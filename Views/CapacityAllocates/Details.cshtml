@@ -1,0 +1,54 @@
+﻿@model SweaterPlanning.Models.CapacityAllocate
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CapacityAllocate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Marchant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Marchant.MarchantId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Buyer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Buyer.BuyerId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Years)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Years.YearId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Months)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Months.MonthId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gauge)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gauge.GaugeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AllocateQty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AllocateQty)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CapacityAllocateId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

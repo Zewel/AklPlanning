@@ -1,0 +1,16 @@
+﻿
+@model System.Data.DataTable;
+@using System.Data;
+
+
+@foreach (DataRow item in Model.Rows)
+{
+
+    <tr style="background-color:lightsteelblue">
+
+        <td>@item.ItemArray[1]</td>
+        <td>@item.ItemArray[2]</td>
+        <td><button class="button  btn-success" data-toggle="tooltip" data-placement="top" title="Search Style" style="border-radius:50%; margin-top:10px" onclick="StyleInfo(@item.ItemArray[0])"><span class="fa fa-search"></span></button></td>
+    </tr>
+
+}

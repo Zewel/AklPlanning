@@ -1,0 +1,285 @@
+﻿
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header row">
+
+                    <div class="col-md-4">
+                        <h3 class="card-title"><span class="fa fa-list"></span>All Menu List</h3>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<button type="button" class="btn btn-default float-right" data-toggle="modal" data-target="#modal-xl">
+                                New Menu
+                            </button>*@
+
+                        <button type="button" class="btn btn-default float-right" onclick="Create()">
+                            New Menu
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="row" id="createMenuId">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Menu Step</label>
+                            <select class="form-control select2" onchange="LoadParent('parentId')" id="menuStep" style="width: 100%;">
+                                <option value="">--Select Menu Step--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Parent Name</label>
+                            <select class="form-control select2" id="parentId" style="width: 100%;">
+                                <option value="">--Select Parent--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Menu Name<i class="danger"> *</i></label>
+                            <input type="text" class="form-control" id="menuName" placeholder="Enter email">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="isMVC">
+                            <label class="form-check-label" for="isMVC">Is MVC</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" onclick="DivHideShow()" class="form-check-input" id="isPage">
+                            <label class="form-check-label" for="isPage">Is Page</label>
+                        </div>
+
+                        <div class="form-group" id="controllerDiv">
+                            <label for="controllerName">Controller Name</label>
+                            <input type="text" class="form-control" id="controllerName" placeholder="Enter email">
+                        </div>
+                        <div class="form-group" id="actionDiv">
+                            <label for="actionName">Action Name</label>
+                            <input type="text" class="form-control" id="actionName" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label>Menu Type</label>
+                            <select class="form-control select2" style="width: 100%;" id="menuType">
+                                <option value="">--Select Menu Type--</option>
+
+                            </select>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="isActive" checked>
+                                <label class="form-check-label" for="isActive">Is Active</label>
+                            </div>
+                            <div class="form-group card-footer" id="actionDiv">
+                                <button class="btn btn-primary float-right" onclick="Add()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive" id="DataDiv">
+                    <table id="dailyTaskTable" class="table table-bordered table-hover dataTable">
+                        <thead>
+                            <tr style="background-color:antiquewhite">
+
+                                <th align="center">MenuId</th>
+                                <th align="center">Menu Name</th>
+                                <th align="center">Controller Name</th>
+                                <th align="center">Action Name</th>
+                                <th align="center">Parent</th>
+                                <th align="center">IsPage</th>
+                                <th align="center">IsMVC</th>
+                                <th align="center">Menu Step Name</th>
+                                <th align="center">Menu Type Name</th>
+                                <th align="center">IsActive</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+IDBCursor
+
+
+        $(function () {
+            debugger;
+            
+            LoadTableData();
+            LoadMenuSetp('menuStep')
+            LoadMenuType('menuType')
+
+            $('#createMenuId').hide();
+            $('#controllerDiv').hide();
+            $('#actionDiv').hide();
+
+
+            $("#saveBtn").click(function (event) {
+                debugger;
+                event.preventDefault();
+                Add();
+
+             window.location.href = '@Url.Action("MenuCreation", "View")';
+
+            });
+        });
+        function LoadMenuSetp(elementId) {
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetAllMenuStep',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value=''>--Select Menu Step--</option>");
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].MenuStepId).html(result[i].MenuStepName));
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+        function LoadMenuType(elementId) {
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetAllMenuType',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value=''>--Select Menu Type--</option>");
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].MenuTypeId).html(result[i].MenuTypeName));
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function LoadTableData() {
+            //$('#equictntbl').dataTable().fnDestroy();
+            $('#dailyTaskTable').DataTable().clear().destroy();
+            var table = $('#dailyTaskTable').DataTable({
+                "ajax": { "url": apiHeader + "api/Common/GetAllMenu", "dataSrc": "", "crossDomain": true, },
+                "buttons": ['excel', 'pdf', 'copy'],
+                "ordering": false,
+                "lengthMenu": [[12, 25, 50, -1], [12, 25, 50, "All"]],
+                "rowsGroup": [1],
+                "vertical_align": 'middle',
+                "columns":
+                    [
+                        { "data": "MenuId" },
+                        { "data": "MenuName" },
+                        { "data": "ControllerName" },
+                        { "data": "ActionName" },
+                        { "data": "Parent" },
+                        { "data": "IsPage" },
+                        { "data": "IsMVC" },
+                        { "data": "MenuStepName" },
+                        { "data": "MenuTypeName" },
+                        { "data": "IsActive" }
+
+                    ],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    { orderable: false, targets: '_all' },
+
+                    { className: 'dt-center', targets: [1, 2, 3, 4] }
+                ]
+            });
+
+        }
+
+        function LoadParent(elementId) {
+            var menuStep = parseInt($('#menuStep').val());
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetAllParent/' + menuStep,
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value=''>--Select Parent--</option>");
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].MenuId).html(result[i].MenuName));
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function DivHideShow() {
+            debugger;
+            if ($('#isPage').prop('checked')) {
+                $('#controllerDiv').show();
+                $('#actionDiv').show();
+            }
+            else {
+                $('#controllerDiv').hide();
+                $('#actionDiv').hide();
+            }
+        }
+
+        function Add() {
+
+            var obj = {
+                MenuStepId: $('#menuStep').val(),
+                ParantId: $('#parentId').val(),
+                MenuName: $('#menuName').val(),
+                IsMVC: $("#isMVC").is(":checked"),
+                IsPage: $("#isPage").is(":checked"),
+                ControllerName: $('#controllerName').val(),
+                ActionName: $('#actionName').val(),
+                MenuTypeId: $('#menuType').val(),
+                IsActive: $("#isActive").is(":checked")
+            };
+
+
+            $('#createMenuId').hide();
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: apiHeader + 'api/Common/AddMenu',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    toastr.success('Menu Save Successfully.');
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+            LoadTableData();
+        }
+
+        function Create() {
+
+            $('#createMenuId').show();
+        }
+    </script>
+
+}

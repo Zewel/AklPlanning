@@ -1,0 +1,395 @@
+﻿
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
+</head>
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="card-title"><span class="fa fa-list small"></span> Gannt Chart</h3>
+
+                    <a href="#" class="float-right btn btn-sm" data-toggle="tooltip" data-placement="top" title="Export" onclick="ExportAllData_HTML(); return false;"><i class="fa fa-list" style="color:green;"></i>Excel</a>
+
+                    <a href="#" class="float-right btn btn-sm" data-toggle="tooltip" data-placement="top" title="Search" onclick="OpenSearchOption(); return false;"><i class="fa-solid fa-search" style="color:yellow;"></i></a>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body row">
+
+
+
+            <div class="col-md-12 table-responsive ">
+                <div class="" style="height:600px">
+
+                    <table id="dynamicTable" class="display   table  table-bordered table-head-fixed text-nowrap table-hover" style="width:100%;"></table>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+    <div class="row" id="StyleListView">
+
+    </div>
+    <div class="modal fadeInUp" id="SearchModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header card-header">
+                    <h4 class="modal-title" id="headderId" style="color:Highlight" ><i class="fa fa-filter"></i> Filter Gannt Chart</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ui-front">
+
+
+                    <div class="row" id="PlanHisBody">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="styleNo">Factory</label>
+                                <select class="form-control select2" style="width: 100%;" onchange="" id="dllFactory">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="styleNo">Style No.</label>
+                                <input type="text" class="form-control" id="styleNo" placeholder="Enter Style No.">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <fieldset class="border p-2" id="orderDiv">
+                                <legend class="w-auto" style="font-size:12px;">Plan Date:</legend>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="orderFromDate">From Date</label>
+                                            <input type="date" class="form-control" id="FromDate" placeholder="Enter Date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="orderToDate">To Date</label>
+                                            <input type="date" data-date-format="DD MMMM YYYY" class="form-control" id="ToDate" placeholder="Enter Date">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div class="col-md-12">
+                        <button type="submit" class="float-right btn btn-info" id="slotSaveBtn" data-dismiss="modal" onclick="GetAllStyle()"><i class="fa-solid fa-search" style="color:yellow;"></i>Find</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        $(function () {
+           // $('#orderDiv').hide();
+            $('#deliveryDiv').hide();
+
+            $("#styleNo").autocomplete(
+                
+                {
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetStlNo/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.StlDesc);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 3,
+                //select: function (event, ui) {
+                //    log(ui.item ?
+                //        "Selected: " + ui.item.label :
+                //        "Nothing selected, input was " + this.value);
+                //},
+                //open: function () {
+                //    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                //},
+                //close: function () {
+                //    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                //}
+            });
+            GetAllStyle();
+
+            let selectedCells = [];
+            LoadFactory("dllFactory");
+            // Add click event to table cells
+
+        });
+        function ExcelList(){
+            debugger;
+            //let table = document.getElementsByTagName("table");
+            //console.log(table);
+            //debugger;
+            //TableToExcel.convert(table[0], {
+            //    name: `UserManagement.xlsx`,
+            //    sheet: {
+            //        name: 'Usermanagement'
+            //    }
+            //});
+            var table2excel = new Table2Excel();
+
+            table2excel.export(document.querySelectorAll('table'));
+        }
+        function GetAllStyle() {
+            //var PoNo = $('#poNo').val();
+            //var StyleNo = $('#styleNo').val();
+            //var Buyer = $('#buyer').val();
+            var Factory = $('#dllFactory').val();
+            var Style = $('#styleNo').val();
+            var PlanFromDate = $('#FromDate').val();
+            var PlanToDate = $('#ToDate').val();
+
+            //var url = apiHeader + 'api/Common/GetPlanningGanntChart/'
+            //    + (PlanFromDate ? PlanFromDate:'') + '/'
+            //    + (PlanToDate ? PlanToDate:'') + '/'
+            //    + (Factory ? Factory:0) + '/'
+            //    + (Style ? Style : ' ') + '/';
+
+
+            var url = apiHeader + 'api/Common/GetPlanningGanntChart';
+
+            //// Add query parameters to the URL if they are provided
+            //var params = [];
+
+            //// Add startDate if it is provided
+            //if (PlanFromDate) {
+            //    params.push('startDate=' + encodeURIComponent(PlanFromDate));
+            //}
+
+            //// Add endDate if it is provided
+            //if (PlanToDate) {
+            //    params.push('endDate=' + encodeURIComponent(PlanToDate));
+            //}
+
+            //// Add factoryId if it is provided
+            //if (Factory) {
+            //    params.push('factoryId=' + encodeURIComponent(Factory));
+            //}
+
+            //// Add styleNumber if it is provided
+            //if (Style) {
+            //    params.push('styleNumber=' + encodeURIComponent(Style));
+            //}
+
+            //// If there are any parameters, append them to the URL
+            //if (params.length > 0) {
+            //    url += '?' + params.join('&');
+            //}
+            var entity = {
+                FactoryId: Factory,
+                StyleNumber: Style,
+                PlanFromDate: PlanFromDate,
+                PlanToDate: PlanToDate
+            };
+            debugger;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(entity),
+                success: function (data) {
+                    // Dynamically create the table
+                    debugger
+
+                    //$('#SearchModal').remove();
+                    //$('.modal-backdrop').remove();
+                    let headers = Object.keys(data[0]);
+                    if ($.fn.dataTable.isDataTable('#dynamicTable')) {
+                        $('#dynamicTable').DataTable().clear().destroy();
+                    }
+                    //$('#dynamicTable').DataTable().clear().destroy();
+                    // Add the 'Total' column to headers dynamically
+                    headers.push("Total Qty");
+
+                    // Build the table structure with footer
+                    let tableHtml = '<thead><tr>';
+                    headers.forEach(header => {
+                        tableHtml += `<th>${header}</th>`;
+                    });
+                    tableHtml += '</tr></thead>';
+
+                    // Build footer with a single colspan for "Total" label
+                    tableHtml += '<tfoot><tr>';
+                    tableHtml += `<th colspan="11" style="text-align: right;">Day Total</th>`; // First 11 columns
+                    for (let i = 11; i < headers.length; i++) {
+                        tableHtml += `<th></th>`; // Empty cells for numeric totals
+                    }
+                    tableHtml += '</tr></tfoot>';
+
+                    $('#dynamicTable').html(tableHtml);
+                    $('#dynamicTable').css('font-size', '8px');  // General table font size
+                    $('#dynamicTable thead th').css('font-size', '8px');  // Header font size
+                    $('#dynamicTable tfoot th').css('font-size', '8px');
+                    // Initialize the DataTable
+
+                    //$('#dynamicTable').DataTable().clear().destroy();
+                    $('#dynamicTable').DataTable({
+                        "fixedHeader": true,
+                        "scrollX": true,
+                        "scrollY": "400px",
+                        "paging": false,
+                        "fixedColumns": {
+                            leftColumns: 11,
+                            rightColumns: 0
+                        },
+                        "ordering": true,
+                        "lengthMenu": [[-1], ["All"]],
+                        data: data,
+
+                        // Map columns dynamically, including the new 'Total' column
+                        columns: headers.map((header, colIndex) => {
+                            if (header === "Total Qty") {
+                                return {
+                                    data: null,
+                                    render: function (data, type, row) {
+                                        let total = 0;
+                                        Object.values(row).forEach((value, index) => {
+                                            if (index > 11 && !isNaN(value) && value !== null) {
+                                                total += parseFloat(value);
+                                            }
+                                        });
+                                        return total.toFixed(2);
+                                    }
+                                };
+                            } else {
+                                return { data: header };
+                            }
+                        }),
+
+                        // Footer Callback for Column Sum
+                        //"footerCallback": function (row, data, start, end, display) {
+                        //    var api = this.api();
+
+                        //    // Helper function to format numbers
+                        //    const formatNumber = (num) => isNaN(num) ? '0.00' : parseFloat(num).toFixed(2);
+
+                        //    // Calculate column-wise total for numeric columns
+                        //    for (let colIndex = 11; colIndex < headers.length; colIndex++) {
+                        //        let total = api
+                        //            .column(colIndex, { page: 'all' })
+                        //            .data()
+                        //            .reduce((a, b) => {
+                        //                return a + (parseFloat(b) || 0);
+                        //            }, 0);
+
+                        //        // Update footer cell with the column total
+                        //        $(api.column(colIndex).footer()).html(formatNumber(total));
+                        //    }
+                        //}
+                        "footerCallback": function (row, data, start, end, display) {
+                            var api = this.api();
+
+                            // Helper function to format numbers
+                            const formatNumber = (num) => isNaN(num) ? '0.00' : parseFloat(num).toFixed(2);
+
+                            // Calculate totals for numeric columns
+                            for (let colIndex = 11; colIndex < headers.length; colIndex++) {
+                                let total = 0;
+
+                                // Check if the column is "Total Qty"
+                                if (headers[colIndex] === "Total Qty") {
+                                    // Calculate 'Total Qty' explicitly
+                                    total = display.reduce((sum, rowIdx) => {
+                                        let rowData = api.row(rowIdx).data();
+                                        let subtotal = 0;
+                                        Object.values(rowData).forEach((value, index) => {
+                                            if (index > 11 && !isNaN(value) && value !== null) {
+                                                subtotal += parseFloat(value);
+                                            }
+                                        });
+                                        return sum + subtotal;
+                                    }, 0);
+                                } else {
+                                    // Regular numeric column
+                                    total = api
+                                        .column(colIndex, { page: 'all' })
+                                        .data()
+                                        .reduce((a, b) => a + (parseFloat(b) || 0), 0);
+                                }
+
+                                // Update footer cell with the column total
+                                $(api.column(colIndex).footer()).html(formatNumber(total));
+                            }
+                        }
+                    });
+                    $('#dynamicTable tfoot th').eq(11).css('position', 'sticky').css('bottom', '0').css('background-color', '#AAA').css('z-index', '1');
+
+                },
+                error: function (error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+
+           $('#dllFactory').val(0);
+           $('#styleNo').val("");
+           $('#FromDate').val("");
+           $('#ToDate').val("");
+
+        }
+
+        
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('dynamicTable'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "GanntChart.xlsx", { cellStyles: true });
+        }
+
+
+        function Print(element) {
+
+            window.open(reportHeader+"Report/CapacityReport?stlCode=" + element, '_blank');
+        }
+
+        
+        function OpenSearchOption() {
+            debugger;
+
+            //$('#SearchModal').modal('hide');
+
+            //// Remove any existing backdrops to prevent duplicates
+            //$('.modal-backdrop').remove();
+
+            // Open the modal
+            $('#SearchModal').modal({ backdrop: 'static', keyboard: false });
+            //$('#SearchModal ').modal({ backdrop: 'static', keyboard: false });
+        }
+
+
+    </script>
+}

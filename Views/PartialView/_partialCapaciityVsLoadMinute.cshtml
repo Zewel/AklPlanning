@@ -1,0 +1,44 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+@using System.Text.RegularExpressions;
+
+
+
+        <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+            <thead>
+                <tr style="background-color:aqua">
+                    <td>Year</td>
+                    <td>Month</td>
+                    <td>Total Capacity Minutes</td>
+                    <td>Total Load Minutes</td>
+                    <td>Avg. Load SMV</td>
+                </tr>
+
+            </thead>
+            <tbody id="tbodyid">
+
+                @foreach (DataRow item in Model.Rows)
+                {
+                    <tr>
+
+                        <td>@item.ItemArray[0]</td>
+                        <td>@item.ItemArray[1]</td>
+                        <td>@item.ItemArray[2]</td>
+                        <td>@item.ItemArray[3]</td>
+                        <td>@item.ItemArray[4]</td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+            <tfoot>
+                @*<tr>
+                    <td colspan="2" style="background-color:lightsteelblue">Total</td>
+                    <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[2])) </td>
+                    <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[3])) </td>
+                </tr>*@
+            </tfoot>
+        </table>
+ 
+

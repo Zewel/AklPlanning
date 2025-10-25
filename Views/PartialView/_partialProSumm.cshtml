@@ -1,0 +1,66 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+<table class="table table-responsive table-bordered table-head-fixed text-nowrap table-hover" id="">
+    <thead class="fixedHeader-floating">
+        <tr>
+
+            <th>Factory</th>
+            <th>Total<br>Machine</th>
+            <th>Run<br>Mcn.</th>
+            <th>Avg.<br>SMV</th>
+            <th>T/Plan<br>Qty</th>
+            <th>T/Pro.<br>Qty</th>
+            <th>Opportunity<br> Loss</th>
+            <th>Opportunity<br> Loss</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow item in Model.Rows)
+        {
+            if (Convert.ToInt32(item.ItemArray[7]) < 0)
+            {
+                <tr style="background-color:lavenderblush" class="tag">
+                    <td class="stlNo">@item.ItemArray[0]</td>
+                    <td class="mcndesc">@item.ItemArray[1]</td>
+                    <td class="mcndesc">@item.ItemArray[2]</td>
+                    <td class="yrnInHouseDt">@item.ItemArray[3]</td>
+                    <td class="yrnTrnDt">@item.ItemArray[5] Pcs</td>
+                    <td class="yrnTrnDt">@item.ItemArray[6] Pcs</td>
+                    <td class="smpApDt">No Loss</td>
+                    <td class="smpApDt">No Loss</td>
+
+                </tr>
+            }
+            else
+            {
+                <tr style="background-color:lavenderblush" class="tag">
+                    <td class="stlNo">@item.ItemArray[0]</td>
+                    <td class="mcndesc">@item.ItemArray[1]</td>
+                    <td class="mcndesc">@item.ItemArray[2]</td>
+                    <td class="yrnInHouseDt">@item.ItemArray[3]</td>
+                    <td class="smpApDt">@item.ItemArray[5] Pcs</td>
+                    <td class="smpApDt">@item.ItemArray[6] Pcs </td>
+                    <td class="smpApDt" style="background-color:yellow">@item.ItemArray[7] Pcs</td>
+                    <td class="smpApDt" style="background-color:yellow">$@item.ItemArray[8]</td>
+                </tr>
+            }
+
+        }
+    </tbody>
+    <tfoot>
+        <tr style="background-color:lavender">
+            <th colspan="1">Total</th>
+            <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[1]))</th>
+            <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[2]))</th>
+            <th></th>
+            <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[5])) Pcs</th>
+            <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[6])) Pcs</th>
+            <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[7])) Pcs</th>
+            <th>$@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[8]))</th>
+        </tr>
+    </tfoot>
+
+</table>

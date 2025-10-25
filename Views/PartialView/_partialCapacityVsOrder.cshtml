@@ -1,0 +1,87 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+
+<table class="table table-bordered datatable" id="exportStylelList">
+    <thead style="background-color:aliceblue">
+        <tr>
+            <th>#Sl</th>
+            <th>Marchant Name</th>
+            <th>Month</th>
+            <th>Gauge Group</th>
+            <th>Capacity</th>
+            <th>Order</th>
+            <th>Efficiency</th>
+            <th>Status</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @{ int i = 1; }
+        @foreach (DataRow item in Model.Rows)
+        {
+            int efficiency = 0;
+            if (Convert.ToInt32(item.ItemArray[6]) == 0)
+            {
+                efficiency = 100;
+            }
+            else
+            {
+                efficiency = (Convert.ToInt32(item.ItemArray[7]) * 100) / Convert.ToInt32(item.ItemArray[6]);
+
+            }
+
+            <tr>
+                <td>@i</td>
+                <td>@item.ItemArray[1]</td>
+                <td>@item.ItemArray[3]</td>
+                <td>@item.ItemArray[5]</td>
+                <td>@item.ItemArray[6]</td>
+                <td>@item.ItemArray[7]</td>
+                @if (efficiency < 100)
+                {
+            <td style="color:red"><span class="fa fa-arrow-down" style="color:red"></span>  @efficiency %</td>
+                }
+                else
+                {
+            <td style="color:green"><span class="fa fa-arrow-up" style="color:green"></span> @efficiency %</td>
+                }
+                @if (Convert.ToInt32(item.ItemArray[6]) > Convert.ToInt32(item.ItemArray[7]))
+                {
+
+
+            <td style="color:green"><span class="fa fa-arrow-down" style="color:green"></span>  Capacity Loss</td>
+                }
+                else
+                {
+
+                    <td style="color:red"><span class="fa fa-arrow-up" style="color:red"></span> Good</td>
+                }
+
+
+            </tr>
+            i++;
+        }
+
+
+
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4">Total</th>
+            <th>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[6])) </th>
+            <th>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[7])) </th>
+            <th>
+                @{
+                    var tOrder = @Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[7]));
+                    var effi = @Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[6]));
+                    var percent = tOrder * 100 / effi;
+                }
+                @percent %
+            </th>
+        </tr>
+    </tfoot>
+</table>
+

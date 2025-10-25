@@ -1,0 +1,103 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+@{
+    var style = ""; var styleCode = 0;
+    @if (Model.Rows.Count > 0) style = Model.AsEnumerable().FirstOrDefault().ItemArray[17].ToString();
+
+    @if (Model.Rows.Count > 0) styleCode = Convert.ToInt32( Model.AsEnumerable().FirstOrDefault().ItemArray[13]);
+}
+
+
+
+<div class="card card-success">
+    <div class="card-header">
+        <div class="row">
+
+            <div class="col-md-4">
+                <span class="info-box-text fa fa-cog" style="color:white"></span><label style="color:white; font-weight:bold">GRN List</label>
+            </div>
+            <div class="col-md-4">
+                <label>Style No: @style</label>
+                <a href="#" class="btn btn-sm" id="" onclick="SeeConsamption(@styleCode); return false"  style="text-decoration:underline; background-color:darkviolet;"><i class="fa fa-arrow-down"></i>Consamption</a>
+            </div>
+            <div class="col-md-4">
+                <button class="button btn-info" style="float:right" onclick="ExportAllData_HTML()"> <span class=" fa fa-list"></span>Excel</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form>
+        <div class="row">
+            <div class="card-body  table-responsive" style="height:350px">
+
+                <table class="table table-bordered table-responsive table-head-fixed text-nowrap table-hover" id="exportGRNList">
+
+                    <thead style="background-color:aliceblue" class="fixedHeader-floating">
+                        <tr class="fixedHeader-floating">
+                            <th>Mcat_Desc</th>
+                            <th>Sbcat_Desc</th>
+                            <th>Const_Desc</th>
+                            <th>Dimn_Desc</th>
+                            <th>Heightdesc</th>
+                            <th>CountDesc</th>
+                            <th>Clr_Desc</th>
+                            <th>ShdDesc</th>
+                            <th>Siz_Desc</th>
+                            <th>GSM_Desc</th>
+                            <th>LineDesc</th>
+                            <th>stlcod</th>
+                            <th>ChallanNO</th>
+                            <th>RcvQty</th>
+                            <th>FocQty</th>
+                            <th>StlDesc</th>
+                            <th>WONO</th>
+                            <th>Bur_Name</th>
+                            <th>SupName</th>
+                            <th>UnitName</th>
+                            <th>GRN Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (DataRow item in Model.Rows)
+                        {
+                            <tr style="background-color:lightsteelblue">
+
+                                <td>@item.ItemArray[2]</td>
+                                <td>@item.ItemArray[3]</td>
+                                <td>@item.ItemArray[4]</td>
+                                <td>@item.ItemArray[5]</td>
+                                <td>@item.ItemArray[6]</td>
+                                <td>@item.ItemArray[7]</td>
+                                <td>@item.ItemArray[8]</td>
+                                <td>@item.ItemArray[9]</td>
+                                <td>@item.ItemArray[10]</td>
+                                <td>@item.ItemArray[11]</td>
+                                <td>@item.ItemArray[12]</td>
+                                <td>@item.ItemArray[13]</td>
+                                <td>@item.ItemArray[14]</td>
+                                <td>@item.ItemArray[15]</td>
+                                <td>@item.ItemArray[16]</td>
+                                <td>@item.ItemArray[17]</td>
+                                <td>@item.ItemArray[18]</td>
+                                <td>@item.ItemArray[19]</td>
+                                <td>@item.ItemArray[20]</td>
+                                <td>@item.ItemArray[21]</td>
+                                <td>@Convert.ToDateTime(item.ItemArray[23]).ToString("dd MMM yyyy")</td>
+                            </tr>
+
+                        }
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </form>
+
+</div>

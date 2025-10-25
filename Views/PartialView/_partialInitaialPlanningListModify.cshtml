@@ -1,0 +1,417 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+@{ var count = 1;
+}
+
+
+@if (Model.Rows.Count > 0)
+{
+    <div class="card card-primary">
+        <div class="card-header">
+            @{ var gaugeList = "";
+                if (Model.AsEnumerable().FirstOrDefault().ItemArray[6].ToString() == "9 GG")
+                { gaugeList = "12 GG"; }
+                else { gaugeList = Model.AsEnumerable().FirstOrDefault().ItemArray[6].ToString(); }
+            }
+            <h3 class="card-title gaugeName_@count">
+                @gaugeList
+                @Model.AsEnumerable().FirstOrDefault().ItemArray[20]
+            </h3>
+            <h6 hidden class="gaugeId_@count">@Model.AsEnumerable().FirstOrDefault().ItemArray[17]</h6>
+            <input type="hidden" id="gaugeId_@count" value="@Model.AsEnumerable().FirstOrDefault().ItemArray[17] " />
+            <button class="btn btn-info" onclick="ActionForSlot(@count)" style="float:right">Create Slot</button>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form>
+            <div class="card-body table-responsive " style="height:500px">
+                <div class="col-md-12 table ">
+                    <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="InitalPlanning_@count">
+                        <thead class="fixedHeader-floating">
+                            <tr>
+                                <th style="width:100px">Action</th>
+                                <th>Type</th>
+                                <th>Day/Rem</th>
+                                <th>SL</th>
+                                <th>Ratio</th>
+                                <th style="width:20%">Buyer</th>
+                                <th width="10px">Style No.</th>
+                                <th>PO No</th>
+                                <th>PO Qty</th>
+                                <th>Mcn. Name</th>
+                                <th>Last Kn/Factory</th>
+                                <th width="4%">Yrn. I/H Date</th>
+                                <th width="4%">Yrn. I/H Complete</th>
+                                <th>Ex-Factory Date</th>
+                                <th>Kn/Part</th>
+                                @*<th>Yrn/T. Date</th>*@
+                                <th>S/App. Date</th>
+                                <th>S/App. Complete Date</th>
+                                <th>B/H App. Date</th>
+                                <th>B/H Complete Date</th>
+                                <th>Test/A. Date</th>
+                                <th>Test/A. Compl. Date</th>
+                                <th>Plan. Status</th>
+                                <th>Plan. Qty</th>
+                                <th>Ini. Plane Date</th>
+                                <th>Gauge</th>
+                                <th>Po Entry date</th>
+                                <th>Remarks</th>
+                                @*<th>Ex-Factory Date</th>*@
+                                <th>PO Color</th>
+
+                                <th>Merchant</th>
+                                <th>Season</th>
+                                <th>StyleStatus</th>
+                                <th>Ship Mode</th>
+                                <th>Month</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (DataRow item1 in Model.Rows)
+                            {
+                                if (Convert.ToInt32(item1.ItemArray[4]) == Convert.ToInt32(item1.ItemArray[19]))
+                                {
+                                    <tr style="background-color:forestgreen" class="tag">
+                                        <td><button class="btn btn-sm btn-primary" style="border-radius:50%">T&A</button><input type="checkbox" disabled="disabled" class="checkBoxCls" id="checkboxPrimary3"></td>
+                                        <td><span class="info-box-text fa fa-cog float-right" style="color:chocolate"></span><label class="float-right" style="color:chocolate; font-weight:bold">@item1.ItemArray[29]</label></td>
+                                        @if (Convert.ToInt32(item1.ItemArray[36]) < 0)
+                                        {
+                                            <td class="dateRem" style="background-color:red">@item1.ItemArray[36]</td>
+                                        }
+                                        else if (Convert.ToInt32(item1.ItemArray[36]) < 35)
+                                        {
+                                            <td class="dateRem" style="background-color:yellow">@item1.ItemArray[36]</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="dateRem" style="background-color:aliceblue">@item1.ItemArray[36]</td>
+
+                                        }
+                                        <td class="SL">@item1.ItemArray[41]</td>
+                                        <td class="ratio">@item1.ItemArray[39]</td>
+                                        <td class="burName" style="width:20%">@item1.ItemArray[11]</td>
+                                        <td width="10px" class="stlNo"> @item1.ItemArray[3]</td>
+                                        <td class="poNo"><a href="#" onclick="ShowStlData(@item1.ItemArray[26]);return false;"><label name="stlNo" style="cursor:pointer">@item1.ItemArray[2] </label></a></td>
+
+                                        <td class="poQty">@item1.ItemArray[4]</td>
+                                        <td class="mcndesc">@item1.ItemArray[20]</td>
+                                        <td class="LastKnF">@item1.ItemArray[30]</td>
+                                        <td class="yrnInHouseDt">@item1.ItemArray[21]</td>
+                                        <td class="yrnInHouseComDt">@item1.ItemArray[32]</td>
+                                        <td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>
+
+                                        <td class="knPart">@item1.ItemArray[38]</td>
+                                        @*<td class="yrnTrnDt">@item1.ItemArray[22]</td>*@
+                                        <td class="smpApDt">@item1.ItemArray[23]</td>
+                                        <td class="smpApCDt">@item1.ItemArray[35]</td>
+                                        <td class="BlkApDt">@item1.ItemArray[24]</td>
+                                        <td class="BlkApDt">@item1.ItemArray[24]</td>
+                                        <td class="BlkCpDt">@item1.ItemArray[34]</td>
+                                        <td class="tstApDt">@item1.ItemArray[25]</td>
+                                        <td class="tstCpDt">@item1.ItemArray[33]</td>
+                                        <td class="PlanStatus">@item1.ItemArray[18]</td>
+                                        <td class="planningQty">@item1.ItemArray[19]</td>
+                                        <td class="iniPlanDt">@Convert.ToDateTime(item1.ItemArray[5].ToString()).ToString("dd MMM yyyy")</td>
+                                        <td class="gaugeDesc">@item1.ItemArray[6]</td>
+                                        @{
+                                            if (item1.ItemArray[7].ToString() == "1/1/1900 12:00:00 AM" || item1.ItemArray[7].ToString() == "" || item1.ItemArray[7].ToString() == null)
+                                            {
+                                                <td></td>
+
+                                            }
+                                            else
+                                            {
+                                                <td class="poEntryDt">@Convert.ToDateTime(item1.ItemArray[7].ToString()).ToString("dd MMM yyyy")</td>
+                                            }
+
+                                        }
+                                        <td class="remarks">@item1.ItemArray[8]</td>
+                                        @*<td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>*@
+                                        <td class="pocolor">@item1.ItemArray[10]</td>
+
+                                        <td class="merchentNm">@item1.ItemArray[12]</td>
+                                        <td class="seasonName">@item1.ItemArray[13]</td>
+                                        <td class="stlStatus">@item1.ItemArray[14]</td>
+                                        <td class="shipMode">
+                                            @item1.ItemArray[15]
+                                            <input type="hidden" class="mcnId" value="@item1.ItemArray[27]" />
+                                            <input type="hidden" class="stdCode" value="@item1.ItemArray[26]" />
+                                            <input type="hidden" class="poCode" value="@item1.ItemArray[01]" />
+                                            <input type="hidden" class="smvKn" value="@item1.ItemArray[28]" />
+                                            <input type="hidden" class="critType" value="@item1.ItemArray[29]" />
+                                            <input type="hidden" class="poSplitId" value="@item1.ItemArray[31]" />
+                                            <input type="hidden" class="knOperationId" value="@item1.ItemArray[37]" />
+
+                                            <input type="hidden" class="poOwnerType" value="@item1.ItemArray[40]" />
+                                        </td>
+
+                                        <td class="monthName">@item1.ItemArray[16]</td>
+
+
+                                    </tr>
+                                }
+                                else if (Convert.ToInt32(item1.ItemArray[19]) < Convert.ToInt32(item1.ItemArray[4]) && Convert.ToInt32(item1.ItemArray[19]) > 0)
+                                {
+                                    <tr style="background-color:paleturquoise">
+                                        <td><button class="btn btn-sm btn-outline-info" onclick="SearchTAndA(@item1.ItemArray[26]);return false;" style="border-radius:50%; font-size:8px">T</button>   <button class="btn btn-sm btn-outline-info" onclick="SearchGRN(@item1.ItemArray[26]);return false;" style="border-radius:50%; font-size:8px">G</button> <input type="checkbox" class="checkBoxCls" id="checkboxPrimary3"></td>
+                                        <td><span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:chocolate; font-weight:bold">@item1.ItemArray[29]</label></td>
+                                        @if (Convert.ToInt32(item1.ItemArray[36]) < 0)
+                                        {
+                                            <td class="dateRem" style="background-color:red">@item1.ItemArray[36]</td>
+                                        }
+                                        else if (Convert.ToInt32(item1.ItemArray[36]) < 35)
+                                        {
+                                            <td class="dateRem" style="background-color:yellow">@item1.ItemArray[36]</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="dateRem" style="background-color:aliceblue">@item1.ItemArray[36]</td>
+
+                                        }
+                                        <td class="SL">@item1.ItemArray[41]</td>
+                                        <td class="ratio">@item1.ItemArray[39]</td>
+                                        <td class="burName" style="width:20%">@item1.ItemArray[11]</td>
+                                        <td class="stlNo">@item1.ItemArray[3]</td>
+                                        <td class="poNo"><a href="#" onclick="ShowStlData(@item1.ItemArray[26]);return false;"><label name="stlNo" style="cursor:pointer">@item1.ItemArray[2] </label></a></td>
+
+                                        <td class="poQty">@item1.ItemArray[4]</td>
+                                        <td class="mcndesc">@item1.ItemArray[20]</td>
+                                        <td class="mcndesc">@item1.ItemArray[30]</td>
+                                        <td class="yrnInHouseDt">@item1.ItemArray[21]</td>
+                                        @if (item1.ItemArray[21].ToString() != "" && item1.ItemArray[32].ToString() != "")
+                                        {
+                                            @if (Convert.ToDateTime(item1.ItemArray[32]) > Convert.ToDateTime(@item1.ItemArray[21]))
+                                            {
+                                                <td class="yrnInHouseComDt"><i class="fa-regular fa-circle-check" style="color:yellow"></i> @item1.ItemArray[32]</td>
+
+                                            }
+                                            else
+                                            {
+                                                <td class="yrnInHouseComDt"><i class="fa-solid fa-circle-check" style="color:lightgreen"></i> @item1.ItemArray[32]</td>
+
+                                            }
+
+
+
+                                        }
+                                        else if (item1.ItemArray[32].ToString() == "")
+                                        {
+                                            <td class="yrnInHouseComDt"><i class="fa-solid fa-ban" style="color:red"></i> @item1.ItemArray[32]</td>
+                                        }
+                                        <td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>
+
+                                        <td class="knPart">@item1.ItemArray[38]</td>
+                                        @*<td class="yrnTrnDt">@item1.ItemArray[22]</td>*@
+                                        <td class="smpApDt">@item1.ItemArray[23]</td>
+                                        <td class="smpApCDt">@item1.ItemArray[35]</td>
+                                        <td class="BlkApDt">@item1.ItemArray[24]</td>
+                                        <td class="BlkCpDt">@item1.ItemArray[34]</td>
+                                        <td class="tstApDt">@item1.ItemArray[25]</td>
+                                        <td class="tstCpDt">@item1.ItemArray[33]</td>
+                                        <td class="PlanStatus">@item1.ItemArray[18]</td>
+                                        <td class="planningQty">@item1.ItemArray[19]</td>
+                                        <td class="iniPlanDt">@Convert.ToDateTime(item1.ItemArray[5].ToString()).ToString("dd MMM yyyy")</td>
+                                        <td class="gaugeDesc">@item1.ItemArray[6]</td>
+                                        @{
+                                            if (item1.ItemArray[7].ToString() == "1/1/1900 12:00:00 AM" || item1.ItemArray[7].ToString() == "" || item1.ItemArray[7].ToString() == null)
+                                            {
+                                                <td></td>
+
+                                            }
+                                            else
+                                            {
+                                                <td class="poEntryDt">@Convert.ToDateTime(item1.ItemArray[7].ToString()).ToString("dd MMM yyyy")</td>
+                                            }
+
+                                        }
+                                        <td class="remarks">@item1.ItemArray[8]</td>
+                                        @* <td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>*@
+                                        <td class="pocolor">@item1.ItemArray[10]</td>
+
+                                        <td class="merchentNm">@item1.ItemArray[12]</td>
+                                        <td class="seasonName">@item1.ItemArray[13]</td>
+                                        <td class="stlStatus">@item1.ItemArray[14]</td>
+                                        <td class="shipMode">
+                                            @item1.ItemArray[15]
+                                            <input type="hidden" class="mcnId" value="@item1.ItemArray[27]" />
+                                            <input type="hidden" class="stdCode" value="@item1.ItemArray[26]" />
+                                            <input type="hidden" class="poCode" value="@item1.ItemArray[01]" />
+                                            <input type="hidden" class="smvKn" value="@item1.ItemArray[28]" />
+                                            <input type="hidden" class="critType" value="@item1.ItemArray[29]" />
+
+                                            <input type="hidden" class="poSplitId" value="@item1.ItemArray[31]" />
+                                            <input type="hidden" class="knOperationId" value="@item1.ItemArray[37]" />
+                                            <input type="hidden" class="poOwnerType" value="@item1.ItemArray[40]" />
+                                        </td>
+                                        <td class="monthName">
+                                            @item1.ItemArray[16]
+                                        </td>
+
+
+
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr style="background-color:lightsteelblue">
+                                        <td><button class="btn btn-sm btn-outline-info" onclick="SearchTAndA(@item1.ItemArray[26]);return false;" style="border-radius:50%; font-size:8px">T</button>   <button class="btn btn-sm btn-outline-info" onclick="SearchGRN(@item1.ItemArray[26]);return false;" style="border-radius:50%; font-size:8px">G</button>   <input type="checkbox" class="checkBoxCls" id="checkboxPrimary3"></td>
+                                        <td><span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:chocolate; font-weight:bold">@item1.ItemArray[29]</label></td>
+                                        @if (Convert.ToInt32(item1.ItemArray[36]) < 0)
+                                        {
+                                            <td class="dateRem" style="background-color:red">@item1.ItemArray[36]</td>
+                                        }
+                                        else if (Convert.ToInt32(item1.ItemArray[36]) < 35)
+                                        {
+                                            <td class="dateRem" style="background-color:yellow">@item1.ItemArray[36]</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="dateRem" style="background-color:aliceblue">@item1.ItemArray[36]</td>
+
+                                        }
+
+
+
+                                        <td class="SL">@item1.ItemArray[41]</td>
+                                        <td class="ratio">@item1.ItemArray[39]</td>
+                                        <td class="burName" style="width:20%">@item1.ItemArray[11]</td>
+                                        <td class="stlNo">@item1.ItemArray[3]</td>
+                                        <td class="poNo"><a href="#" onclick="ShowStlData(@item1.ItemArray[26]);return false;"><label name="stlNo" style="cursor:pointer">@item1.ItemArray[2] </label></a></td>
+
+                                        <td class="poQty">@item1.ItemArray[4]</td>
+                                        <td class="mcndesc">@item1.ItemArray[20]</td>
+                                        <td class="mcndesc">@item1.ItemArray[30]</td>
+                                        <td class="yrnInHouseDt">@item1.ItemArray[21]</td>
+                                        @if (item1.ItemArray[21].ToString() != "" && item1.ItemArray[32].ToString() != "")
+                                        {
+                                            @if (Convert.ToDateTime(item1.ItemArray[32]) > Convert.ToDateTime(@item1.ItemArray[21]))
+                                            {
+                                                <td class="yrnInHouseComDt"><i class="fa-regular fa-circle-check" style="color:yellow"></i> @item1.ItemArray[32]</td>
+
+                                            }
+                                            else
+                                            {
+                                                <td class="yrnInHouseComDt"><i class="fa-solid fa-circle-check" style="color:lightgreen"></i> @item1.ItemArray[32]</td>
+
+                                            }
+
+
+
+                                        }
+                                        else if (item1.ItemArray[32].ToString() == "")
+                                        {
+                                            <td class="yrnInHouseComDt"><i class="fa-solid fa-ban" style="color:red"></i> @item1.ItemArray[32]</td>
+                                        }
+                                        <td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>
+
+                                        <td class="knPart">@item1.ItemArray[38]</td>
+                                        @*<td class="yrnTrnDt">@item1.ItemArray[22]</td>*@
+                                        <td class="smpApDt">@item1.ItemArray[23]</td>
+                                        <td class="smpApCDt">@item1.ItemArray[35]</td>
+                                        <td class="BlkApDt">@item1.ItemArray[24]</td>
+                                        <td class="BlkCpDt">@item1.ItemArray[34]</td>
+                                        <td class="tstApDt">@item1.ItemArray[25]</td>
+                                        <td class="tstCpDt">@item1.ItemArray[33]</td>
+                                        <td class="PlanStatus">@item1.ItemArray[18]</td>
+                                        <td class="planningQty">@item1.ItemArray[19]</td>
+                                        <td class="iniPlanDt">@Convert.ToDateTime(item1.ItemArray[5].ToString()).ToString("dd MMM yyyy")</td>
+                                        <td class="gaugeDesc">@item1.ItemArray[6]</td>
+                                        @{
+                                            if (item1.ItemArray[7].ToString() == "1/1/1900 12:00:00 AM" || item1.ItemArray[7].ToString() == "" || item1.ItemArray[7].ToString() == null)
+                                            {
+                                                <td></td>
+
+                                            }
+                                            else
+                                            {
+                                                <td class="poEntryDt">@Convert.ToDateTime(item1.ItemArray[7].ToString()).ToString("dd MMM yyyy")</td>
+                                            }
+
+                                        }
+                                        <td class="remarks">@item1.ItemArray[8]</td>
+                                        @*<td class="exfactory">@Convert.ToDateTime(item1.ItemArray[9].ToString()).ToString("dd MMM yyyy")</td>*@
+                                        <td class="pocolor">@item1.ItemArray[10]</td>
+
+                                        <td class="merchentNm">@item1.ItemArray[12]</td>
+                                        <td class="seasonName">@item1.ItemArray[13]</td>
+                                        <td class="stlStatus">@item1.ItemArray[14]</td>
+                                        <td class="shipMode">
+                                            @item1.ItemArray[15]
+                                            <input type="hidden" class="mcnId" value="@item1.ItemArray[27]" />
+                                            <input type="hidden" class="stdCode" value="@item1.ItemArray[26]" />
+                                            <input type="hidden" class="poCode" value="@item1.ItemArray[01]" />
+                                            <input type="hidden" class="smvKn" value="@item1.ItemArray[28]" />
+                                            <input type="hidden" class="critType" value="@item1.ItemArray[29]" />
+
+                                            <input type="hidden" class="poSplitId" value="@item1.ItemArray[31]" />
+
+                                            <input type="hidden" class="knOperationId" value="@item1.ItemArray[37]" />
+                                            <input type="hidden" class="poOwnerType" value="@item1.ItemArray[40]" />
+                                        </td>
+                                        <td class="monthName">
+                                            @item1.ItemArray[16]
+                                        </td>
+
+
+                                    </tr>
+                                }
+
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+
+
+        </form>
+        @*<div class="card-footer">
+                <button type="submit" onclick="Add()" class="float-right btn btn-primary">Submit</button>
+            </div>*@
+    </div>
+}
+else
+{
+    <label style="color:red">No Data</label>
+}
+
+@section Scripts{
+    <script>
+        $(function () {
+
+            //var groupColumn = 16;
+            //for (let i = 1; i <= 7; i++) {
+
+            //    var table = $('#InitalPlanning_' + i).DataTable({
+            //        "columnDefs": [
+            //            { "visible": false, "targets": groupColumn }
+            //        ],
+            //        "order": [[groupColumn, 'asc']],
+            //        "displayLength": -1,
+            //        "paging": false,
+            //        "fixedHeader": true,
+            //        "drawCallback": function (settings) {
+            //            var api = this.api();
+            //            var rows = api.rows({ page: 'current' }).nodes();
+            //            var last = null;
+
+            //            api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
+            //                if (last !== group) {
+            //                    $(rows).eq(i).before(
+            //                        '<tr class="group"><td colspan="15"   style="float:left">' + group + '</td></tr>'
+            //                    );
+
+            //                    last = group;
+            //                }
+            //            });
+            //        }
+            //    });
+            //}
+        });
+
+    </script>
+}

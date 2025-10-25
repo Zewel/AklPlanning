@@ -1,0 +1,97 @@
+﻿@model IEnumerable<MenuParent>
+
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column menu-open" data-widget="treeview" role="menu" data-accordion="false">
+
+
+        @foreach (MenuParent aStepOne in Model)
+        {
+        <li class="nav-item menu-open">
+            @if (string.IsNullOrEmpty(@aStepOne.ControllerName))
+            {
+                if (@aStepOne.MenuChildList.Count > 0)
+                {
+                    <a href="javascript:void(0);" class="nav-link"><i class="nav-icon fas fa-copy"></i><p>@aStepOne.MenuName</p><i class="right fas fa-angle-left"></i></a>
+                }
+                else
+                {
+                    <a href="javascript:void(0);" class="nav-link"><i class="nav-icon fas fa-copy"></i><p>@aStepOne.MenuName</p></a>
+                }
+            }
+            else
+            {
+                if (@aStepOne.MenuChildList.Count > 0)
+                {
+                    @*<p class="text-blue"*@
+                       @*<a href="@Url.Action(@aStepOne.ActionName, @aStepOne.ControllerName)" class="nav-link"><i class="fa fa-angle-left pull-right"></i><p>@aStepOne.MenuName</p><i class="right fas fa-angle-left"></i></a>*@
+                        <a href="@Url.Action(@aStepOne.ActionName, @aStepOne.ControllerName)" class="nav-link"><i class="far fa-circle nav-icon"></i><p class="text-blue">@aStepOne.MenuName</p><i class="right fas fa-angle-left"></i></a>
+
+                        }
+                        else
+                        {
+
+                        @*<a href="@Url.Action(@aStepOne.ActionName, @aStepOne.ControllerName)" class="nav-link"><i class="fa fa-angle-left pull-right"></i><p>@aStepOne.MenuName</p></a>*@
+                        <a href="@Url.Action(@aStepOne.ActionName, @aStepOne.ControllerName)" class="nav-link"><i class="far fa-circle nav-icon"></i><p >@aStepOne.MenuName</p></a>
+
+                        }
+
+                        }
+                        @if (@aStepOne.MenuChildList.Count > 0)
+                        {
+                            <ul class="nav nav-treeview menu-open">
+                                @foreach (MenuChild aStepTwo in aStepOne.MenuChildList)
+                                {
+                                    <li class="nav-item has-treeview">
+                                        @if (string.IsNullOrEmpty(@aStepTwo.ControllerName))
+                                        {
+                                            if (@aStepTwo.MenuSubChildList.Count > 0)
+                                            {
+                                                <a href="javascript:void(0);" class="nav-link"><i class="far fa-check-circle">&nbsp;</i><p>@aStepTwo.MenuName</p><i class="right fas fa-angle-left"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="javascript:void(0);" class="nav-link"><i class="far fa-check-circle">&nbsp;</i><p>@aStepTwo.MenuName</p></a>
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (@aStepTwo.MenuSubChildList.Count > 0)
+                                            {
+                                                <a href="@Url.Action(@aStepTwo.ActionName, @aStepTwo.ControllerName)" class="nav-link"><i class="far fa-check-circle">&nbsp;</i><p>@aStepTwo.MenuName</p><i class="right fas fa-angle-left"></i></a>
+
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action(@aStepTwo.ActionName, @aStepTwo.ControllerName)" class="nav-link"><i class="far fa-check-circle">&nbsp;</i><p>@aStepTwo.MenuName</p></a>
+
+                                            }
+
+                                        }
+                                        @if (@aStepTwo.MenuSubChildList.Count > 0)
+                                        {
+                                            <ul class="nav nav-treeview menu-open">
+                                                @foreach (MenuSubChild aStepThree in aStepTwo.MenuSubChildList)
+                                                {
+                                                    if (string.IsNullOrEmpty(@aStepThree.ControllerName))
+                                                    {
+                                                        <li class="nav-item"><a href="javascript:void(0);" class="nav-link"><i class="far fa-flag">&nbsp;</i><p>@aStepThree.MenuName</p></a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="nav-item"><a href="@Url.Action(@aStepThree.ActionName, @aStepThree.ControllerName)" class="nav-link"><i class="far fa-flag">&nbsp;</i><p>@aStepThree.MenuName</p></a></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                    </li>
+        }
+
+    </ul>
+</nav>

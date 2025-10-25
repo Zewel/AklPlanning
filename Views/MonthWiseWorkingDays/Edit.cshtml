@@ -1,0 +1,78 @@
+﻿@model SweaterPlanning.Models.MonthWiseWorkingDay
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="fa fa-list"></span> Month Wise Working Day Edit</h3>
+
+                    <a asp-action="Create" class="btn btn-primary float-right">Back to List</a>
+
+                </div>
+                <form asp-action="Edit">
+                    <div class="card-body">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="MonthWiseWorkId" />
+                        <input type="hidden" asp-for="CreateBy" />
+                        <input type="hidden" asp-for="CreateDate" />
+                        <input type="hidden" asp-for="YearId" />
+                        <input type="hidden" asp-for="MonthId" />
+                        <div class="form-group">
+                            <label asp-for="YearId" class="control-label" > Year</label>
+                            <select asp-for="YearId" class="form-control"id="yearId" asp-items="ViewBag.YearId" disabled></select>
+                            <span asp-validation-for="YearId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MonthId" class="control-label">Month</label>
+                            <select asp-for="MonthId" class="form-control" asp-items="ViewBag.MonthId" disabled></select>
+                            <span asp-validation-for="MonthId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DayNo" class="control-label">Day No<span class="text-danger"> *</span></label>
+                            <input asp-for="DayNo" class="form-control" />
+                            <span asp-validation-for="DayNo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="WorkableMinutes" class="control-label">Workable Minutes<span class="text-danger"> *</span></label>
+                            <input asp-for="WorkableMinutes" class="form-control" />
+                            <span asp-validation-for="WorkableMinutes" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AvgKnittingTime" class="control-label">Avg. Knitting Time<span class="text-danger"> *</span></label>
+                            <input asp-for="AvgKnittingTime" class="form-control" />
+                            <span asp-validation-for="AvgKnittingTime" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-default" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $(function () {
+        $("#yearId").prop('disabled', true);
+    });
+</script>
+}

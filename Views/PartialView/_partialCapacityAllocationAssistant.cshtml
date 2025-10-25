@@ -1,0 +1,95 @@
+﻿@model System.Data.DataSet;
+@using System.Data;
+@using System.Text.RegularExpressions;
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Gauge Wise Remaining Qty Monthly</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Gauge Name</td>
+                            <td>Projection Qty</td>
+                            <td>Allocate Qty</td>
+                            <td>Remaining Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count0 = 1;}
+                        @foreach (DataRow item in Model.Tables[0].Rows)
+                        {
+                            <tr id="@count0">
+                                <td>@count0</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[2]</td>
+                                <td>@item.ItemArray[1]</td>
+                                @{ var name=item.ItemArray[0].ToString().Replace(" ", "");
+                                    name = name.ToString().Replace("/", "");
+
+                                    }
+                                <td id="@name">@item.ItemArray[3]</td>
+                          </tr>
+                          count0++;
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="background-color:lightsteelblue">Total</td>
+                            <td id="totalRemaining" style="background-color:yellow">@Model.Tables[0].AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[3])) </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Month Wise Marchandizer Summmary</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Month</td>
+                            <td>Allocate Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count1 = 1;
+                            int mrTotal = 0;}
+                        @foreach (DataRow item in Model.Tables[1].Rows)
+                        {
+                            <tr id="@count1">
+                                <td>@count1</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                            </tr>
+                            count1++;
+
+                            mrTotal = mrTotal + Convert.ToInt32(item.ItemArray[1]);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>@mrTotal</td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

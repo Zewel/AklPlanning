@@ -1,0 +1,94 @@
+﻿@{
+
+    int sl = (int)TempData["trSl"];
+}
+
+<tr id="tr_@sl">
+    
+    <td>
+
+        <select class="form-control select2" style="width: 100%;" id="dllPo_@sl" onchange="GetLastPrice(@sl)">
+        </select>
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="StyleName_@sl" />
+
+    </td>
+    <td>
+
+        <input type="number" class="form-control" id="orderQty_@sl" oninput="" />
+
+    </td>
+    <td>
+
+        <input type="number" class="form-control" id="shipDate_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="AlreadyKnitt_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="RemainingQty_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="Jactime_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="ProductionPerMachine_@sl" />
+
+    </td>
+
+    <td>
+
+        <input type="text" class="form-control" id="ReqMachine_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="ProdutionPerDay_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="Traildate_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="KnittingStartDate_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="KnittingEndDate_@sl" />
+
+    </td>
+    <td>
+
+        <input type="text" class="form-control" id="txtRemarks_@sl" />
+
+    </td>
+    <td>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-sm" onclick="AddRow()"><span class="fa fa-plus"></span></button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-danger btn-sm" onclick="RemoveRow(@sl)"><span class="fa fa-trash"></span></button>
+                </div>
+            </div>
+            
+            
+        </div>
+    </td>
+</tr>

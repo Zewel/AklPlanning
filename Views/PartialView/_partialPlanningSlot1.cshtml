@@ -1,0 +1,445 @@
+﻿@model Tuple<List<SweaterPlanning.Models.ViewModel.FactoryListView>, List<SweaterPlanning.Models.ViewModel.PlanningSlotMasterView>>
+
+<style>
+    .InitalPlanning thead tr th {
+        background-color: forestgreen;
+    }
+
+    td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.expand td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;
+    }
+
+    .ex1 {
+        background-color: lightblue;
+        width: auto;
+        overflow-x: scroll;
+    }
+
+    .container1 {
+        width: 30em;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .blink_me {
+        animation: blinker 1s linear infinite;
+    }
+
+    @@keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
+@foreach (var item in Model.Item1)
+{
+    <div class="card card-success">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3 class="card-title"> Factory: @item.ShortForm  Brand: @item.McnType  Gauge: @item.GaugeDesc  </h3>
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-10">
+                            @*<input type="text" class="search float-right" placeholder="Search Style..." id="InitalPlanning_@item.Number" />*@
+                            <input type="text" class="search float-right" placeholder="Search Style..." id="searchfor" />
+                        </div>
+                        <div class="col-md-2">
+                            <button class="button btn-info" data-toggle="tooltip" data-placement="top" title="Search Style" style="border-radius:50%" onclick="FindStyle('InitalPlanning_@item.Number')"><span class="fa fa-search"></span></button>
+                        </div>
+                    </div>
+                    @*<button class="button btn-info" style="float:right" data-toggle="modal" data-target="#modal-sm"> <span class=" fa fa-crown"></span>Create Slot</button>*@
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <button class="button btn-info" data-toggle="tooltip" data-placement="top" title="Print All" style="float:right; border-radius:50%" onclick="PrintAll(@item.Number)"> <span class=" fa fa-print"></span></button>
+
+                        </div>
+                        <div class="col-md-2">
+                            <button class="button btn-danger" data-toggle="tooltip" data-placement="top" title="Delete All" style="float:right; border-radius:50%" onclick="DeleteAll(@item.Number)"> <span class=" fa fa-trash"></span></button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form>
+            <div class="card-body  table-responsive">
+                <table class="table table-bordered" id="InitalPlanning_@item.Number">
+                    <thead style="background-color:aliceblue">
+                        <tr>
+                            @for (var i = 0; i < 1; i++)
+                            {
+                                int count = 1;
+                                var datalist = Model.Item2.AsEnumerable().Where(r => (int)r.FactoryId == Convert.ToInt32(item.FactoryId) && (int)r.BrandId == Convert.ToInt32(item.BrandId) && (int)r.GaugeId == Convert.ToInt32(item.GaugeId)).OrderBy(a => a.PlaneSlotMasterId);
+                                @foreach (var item1 in Model.Item2.AsEnumerable().Where(r => (int)r.FactoryId == Convert.ToInt32(item.FactoryId) && (int)r.BrandId == Convert.ToInt32(item.BrandId) && (int)r.GaugeId == Convert.ToInt32(item.GaugeId)).OrderBy(a => a.PlaneSlotMasterId))
+                                {
+                                    <th style="width:560px" id="InitalPlanning_@item.Number@count ">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        @if (item1.EndDate < DateTime.Now)
+                                                        {
+                                                            <button class="btn btn-outline-success btn-xs float-md-none" onclick="CompleteSloat(@item1.PlaneSlotMasterId)" style="border-radius:50%; margin-top:-7px"><span class=" text-xs fa fa-c"></span></button>
+
+                                                        }
+
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <input type="checkbox" class="checkBoxCls float-md-left" value="@item1.PlaneSlotMasterId" id="checkboxPrimary_@item.Number@count" />
+                                                        <input type="hidden" class="planMasterId" id="planMasterId_@item.Number@count" value="@item1.PlaneSlotMasterId" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-md-2">
+                                                    <input type="checkbox" class="checkBoxCls" value="@item1.PlaneSlotMasterId" id="checkboxPrimary_@item.Number@count" />
+                                                    <input type="hidden" class="planMasterId" id="planMasterId_@item.Number@count" value="@item1.PlaneSlotMasterId" />
+                                                </div>*@
+                                            <div class="col-md-2">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="info-box-text">@Convert.ToDateTime(item1.StartDate.ToString()).ToString("dd MMM yyyy") - @Convert.ToDateTime(item1.EndDate.ToString()).ToString("dd MMM yyyy") </span>
+
+                                            </div>
+                                        </div>
+                                    </th>
+                                    count++;
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @for (var i = 0; i < 1; i++)
+                            {
+                                var detailsTblCount = 1;
+                                @foreach (var item1 in Model.Item2.AsEnumerable().Where(r => (int)r.FactoryId == Convert.ToInt32(item.FactoryId) && (int)r.BrandId == Convert.ToInt32(item.BrandId) && (int)r.GaugeId == Convert.ToInt32(item.GaugeId)).OrderBy(x => x.PlaneSlotMasterId))
+                                {
+                                    int allMcn = item1.SlotDetailsViews.Sum(x => x.RequiredMachine);
+                                    int freeMcn = item1.NoOfMachine - allMcn;
+                                    <td class="thInitalPlanning_@item.Number@detailsTblCount">
+                                        <!--<div class="info-box bg-info" id="InitalPlanning_@item.Number@detailsTblCount" style="width:480px">-->   @*<span class="info-box-icon"><i class="far fa-bookmark"></i></span>*@
+
+                                        <!--<div class="info-box-content" style="background-color:mediumslateblue">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="info-box-text">Lead Time: @item1.LeadTime Total Machine: @item1.NoOfMachine</span>
+
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <span class="info-box-text float-right">
+                                                        <button type="button" class="btn btn-info btn-sm" onclick="AddStyle(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #cc5de8;"><span class="fa fa-plus"></span></button>&nbsp;&nbsp;
+                                                        <button type="button" class="btn btn-info btn-sm float-right" onclick="ShowAll(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #ff1188 "><span class="fa fa-eye"></span></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body table-responsive p-0">
+
+                                                <table class="table table-striped table-responsive  table-hover" id="tblInitalPlanning_@item.Number@detailsTblCount">
+                                                    <tr>
+                                                        <td>PONo</td>
+                                                        <td>PoQty</td>
+                                                        <td>Style No.</td>
+                                                        <td>SmvKn</td>
+                                                        <td>Req. Machine</td>
+                                                        <td>Remarks</td>
+                                                        <td>TrialDate</td>
+                                                    </tr>
+                                                    @if (item1.SlotDetailsViews.Any())
+                                                    {
+                                                        @foreach (var data in item1.SlotDetailsViews)
+                                                        {
+                                                            <tr>
+                                                                <td>@data.PONo</td>
+                                                                <td>@data.PoQty</td>
+                                                                <td>@data.StyleNumber</td>
+                                                                <td>@data.SmvKn</td>
+                                                                <td>@data.RequiredMachine</td>
+                                                                <td>@data.Remarks</td>
+                                                                <td>@data.TrialDate</td>
+                                                            </tr>
+                                                        }
+
+                                                        <tr>
+                                                            <td colspan="4">Total Allocate Machine</td>
+                                                            <td>@item1.SlotDetailsViews.Sum(x => x.RequiredMachine)</td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="8"> ....No PO Allocate...</td>
+                                                        </tr>
+                                                    }
+
+                                                </table>
+                                            </div>
+                                        </div>-->
+                                        <!-- /.info-box-content -->
+                                        <!--</div>-->
+                                        <div class="card card-info" id="InitalPlanning_@item.Number@detailsTblCount" style="width:560px; height:200px">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <span class="info-box-text">Lead Time: @item1.LeadTime | Total Machine: @item1.NoOfMachine | </span>
+                                                        <input type="hidden" id="InitalPlanninginput_@item.Number@detailsTblCount" value="@item1.NoOfMachine" />
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <span class="info-box-text float-left">Allocate Mcn: @item1.SlotDetailsViews.Sum(x => x.RequiredMachine) |&nbsp; </span>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @if (Convert.ToInt32(freeMcn) < 0 && Convert.ToInt32(freeMcn) >= -2)
+                                                        {
+                                                            <span class="info-box-text float-left blink_me" style="color:palegoldenrod">&nbsp;&nbsp;Free/Mcn: @freeMcn</span>
+                                                        }
+                                                        else if (Convert.ToInt32(freeMcn) < -2)
+                                                        {
+
+                                                            <span class="info-box-text float-left blink_me" style="color:red">&nbsp;&nbsp; Free/Mcn: @freeMcn</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="info-box-text float-left">&nbsp;&nbsp; Free/Mcn: @freeMcn</span>
+                                                        }
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="#" class="btn btn-sm allswap swap_@item.Number" id="swap_@item.Number@item1.PlaneSlotMasterId" onclick="SwappingDestination(@item.Number,@detailsTblCount,@item1.PlaneSlotMasterId,); return false;" style=" border-radius: 50%; background-color:yellow; display:none "><i class="fa fa-arrow-down"></i></a>
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @*<button type="button" class="btn btn-info btn-sm" onclick="AddStyle(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #cc5de8;"><span class="fa fa-plus"></span></button>&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-info btn-sm float-right" onclick="ShowAll(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #ff1188 "><span class="fa fa-eye"></span></button>*@
+
+                                                        <span class="info-box-text float-right">
+                                                            <button type="button" class="btn btn-info btn-xs" onclick="AddStyle(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #cc5de8;"><span class="fa fa-plus"></span></button>&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-info btn-xs float-right" onclick="ShowAll(@item1.PlaneSlotMasterId)" style="border-radius: 50%; background-color: #ff1188 "><span class="fa fa-eye"></span></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-header -->
+
+                                            <div class="card-body table-responsive p-0" style="height:145px;">
+                                                @*style="height: 300px;"*@
+
+                                                <table class="table dataTable table-head-fixed text-nowrap" id="tblInitalPlanning_@item.Number@detailsTblCount">
+                                                    <thead style=" position: sticky;z-index: 12;top: 0;background: white">
+                                                        <tr>
+                                                            <td style="width:1px">SlId</td>
+                                                            <td style="width:1px">PONo</td>
+                                                            <td style="width:1px">PoQty</td>
+                                                            <td style="width:1px">KnittQty</td>
+                                                            <td style="width:1px">Balance</td>
+                                                            <td style="width:1px">Style No.</td>
+                                                            <td style="width:1px">Smv</td>
+                                                            <td style="width:1px">Mcn</td>
+                                                            <td style="width:1px">Delivery</td>
+                                                            <td style="width:1px">TrialDate</td>
+                                                            <td style="width:1px">Day B. KN.</td>
+                                                            <td style="width:1px">Day B. Today</td>
+
+                                                        </tr>
+                                                    </thead>
+                                                    @if (item1.SlotDetailsViews.Any())
+                                                    {
+                                                <tbody>
+                                                    @foreach (var data in item1.SlotDetailsViews)
+                                                    {
+                                                        if (@item1.NoOfMachine < item1.SlotDetailsViews.Sum(x => x.RequiredMachine))
+                                                        {
+                                                           
+                                                                var day1 = Convert.ToDateTime(data.DeliveryDate);
+                                                                var dayNow = Convert.ToDateTime(DateTime.Now);
+                                                                var dayNo = Math.Floor((day1 - dayNow).TotalDays);
+                                                           
+                                                            <tr>
+                                                                @*style="background-color:mistyrose"*@
+                                                                <td hidden>@data.POCod</td>
+                                                                @if (Convert.ToInt32(data.FlagStatus) == 0)
+                                                                {
+                                                                    <td class="context-menu-one">
+                                                                        <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:yellow;"></i></a>@data.PlaneMasterId
+
+                                                                    </td>
+
+                                                                }
+                                                                else if (Convert.ToInt32(data.FlagStatus) == 1)
+                                                                {
+                                                                    <td class="context-menu-one">
+                                                                        <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:green;"></i></a>@data.PlaneMasterId
+                                                                        <input type="hidden" value="@data.FlagStatus" />
+                                                                    </td>
+
+                                                                }
+                                                                else if (Convert.ToInt32(data.FlagStatus) == 3)
+                                                                {
+                                                                    <td class="context-menu-one">
+                                                                        <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:red;"></i></a>@data.PlaneMasterId
+                                                                        <input type="hidden" value="@data.FlagStatus" />
+                                                                    </td>
+
+                                                                }
+                                                                <td><a href="#" onclick="SwappingPo(@item1.PlaneSlotMasterId,@item.Number, @detailsTblCount, this); return false;"><label name="stlNo" style="cursor:pointer">@data.PONo</label></a> </td>
+                                                                <td>@data.PoQty</td>
+
+                                                                <td>@data.KnittQty</td>
+                                                                <td>@(data.PoQty-data.KnittQty)</td>
+                                                                <td>@data.StyleNumber</td>
+                                                                <td>@data.SmvKn</td>
+                                                                <td style="width:5px">@data.RequiredMachine</td>
+                                                                <td>@data.DeliveryDate</td>
+                                                                <td>@data.TrialDate</td>
+
+                                                                <td>@data.DaybeforeKnitt</td>
+
+                                                                @if (dayNo < 0)
+                                                                {
+
+
+                                                                    <td>Del. Date Gone</td>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <td>@dayNo</td>
+                                                                }
+                                                                <td hidden>@data.PlanningSlotDetailsId</td>
+
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            var day1 = Convert.ToDateTime(data.DeliveryDate);
+                                                            var dayNow = Convert.ToDateTime(DateTime.Now);
+                                                            var dayNo = Math.Floor((day1 - dayNow).TotalDays);
+
+                                                <tr>
+                                                    <td hidden>@data.POCod</td>
+                                                    @if (Convert.ToInt32(data.FlagStatus) == 0)
+                                                    {
+                                                        <td class="context-menu-one">
+                                                            <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:yellow;"></i></a>@data.PlaneMasterId
+
+                                                        </td>
+
+                                                    }
+                                                    else if (Convert.ToInt32(data.FlagStatus) == 1)
+                                                    {
+                                                        <td class="context-menu-one">
+                                                            <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:green;"></i></a>@data.PlaneMasterId
+                                                            <input type="hidden" value="@data.FlagStatus" />
+                                                        </td>
+
+                                                    }
+                                                    else if (Convert.ToInt32(data.FlagStatus) == 3)
+                                                    {
+                                                        <td class="context-menu-one">
+                                                            <a href="#" onclick="PlanHistory( @data.POCod); return false;"><i class="fa-solid fa-flag" style="color:red;"></i></a>@data.PlaneMasterId
+                                                            <input type="hidden" value="@data.FlagStatus" />
+                                                        </td>
+
+                                                    }
+
+                                                    <td><a href="#" onclick="SwappingPo(@item1.PlaneSlotMasterId,@item.Number, @detailsTblCount, this); return false;"><label name="stlNo" style="cursor:pointer">@data.PONo</label></a> </td>
+                                                    <td>@data.PoQty</td>
+                                                    <td>@data.KnittQty</td>
+                                                    <td>@(data.PoQty-data.KnittQty)</td>
+                                                    <td> <span class="info-box-text fa fa-cog" style="color:chocolate"> @data.CriticalTyp</span> @data.StyleNumber </td>
+                                                    <td>@data.SmvKn</td>
+                                                    <td style="width:5px">@data.RequiredMachine</td>
+
+                                                    <td style="color:darkblue">@data.DeliveryDate</td>
+                                                    <td>@data.TrialDate</td>
+                                                    <td style="color:darkblue">@data.DaybeforeKnitt</td>
+
+                                                    @if (dayNo < 0)
+                                                    {
+
+
+                                                        <td>Del. Date Gone</td>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <td>@dayNo</td>
+                                                    }
+
+                                                    <td hidden>@data.PlanningSlotDetailsId</td>
+                                                </tr>
+                                                        }
+
+                                                    }
+
+
+                                                </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2">Total Qty</td>
+                                                                <td>@item1.SlotDetailsViews.Sum(x => x.PoQty)</td>
+                                                                <td>@item1.SlotDetailsViews.Sum(x => x.KnittQty)</td>
+                                                                <td></td>
+                                                                <td colspan="2">Total Allocate Machine</td>
+                                                                <td>@item1.SlotDetailsViews.Sum(x => x.RequiredMachine)</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="8"> ....No PO Allocate...</td>
+                                                            </tr>
+                                                        </tfoot>
+
+                                                    }
+
+                                                </table>
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+                                    </td>
+
+                                    detailsTblCount++;
+
+                                }
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+
+    </div>
+}
+

@@ -1,0 +1,1514 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <a href="/View/StyleApproval" class="btn btn-app bg-success">
+                <span class="badge bg-teal" id="noOfStyleSpan" style="font-size:14px;color:red"></span>
+                <i class="fas fa-tshirt"></i> Booking
+            </a>
+            <a href="/view/InitialPlanningListModify" class="btn btn-app bg-info">
+                <span class="badge bg-teal" id="noOfplanSpan" style="font-size:14px;color:red"></span>
+                <i class="fas fa-tasks"></i> Plan Load
+            </a>
+            <a href="#" onclick="LoadCapacityVsLoadM()" class="btn btn-app" style="background-color:deepskyblue; color:white">
+                <span class="badge bg-teal" id="LoadSpan"></span>
+                <i class="fas fa-inbox"></i> Load/Minutes
+            </a>
+            <a href="#" onclick="LoadEvent()" class="btn btn-app bg-danger">
+                <span class="badge bg-teal" id="noOfEventSpan" style="font-size:14px;color:red"></span>
+                <i class="fas fa-tasks"></i> Event
+            </a>
+
+        </div>
+        <div class="row col-md-12">
+            <div class="col-md-6">
+
+                <div class="card card-success col-md-12">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <h3 class="card-title">Daily Knitting's Production Summary All Factory</h3>
+
+                            </div>
+                            <div class="col-md-4">
+                               
+                            </div>
+                            <div class="col-md-2">
+                                <input type='text' class="form-control" id='startDate' onchange="FactoryWiseProSumm()" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body col-md-12">
+                        <div class="row">
+                            <div class="col-md-8" id="ProductionSummDiv">
+
+                            </div>
+                           @* <div class="col-md-2"></div>*@
+                            <div class="col-md-4">
+                                <div class="chart" id="ProductionChartDiv">
+                                    <canvas id="ProductionChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h6 class="card-title"> Linking Production Efficiency</h6>
+                            </div>
+                           
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form>
+                        <div class="card-body  table-responsive" id="LinkingListDiv">
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                @*<div class="col-lg-3 col-6">
+
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3 id="noOfStylehead">0</h3>
+
+                                <p>New Style For Cap. Booking <i class="fa fa-tshirt"></i></p>
+                            </div>
+                            <div class="icon">
+
+
+                            </div>
+                            <a href="/View/StyleApproval" class="small-box-footer">Go For Booking <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>*@
+                <!--<div class="col-lg-3 col-6" style="border-radius:40%">-->
+                <!-- small box -->
+                <!--<div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="noOfStyleheadFPlanning">0</h3>
+
+                            <p>New Style For Planning  <i class="fa fa-bar-chart"></i></p>
+                        </div>
+                        <div class="icon">
+
+                        </div>
+                        <a href="/view/InitialPlanningList" class="small-box-footer">Go For Plan <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>-->
+                <!--<div class="col-lg-3 col-6" style="border-radius:40%">-->
+                <!-- small box -->
+                <!--<div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="noOfStyleheadFPlanning">0</h3>
+
+                            <p>Capacity Vs Load Minute  <i class="fa fa-bar-chart"></i></p>
+                        </div>
+                        <div class="icon">
+
+                        </div>
+                        <a href="#" onclick="LoadCapacityVsLoadM()" class="small-box-footer">Go For Full Data <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>-->
+
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-4">
+
+                                    <h3 class="card-title">Total Pro. Capacity Vs Total Order</h3>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h6 id="totalCaplbl"></h6>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                            <h6 id="totalPlanOrdlbl"></h6>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                            <h6 id="totalOrdlbl"></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <select class="form-control select2" style="width: 100%;" id="dllChangeYear">
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="chart" id="barChartDiv">
+                                <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+
+                                    <h3 class="card-title">Yearly Buyer Avg. Fob & Avg. Knittings SMV</h3>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="chart" id="AvgFobChartDiv">
+                                <canvas id="AvgbarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+
+                                    <h3 class="card-title">Yearly Buyer Total Order Qty</h3>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="chart" id="TotalOrderChartDiv">
+                                <canvas id="TotalOrderbarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+
+                                    <h3 class="card-title">Gauge Wise Buyer Total Order Qty</h3>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="chart" id="TotalGaugeOrderChartDiv">
+                                <canvas id="TotalGaugeOrderbarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Factory Wise Porduction Capacity</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" id="DonutChartDiv">
+                            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-12" id="totalMonthOrder"></div>
+        </div>
+    </div>
+    <div class="modal fadeInUp" id="CapacityVsLoadModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="height:500px">
+                <div class="modal-header card-header" style="background-color:dodgerblue">
+                    <h5 class="modal-title" id="headderId">Capacity Vs Load Minutes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ui-front" id="CapaVsLoadBody">
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fadeInUp" id="EventModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="height:500px">
+                <div class="modal-header card-header" style="background-color:dodgerblue">
+                    <h5 class="modal-title" id="headderId">Capacity Vs Load Minutes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ui-front" id="EventBody">
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        $(function () {
+            $("#dllChangeYear").change(function () {
+
+                Load3GuageChart();
+                FactoryWiseDoChart();
+                AvgFobChart();
+                TotalBuyerOrder();
+                TotalBuyerGuageOrder();
+                TotalOrder();
+            });
+           // $('#startDate').val();
+            var dateObject = new Date();
+            dateObject.setDate(dateObject.getDate() - 1);
+            $('#startDate').datepicker({
+                autoclose: true,
+                dateFormat: 'dd-M-yy'
+
+            }).datepicker('setDate', dateObject);
+            FactoryWiseProSumm();
+            ChangeCurrentYear();
+            NoOfPendingStyle();
+            NoOfPendingStyleFPlanning();
+            NoOfPendingEvent();
+
+        });
+        ////////////////////////////////
+        function ChangeCurrentYear() {
+            //LoadYear();
+
+            LoadYear('dllChangeYear');
+            var filterData = allYears.find(x => x.CurrentYear == true).YearId;
+            currentYear = allYears.find(x => x.CurrentYear == true).YearId;
+            $('#dllChangeYear').val(filterData).trigger('change');
+        }
+        var allYears = [];
+
+
+        function LoadYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetallYear',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    allYears = result;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                        }
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function NoOfPendingStyle() {
+            $.ajax({
+                url: apiHeader + 'api/StyleApproval/NumberOfPendinStyle',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    $('#noOfStyleSpan').text(result[0].NumberofPendingStyle);
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function NoOfPendingStyleFPlanning() {
+            $.ajax({
+                url: apiHeader + 'api/StyleApproval/NumberOfPendinStyleFPlanning',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    $('#noOfplanSpan').text(result[0].NoOfStyleFPlanning);
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+        function NoOfPendingEvent() {
+            $.ajax({
+                url: apiHeader + 'api/StyleApproval/NumberOfEventPendingFPlanning',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    debugger;
+
+                    $('#noOfEventSpan').text(result.Table[0].NoOfEvent);
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+
+        function FactoryWiseProChart() {
+
+            productionDate = $('#startDate').val();
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/FactoryWiseProSumm/' + productionDate,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                  //  $('#ProductionChartDiv').empty().append('<canvas id="ProductionChart" height="200"></canvas>');
+                  //  var areaChartData = {};
+                  //  var TotalCapacity = [];
+                  //  var TotalProduction = [];
+                  //  var Factory = [];
+                  //  $.each(result, function (i, item) {
+                  //      Factory.push(item.ShortForm);
+                  //  });
+                  //  $.each(result, function (i, item) {
+                  //      TotalCapacity.push(item.TotalPlanQty);
+                  //  });
+                  //  $.each(result, function (i, item) {
+                  //      TotalProduction.push(item.TotalProduction);
+                  //  });
+                  //  areaChartData = {};
+                  //  areaChartData = {
+                  //      //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                  //      labels: Factory,
+                  //      datasets: [
+                  //          {
+                  //              label: 'Production Capacity',
+                  //              backgroundColor: 'rgba(54, 79, 199,08)',
+                  //              borderColor: 'rgba(255,99,132,1)',
+                  //              pointRadius: false,
+
+                  //              pointColor: '#3b8bba',
+                  //              pointStrokeColor: 'rgba(60,141,188,1)',
+                  //              pointHighlightFill: '#fff',
+                  //              pointHighlightStroke: 'rgba(60,141,188,1)',
+                  //              //data: [25000, 24000, 26000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000]
+                  //              data: TotalCapacity,
+                  //              //barThickness: 8,
+                  //              //barPercentage: 0.5,
+                  //              //categoryPercentage: 1.0,
+                  //              showDatapoints: true,
+                  //              options: {
+                  //                  scales: {
+                  //                      xAxes: [{ barPercentage: 0.5 }]
+                  //                  }
+                  //              }
+                  //          },
+                  //          {
+                  //              label: 'Actual Production',
+                  //              backgroundColor: '#f21480',
+                  //              borderColor: 'rgba(255,99,132,1)',
+                  //              pointRadius: false,
+                  //              pointColor: 'rgba(210, 214, 222, 1)',
+                  //              pointStrokeColor: ' #f21480',
+                  //              pointHighlightFill: '#fff',
+                  //              pointHighlightStroke: 'rgba(220,220,220,1)',
+                  //              //data: [2000,0,0,0,0,0,0,0,0,0,0,0]
+                  //              data: TotalProduction,
+                  //              //barThickness: 8,
+                  //              //categoryPercentage: 1.0,
+                  //              //barPercentage: 0.5,
+                  //              showDatapoints: true,
+                  //              options: {
+                  //                  scales: {
+                  //                      xAxes: [{ barPercentage: 0.5 }]
+                  //                  }
+                  //              }
+                  //          },
+                  //          //{
+                  //          //    label: 'Total Order Qty',
+                  //          //    backgroundColor: 'rgba(255, 20, 147,.8)',
+                  //          //    borderColor: 'rgba(54, 162, 235, 1)',
+                  //          //    pointRadius: false,
+                  //          //    pointColor: 'rgba(210, 214, 222, 1)',
+                  //          //    pointStrokeColor: '#c1c7d1',
+                  //          //    pointHighlightFill: '#fff',
+                  //          //    pointHighlightStroke: 'rgba(220,220,220,1)',
+                  //          //    //data: [2000,0,0,-1000,0,0,-3000,0,0,0,0,0],
+                  //          //    data: TotalOrder,
+                  //          //    showDatapoints: true
+                  //          //},
+
+                  //      ]
+                  //  }
+                  //  var barChartCanvas = $('#ProductionChart').get(0).getContext('2d');
+
+                  //  var barChartData = $.extend(true, {}, areaChartData)
+                  //  var temp0 = areaChartData.datasets[0]
+                  //  var temp1 = areaChartData.datasets[1]
+                  //  //var temp2 = areaChartData.datasets[2]
+                  //  barChartData.datasets[0] = temp0
+                  //  barChartData.datasets[1] = temp1
+                  ////  barChartData.datasets[2] = temp2
+
+                  //  var barChartOptions = {
+                  //      responsive: true,
+                  //      maintainAspectRatio: false,
+                  //      showDatapoints: true,
+                  //      datasetFill: false,
+                  //      animation: {
+                  //          duration: 1,
+                  //          onComplete: function () {
+                  //              var chartInstance = this.chart,
+                  //                  ctx = chartInstance.ctx;
+
+                  //              ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                  //              ctx.textAlign = 'center';
+                  //              ctx.textBaseline = 'bottom';
+
+                  //              this.data.datasets.forEach(function (dataset, i) {
+                  //                  var meta = chartInstance.controller.getDatasetMeta(i);
+                  //                  meta.data.forEach(function (bar, index) {
+                  //                      var data = dataset.data[index];
+                  //                      ctx.fillText(data, bar._model.x, bar._model.y - 1);
+                  //                  });
+                  //              });
+                  //          }
+                  //      }
+                  //  }
+
+                  //  barChart = new Chart(barChartCanvas, {
+                  //      type: 'bar',
+                  //      data: barChartData,
+                  //      options: barChartOptions
+
+
+                  //  });
+
+                    $('#ProductionChartDiv').empty().append('<canvas id="ProductionChart" height="200"></canvas>');
+
+                    var TotalCapacity = [];
+                    var TotalProduction = [];
+                    var Factory = [];
+
+                    $.each(result, function (i, item) {
+                        Factory.push(item.ShortForm);
+                        TotalCapacity.push(item.TotalPlanQty);
+                        TotalProduction.push(item.TotalProduction);
+                    });
+
+                    var areaChartData = {
+                        labels: Factory,
+                        datasets: [
+                            {
+                                label: 'Production Capacity',
+                                backgroundColor: 'rgba(54, 79, 199, 0.8)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+                                data: TotalCapacity
+                            },
+                            {
+                                label: 'Actual Production',
+                                backgroundColor: '#069116',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+                                data: TotalProduction
+                            }
+                        ]
+                    };
+
+                    var barChartCanvas = $('#ProductionChart').get(0).getContext('2d');
+                    var barChartData = $.extend(true, {}, areaChartData);
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            tooltip: {
+                                enabled: true
+                            },
+                            datalabels: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                barThickness: 50,          // ✅ THICK bars
+                                categoryPercentage: 0.5,
+                                barPercentage: 0.8
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: [ // ✅ ADD THIS for text on top
+                            {
+                                afterDatasetsDraw: function (chart) {
+                                    var ctx = chart.ctx;
+                                    chart.data.datasets.forEach(function (dataset, i) {
+                                        var meta = chart.getDatasetMeta(i);
+                                        if (!meta.hidden) {
+                                            meta.data.forEach(function (element, index) {
+                                                ctx.fillStyle = 'black';
+                                                ctx.font = 'bold 12px Arial';
+                                                ctx.textAlign = 'center';
+                                                ctx.textBaseline = 'bottom';
+
+                                                ctx.fillText(dataset.data[index], element.x, element.y - 5);
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        ]
+                    };
+
+                    var barChart = new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+                    });
+
+
+                    //barChart = new Chart(barChartCanvas, {
+                    //    type: 'bar',
+                    //    data: barChartData,
+                    //    options: barChartOptions
+                    //});
+                    //alert(CapacityFor3Guage);
+                    //alert(AllocationFor3Gauge);
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+
+        }
+        function Load3GuageChart() {
+
+            yearId = parseInt($('#dllChangeYear').val());
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/ChartData3Gauge/' + yearId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#barChartDiv').empty().append('<canvas id="barChart" height="200"></canvas>');
+                    var areaChartData = {};
+                    var TotalCapacity = [];
+                    var TotalOrder = [];
+                    var TotalPlanOrder = [];
+                    var MonthLabel = [];
+                    var totalCapacityValue = 0;
+                    var totalOrderValue = 0;
+                    var totalPlanOrderValue = 0;
+                    $.each(result, function (i, item) {
+                        MonthLabel.push(item.MonthNames);
+                    });
+                    $.each(result, function (i, item) {
+                        TotalCapacity.push(item.totalCapacity);
+                        totalCapacityValue += item.totalCapacity;
+                    });
+                    $.each(result, function (i, item) {
+                        TotalOrder.push(item.TotalOrder);
+                        totalOrderValue += item.TotalOrder;
+                    });
+                    $.each(result, function (i, item) {
+                        TotalPlanOrder.push(item.TotalPlanOrder);
+                        totalPlanOrderValue += item.TotalPlanOrder;
+                    });
+                    $('#totalCaplbl').text("Capacity: " + totalCapacityValue+" Pcs");
+                    $('#totalOrdlbl').text("Order: " + totalOrderValue+" Pcs");
+                    $('#totalPlanOrdlbl').text("Plan Order: " + totalPlanOrderValue+" Pcs");
+                    areaChartData = {};
+                    areaChartData = {
+                        //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        labels: MonthLabel,
+                        datasets: [
+                            {
+                                label: 'Total Capacity Qty',
+                                backgroundColor: 'rgba(54, 79, 199,08)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                //data: [25000, 24000, 26000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000]
+                                data: TotalCapacity,
+                                barThickness: 8,
+                                barPercentage: 0.5,
+                                categoryPercentage: 1.0,
+                                showDatapoints: true,
+                                options: {
+                                    scales: {
+                                        xAxes: [{ barPercentage: 0.5 }]
+                                    }
+                                }
+                            },
+                            {
+                                label: 'Total Plan Qty',
+                                backgroundColor: '#f21480',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+                                pointColor: 'rgba(210, 214, 222, 1)',
+                                pointStrokeColor: ' #f21480',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(220,220,220,1)',
+                                //data: [2000,0,0,0,0,0,0,0,0,0,0,0]
+                                data: TotalPlanOrder,
+                                barThickness: 8,
+                                categoryPercentage: 1.0,
+                                barPercentage: 0.5,
+                                showDatapoints: true,
+                                options: {
+                                    scales: {
+                                        xAxes: [{ barPercentage: 0.5 }]
+                                    }
+                                }
+                            },
+                            //{
+                            //    label: 'Total Order Qty',
+                            //    backgroundColor: 'rgba(255, 20, 147,.8)',
+                            //    borderColor: 'rgba(54, 162, 235, 1)',
+                            //    pointRadius: false,
+                            //    pointColor: 'rgba(210, 214, 222, 1)',
+                            //    pointStrokeColor: '#c1c7d1',
+                            //    pointHighlightFill: '#fff',
+                            //    pointHighlightStroke: 'rgba(220,220,220,1)',
+                            //    //data: [2000,0,0,-1000,0,0,-3000,0,0,0,0,0],
+                            //    data: TotalOrder,
+                            //    showDatapoints: true
+                            //},
+
+                        ]
+                    }
+                    var barChartCanvas = $('#barChart').get(0).getContext('2d');
+
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    //var temp2 = areaChartData.datasets[2]
+                    barChartData.datasets[0] = temp0
+                    barChartData.datasets[1] = temp1
+                  //  barChartData.datasets[2] = temp2
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        showDatapoints: true,
+                        datasetFill: false,
+                        animation: {
+                            duration: 1,
+                            onComplete: function () {
+                                var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+
+                                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+
+                                this.data.datasets.forEach(function (dataset, i) {
+                                    var meta = chartInstance.controller.getDatasetMeta(i);
+                                    meta.data.forEach(function (bar, index) {
+                                        var data = dataset.data[index];
+                                        ctx.fillText(data, bar._model.x, bar._model.y - 1);
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                    barChart = new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+
+
+                    });
+
+
+                    //barChart = new Chart(barChartCanvas, {
+                    //    type: 'bar',
+                    //    data: barChartData,
+                    //    options: barChartOptions
+                    //});
+                    //alert(CapacityFor3Guage);
+                    //alert(AllocationFor3Gauge);
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+
+        }
+
+        function FactoryWiseDoChart() {
+            yearId = parseInt($('#dllChangeYear').val());
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/FactoryWiseCapacity/' + yearId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#DonutChartDiv').empty().append('<canvas id="donutChart" height="200"></canvas>');
+
+                    var TotalFactoryCapacity = [];
+                    var FactoryLabel = [];
+                    $.each(result, function (i, item) {
+                        FactoryLabel.push(item.FactoryName);
+                    });
+                    $.each(result, function (i, item) {
+                        TotalFactoryCapacity.push(item.TotalCapacity);
+                    });
+
+                    var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+                    var donutData = {
+                        //labels: ['Chrome', 'IE','FireFox','Safari', 'Opera','Navigator',],
+                        labels: FactoryLabel,
+                        datasets: [
+                            {
+                                //data: [700, 500, 400, 600, 300, 100],
+                                data: TotalFactoryCapacity,
+                                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+                            }
+                        ]
+                    }
+                    var donutOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                    }
+                    //Create pie or douhnut chart
+                    // You can switch between pie and douhnut using the method below.
+                    var donutChart = new Chart(donutChartCanvas, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    });
+
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+        }
+
+
+
+        function AvgFobChart() {
+
+            yearId = parseInt($('#dllChangeYear').val());
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/BuyerWiseAvgFob/' + yearId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#AvgFobChartDiv').empty().append('<canvas id="AvgbarChart" height="250"></canvas>');
+                    var areaChartData = {};
+                    var AvgFob = [];
+                    var BuyerLabel = [];
+                    var AvgSMV = [];
+                    $.each(result, function (i, item) {
+                        BuyerLabel.push(item.BuyerName);
+                    });
+                    $.each(result, function (i, item) {
+                        AvgFob.push(item.AvgFob);
+                    });
+                    $.each(result, function (i, item) {
+                        AvgSMV.push(item.AvgSMVKn);
+                    });
+                    Chart.defaults.global.defaultFontColor = "#000000";
+                    areaChartData = {};
+                    areaChartData = {
+                        //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        labels: BuyerLabel,
+                        font: {
+                            size: 30
+                        },
+                        datasets: [
+                            {
+                                label: 'Avg Fob',
+                                backgroundColor: 'rgb(102, 204, 255)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+                                font: {size:04},
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                //data: [25000, 24000, 26000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000]
+                                data: AvgFob,
+                                showDatapoints: true
+                            },
+                            {
+                                type: 'line',
+                                label: 'Avg. Kn. SMV',
+                                data: AvgSMV,
+                                backgroundColor: 'RGB(255, 37, 0,01)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                fill: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#000000',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                color: '#ff004c',
+                                showDatapoints: true,
+                                borderColor: 'rgb(54, 162, 235)'
+
+                            },
+                            //{}
+                        ]
+
+                    }
+                    var barChartCanvas = $('#AvgbarChart').get(0).getContext('2d');
+
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    barChartData.datasets[0] = temp0
+                    barChartData.datasets[1] = temp1
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        showDatapoints: true,
+                        datasetFill: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        animation: {
+                            duration: 1,
+                            onComplete: function () {
+                                var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+
+                                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+
+                                this.data.datasets.forEach(function (dataset, i) {
+                                    var meta = chartInstance.controller.getDatasetMeta(i);
+                                    meta.data.forEach(function (bar, index) {
+                                        var data = dataset.data[index];
+                                        ctx.fillText(data, bar._model.x, bar._model.y - 1);
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                    barChart = new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+
+
+
+                    });
+
+                    //areaChartData.rander();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+
+        }
+        function TotalBuyerOrder() {
+
+            yearId = parseInt($('#dllChangeYear').val());
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/TotalBuyerOrder/' + yearId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#TotalOrderChartDiv').empty().append('<canvas id="TotalOrderbarChart" height="250"></canvas>');
+                    var areaChartData = {};
+                    var TotalOrder = [];
+                    var TotalStyles = [];
+                    var BuyerLabel = [];
+                    $.each(result, function (i, item) {
+                        BuyerLabel.push(item.BuyerName);
+                    });
+                    $.each(result, function (i, item) {
+                        TotalOrder.push(item.TotalOrder);
+                    });
+                    $.each(result, function (i, item) {
+                        TotalStyles.push(item.TotalStyle);
+                    });
+
+                    areaChartData = {};
+                    areaChartData = {
+                        //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        labels: BuyerLabel,
+                        datasets: [
+                            {
+                                label: 'Total Order',
+                                backgroundColor: 'rgba(238, 130, 238,.8)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                //data: [25000, 24000, 26000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000]
+                                data: TotalOrder,
+                                showDatapoints: true
+                            },
+                            //[],
+                            {
+                                //type: 'Bar',
+                                label: 'Total Style',
+                                data: TotalStyles,
+                                backgroundColor: 'RGB(255, 37, 0,01)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                fill: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#000000',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                color: '#ff004c',
+                                showDatapoints: true,
+                                borderColor: 'rgb(54, 162, 235)'
+
+                            },
+                        ]
+                    }
+                    var barChartCanvas = $('#TotalOrderbarChart').get(0).getContext('2d');
+
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    barChartData.datasets[0] = temp0
+                    barChartData.datasets[1] = temp1
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        showDatapoints: true,
+                        datasetFill: false,
+                        animation: {
+                            duration: 1,
+                            onComplete: function () {
+                                var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+
+                                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+
+                                this.data.datasets.forEach(function (dataset, i) {
+                                    var meta = chartInstance.controller.getDatasetMeta(i);
+                                    meta.data.forEach(function (bar, index) {
+                                        var data = dataset.data[index];
+                                        ctx.fillText(data, bar._model.x, bar._model.y - 1);
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                    barChart = new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+
+
+                    });
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+
+        }
+
+        function TotalBuyerGuageOrder() {
+
+            yearId = parseInt($('#dllChangeYear').val());
+            buyerId = parseInt(2);
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/TotalBuyerGuageOrder/' + yearId + '/' + buyerId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#TotalGaugeOrderChartDiv').empty().append('<canvas id="TotalGaugeOrderbarChart" height="250"></canvas>');
+                    var areaChartData = {};
+                    var ThreeFiveCapa = [];
+                    var SevenFiveCapa = [];
+                    var NineTwlvCapa = [];
+                    var ThreeFiveOrder = [];
+                    var SevenFiveOrder = [];
+                    var NineTwlvOrder = [];
+                    var MonthLabel = [];
+
+                    $.each(result.Table, function (i, item) {
+                        MonthLabel.push(item.MonthNames);
+                    });
+
+
+                    var ThreeFiveList = result.Table1.filter(function (el) {
+                        return el.GaugeGroupName == '3/5';
+                    });
+                    $.each(ThreeFiveList, function (i, item) {
+                        ThreeFiveCapa.push(item.AllocateQty);
+                    });
+                    $.each(ThreeFiveList, function (i, item) {
+                        ThreeFiveOrder.push(item.OrderQty);
+                    });
+                    var SevenList = result.Table1.filter(function (el) {
+                        return el.GaugeGroupName == '7';
+                    });
+                    $.each(SevenList, function (i, item) {
+                        SevenFiveCapa.push(item.AllocateQty);
+                    });
+                    $.each(SevenList, function (i, item) {
+                        SevenFiveOrder.push(item.OrderQty);
+                    });
+                    var ThreeFiveList = result.Table1.filter(function (el) {
+                        return el.GaugeGroupName == '9/12';
+                    });
+                    $.each(ThreeFiveList, function (i, item) {
+                        NineTwlvCapa.push(item.AllocateQty);
+                    });
+                    $.each(ThreeFiveList, function (i, item) {
+                        NineTwlvOrder.push(item.OrderQty);
+                    });
+
+                    areaChartData = {};
+                    areaChartData = {
+                        //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        labels: MonthLabel,
+                        datasets: [
+                            {
+                                label: '3/5',
+                                backgroundColor: 'rgba(238, 130, 238,.8)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                pointRadius: false,
+
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                //data: [25000, 24000, 26000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000, 23000]
+                                data: ThreeFiveCapa,
+                                showDatapoints: true
+                            } ,
+                            //{
+                            //    //type: 'Bar',
+                            //    label: 'Total Style',
+                            //    data: TotalStyles,
+                            //    backgroundColor: 'RGB(255, 37, 0,01)',
+                            //    borderColor: 'rgba(255,99,132,1)',
+                            //    fill: false,
+                            //    pointColor: '#3b8bba',
+                            //    pointStrokeColor: 'rgba(60,141,188,1)',
+                            //    pointHighlightFill: '#000000',
+                            //    pointHighlightStroke: 'rgba(60,141,188,1)',
+                            //    color: '#ff004c',
+                            //    showDatapoints: true,
+                            //    borderColor: 'rgb(54, 162, 235)'
+
+                            //},
+                        ]
+                    }
+                    var barChartCanvas = $('#TotalOrderbarChart').get(0).getContext('2d');
+
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    barChartData.datasets[0] = temp0
+                    barChartData.datasets[1] = temp1
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        showDatapoints: true,
+                        datasetFill: false,
+                        animation: {
+                            duration: 1,
+                            onComplete: function () {
+                                var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+
+                                ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+
+                                this.data.datasets.forEach(function (dataset, i) {
+                                    var meta = chartInstance.controller.getDatasetMeta(i);
+                                    meta.data.forEach(function (bar, index) {
+                                        var data = dataset.data[index];
+                                        ctx.fillText(data, bar._model.x, bar._model.y - 1);
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                    barChart = new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+
+
+                    });
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+
+        }
+
+
+        function FactoryWiseDoChart1() {
+            yearId = parseInt($('#dllChangeYear').val());
+            //yearId = currentYear;
+            $.ajax({
+                url: apiHeader + 'api/Common/MonthWiseOrderEfficiency/' + yearId,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    $('#DonutChartDiv').empty().append('<canvas id="donutChart" height="200"></canvas>');
+
+                    var TotalFactoryCapacity = [];
+                    var FactoryLabel = [];
+                    $.each(result, function (i, item) {
+                        FactoryLabel.push(item.FactoryName);
+                    });
+                    $.each(result, function (i, item) {
+                        TotalFactoryCapacity.push(item.TotalCapacity);
+                    });
+
+                    var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+                    var donutData = {
+                        //labels: ['Chrome', 'IE','FireFox','Safari', 'Opera','Navigator',],
+                        labels: FactoryLabel,
+                        datasets: [
+                            {
+                                //data: [700, 500, 400, 600, 300, 100],
+                                data: TotalFactoryCapacity,
+                                backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+                            }
+                        ]
+                    }
+                    var donutOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                    }
+                    //Create pie or douhnut chart
+                    // You can switch between pie and douhnut using the method below.
+                    var donutChart = new Chart(donutChartCanvas, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    });
+
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                },
+                complete: function () {
+
+
+                }
+            });
+        }
+        function TotalOrder() {
+             var urlpath = '@Url.Action("MonthWiseTotalOrder", "PartialView")';
+
+
+             $.ajax({
+                type: "GET",
+                 url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                 dataType: "html",
+                 beforeSend: function () {
+                     $("#totalMonthOrder").empty();
+                 },
+                 success: function (result) {
+
+                     $("#totalMonthOrder").html(result);
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function LoadCapacityVsLoadM() {
+            var urlpath = '@Url.Action("CapacityVsLoadMinute", "PartialView")';
+
+            yearId = parseInt($('#dllCurrentYear').val());
+            $.ajax({
+                type: "GET",
+                url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                data: { year: yearId },
+                 dataType: "html",
+                 beforeSend: function () {
+                     $("#CapaVsLoadBody").empty();
+                 },
+                 success: function (result) {
+                     $('#CapacityVsLoadModal').modal({ backdrop: 'static', keyboard: false });
+                    // $('#viewBody').html(result);
+                     $("#CapaVsLoadBody").html(result);
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function LoadEvent() {
+            var urlpath = '@Url.Action("TNAEventFPlan", "PartialView")';
+
+
+            $.ajax({
+                type: "GET",
+                url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                data: {},
+                 dataType: "html",
+                 beforeSend: function () {
+                     $("#EventBody").empty();
+                 },
+                 success: function (result) {
+                     $('#EventModal').modal({ backdrop: 'static', keyboard: false });
+                    // $('#viewBody').html(result);
+                     $("#EventBody").html(result);
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+
+        function FactoryWiseProSumm() {
+             var urlpath = '@Url.Action("FactoryWiseProSumm", "PartialView")';
+             var productionDate = $('#startDate').val();
+
+             $.ajax({
+                type: "GET",
+                 url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                 dataType: "html",
+                 data: { ProductionDate: productionDate },
+                 beforeSend: function () {
+                     $("#ProductionSummDiv").empty();
+                 },
+                 success: function (result) {
+
+                     $("#ProductionSummDiv").html(result);
+                     FactoryWiseProChart();
+                     GetAllLinkingList();
+                },
+
+                complete: function () {
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetAllLinkingList() {
+            debugger;
+            var companyId = parseInt($('#SessionCompany').val());
+
+           // var prodate = new Date(Date.now() - 1 * 864e5 - new Date(Date.now() - 1 * 864e5).getTimezoneOffset() * 6e4).toISOString().split('T')[0];
+            var prodate = $('#startDate').val();
+             var urlpath = '@Url.Action("DailyLinkingProEff", "PartialView")';
+
+
+             $.ajax({
+                 type: "GET",
+                 url: urlpath,
+                 contentType: "application/json;charset=utf-8",
+                 data: { productionDate: prodate},
+                 dataType: "html",
+                 beforeSend: function () {
+                     //$('#testSpan').show();
+                     $("#LinkingListDiv").empty();
+                 },
+                success: function (result) {
+
+                    $("#LinkingListDiv").html(result);
+                    //$('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+}

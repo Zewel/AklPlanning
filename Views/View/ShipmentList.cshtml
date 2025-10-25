@@ -1,0 +1,174 @@
+﻿
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="card-title"><span class="fa fa-search"></span> Style-Info Search Criteria</h3>
+            </div>
+        </div>
+        <div class="card-body row">
+
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Style Shipment Date Wise
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="styleNo">Year</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllChangeYear">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="poNo">Month</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllMonth">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" onclick="GetAllStyle()" id="processButton" class="float-right btn btn-primary">Submit</button>
+        </div>
+    </div>
+    <div class="row" id="StyleListView">
+
+    </div>
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+
+            LoadYear('dllChangeYear');
+            LoadMonth('dllMonth');
+            $('#exportStylelList').dataTable();
+
+        })
+        function LoadYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetallYear',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    allYears = result;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        $('#' + elementId + '').append("<option value=''>--Select Year--</option>");
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                        }
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+
+        function LoadMonth(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetMonth',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    allYears = result;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        $('#' + elementId + '').append("<option value=''>--Select Month--</option>");
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].MonthId).html(result[i].MonthNames));
+                        }
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+         function GetAllStyle() {
+             var YearId = $('#dllChangeYear').val();
+             var MonthId = $('#dllMonth').val();
+           
+           
+            debugger;
+             var urlpath = '@Url.Action("ShipmentList", "PartialView")';
+
+
+             $.ajax({
+                 type: "GET",
+                 url: urlpath,
+                 contentType: "application/json;charset=utf-8",
+                 data: { year: YearId, monthId: MonthId},
+                 dataType: "html",
+                 beforeSend: function () {
+                     $('#testSpan').show();
+                     $("#StyleListView").empty();
+                 },
+                success: function (result) {
+
+                    $("#StyleListView").html(result);
+                    $('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportStylelList'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "AllStyleList.xlsx", { cellStyles: true });
+        }
+
+
+    </script>
+}

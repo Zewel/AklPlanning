@@ -1,0 +1,130 @@
+﻿@model Tuple<List<SweaterPlanning.Models.ViewModel.FactoryListView>, List<SweaterPlanning.Models.ViewModel.PlanningSlotMasterView>>
+
+<style>
+    .InitalPlanning thead tr th {
+        background-color: lightgray;
+    }
+
+    td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.expand td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;
+    }
+</style>
+@foreach (var item in Model.Item1)
+{
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3 class="card-title"> Factory: @item.ShortForm  Brand: @item.McnType  Gauge: @item.GaugeDesc  </h3>
+                </div>
+                <div class="col-md-2">
+                  
+                    @*<button class="button btn-info" style="float:right" data-toggle="modal" data-target="#modal-sm"> <span class=" fa fa-crown"></span>Create Slot</button>*@
+                </div>
+                <div class="col-md-2">
+                    <button class="button btn-info" style="float:left" onclick="PrintAll(@item.Number)" > <span class=" fa fa-list"></span>Excel</button>
+                    <button class="button btn-danger" style="float:right" onclick="DeleteAll(@item.Number)" > <span class=" fa fa-trash"></span> Delete</button>
+                    
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form>
+            <div class="card-body table-responsive " style="height:300px">
+                <div class="col-md-12 table ">
+                    <table class="table table-bordered table-head-fixed text-nowrap table-hover InitalPlanning" id="InitalPlanning_@item.Number">
+                        <thead class="fixedHeader-floating" style="background-color:aqua">
+                            <tr>
+                                <th>Action</th>
+                                <th>Details</th>
+                                <th>Year</th>
+                                <th>Factory</th>
+                                <th>Brand</th>
+                                <th>Gauge</th>
+                                <th>LeadTime</th>
+                                <th>Machine Qty</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Add Style</th>
+                                <th>Show</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item1 in Model.Item2.AsEnumerable().Where(r => (int)r.FactoryId == Convert.ToInt32(item.FactoryId) && (int)r.BrandId == Convert.ToInt32(item.BrandId) && (int)r.GaugeId == Convert.ToInt32(item.GaugeId)))
+                            {
+                                @if (Convert.ToString(item1.StageName) == "Pending")
+                                {
+                            <tr style="background-color:aliceblue" class="header expand">
+                                <td> <input type="checkbox" class="checkBoxCls" value="@item1.PlaneSlotMasterId" id="checkboxPrimary3"/>
+                                     <input type="hidden" class="planMasterId" value="@item1.PlaneSlotMasterId" />
+                                </td>
+                                <td class="details-control"></td>
+                                <td>@item1.YearName</td>
+                                <td>@item1.ShortForm</td>
+                                <td>@item1.McnType</td>
+                                <td>@item1.GaugeDesc</td>
+                                <td>@item1.LeadTime</td>
+                                <td>@item1.NoOfMachine</td>
+                                <td>@Convert.ToDateTime(item1.StartDate.ToString()).ToString("dd MMM yyyy")</td>
+                                <td>@Convert.ToDateTime(item1.EndDate.ToString()).ToString("dd MMM yyyy")</td>
+                                <td>@item1.StageName</td>
+                                <td><button type="button" class="btn btn-info btn-sm" onclick="AddStyle(@item1.PlaneSlotMasterId)"><span class="fa fa-plus"></span> Add PO</button></td>
+                                <td><button type="button" class="btn btn-info btn-sm" onclick="ShowAll(@item1.PlaneSlotMasterId)"><span class="fa fa-eye"></span> Show</button></td>
+                            </tr>
+                                    <tr>
+                                        <td colspan="12">
+                                            <table class="table table-striped table-hover">
+                                                <tr>
+                                                    <th></th>
+                                                    <th>PONo</th>
+                                                    <th>PoQty</th>
+                                                    <th>StyleNumber</th>
+                                                    <th>SmvKn</th>
+                                                    <th>RequiredMachine</th>
+                                                    <th>Remarks</th>
+                                                    <th>TrialDate</th>
+                                                </tr>
+                                                @foreach (var data in item1.SlotDetailsViews)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>@data.PONo</td>
+                                                        <td>@data.PoQty</td>
+                                                        <td>@data.StyleNumber</td>
+                                                        <td>@data.SmvKn</td>
+                                                        <td>@data.RequiredMachine</td>
+                                                        <td>@data.Remarks</td>
+                                                        <td>@data.TrialDate</td>
+                                                    </tr>
+                                                }
+
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </form>
+        @*<div class="card-footer">
+                <button type="submit" onclick="Add()" class="float-right btn btn-primary">Submit</button>
+            </div>*@
+    </div>
+}

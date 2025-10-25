@@ -1,0 +1,79 @@
+﻿@model SweaterPlanning.Models.BarCode
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <div class="card card-info">
+                <div class="card-header">
+
+                    <h3 class="card-title"><span class="fa fa-list"></span> Pending Capacity Approval List</h3>
+
+
+
+                </div>
+                @{
+                    var base64 = Convert.ToBase64String(Model.BarCodeImg);
+                    var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+                }
+                <div class="card-body table-responsive" id="workCalanderDiv">
+                    <table id="dailyTaskTable" class="table table-responsive table-bordered table-hover dataTable">
+                        <thead>
+                            <tr style="background-color:antiquewhite">
+                                <th align="center">bar Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img id="ItemPreview" src="@imgSrc" width="200px" height="100px"></td>
+                            </tr>
+                        </tbody>
+                        @*</tbody>*@
+                        @*<tfoot>
+                                <tr>
+                                    <th colspan="6">Total</th>
+                                    <th></th>
+                                    <th></th>
+
+                                </tr>
+                            </tfoot>*@
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="card card-warning" id="planningAssistant">
+                <div class="card-header">
+
+                    <h3 class="card-title"><span class="fa fa-list"></span> Planning Assistant</h3>
+
+
+                </div>
+
+                <div class="card-body" id="workCalanderDiv">
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        $(function () {
+            ExportAllData_HTML();
+        });
+
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('workCalanderDiv'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "myTemp.xlsx", { cellStyles: true });
+        }
+    </script>
+}

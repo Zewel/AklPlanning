@@ -1,0 +1,153 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+<div class="card card-primary">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="card-title"><span class="fa fa-list"> Style List</span></h3>
+            </div>
+            <div class="col-md-4">
+                <label class="label-info">Total Order Qty is:@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[3])) </label>
+            </div>
+            <div class="col-md-4">
+                <button class="button btn-info" style="float:right" onclick="ExportAllData_HTML()"> <span class=" fa fa-list"></span>Excel</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form>
+        <div class="card-body table-responsive " style="height:280px">
+            <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="exportStylelList">
+                <thead style="background-color:aliceblue">
+                    <tr>
+                        <th>Action</th>
+                        <th>Buyer</th>
+                        <th>Style No</th>
+                        <th>Gmt. Dept</th>
+                        <th>Po Qty</th>
+                        <th>Fob</th>
+                        <th>Total Amount</th>
+                        <th>Exfty New</th>
+                        <th>HOD</th>
+                        <th>Merchant</th>
+                        <th>Ratio Type</th>
+                        <th>Critical Type</th>
+                        <th>Mcn.</th>
+                        <th>Gauge</th>
+                        <th>Po No</th>
+                        <th>Prod. Lead</th>
+                        <th>Order Lead</th>
+                        <th>Conf.Date</th>
+                        <th>Total Amount</th>
+                        <th>SmvKn</th>
+                        <th>SmvLk</th>
+                        <th>SmvTr</th>
+                        <th>SmvMn</th>
+                        <th>SmvSw</th>
+                        <th>SmvButton</th>
+                        <th>SmvZipper</th>
+                        <th>SmvFinishing</th>
+                        <th>SmvOthers</th>
+                        <th>Smv Total</th>
+                        <th>Po Entry date</th>
+                        <th>Po Entry User</th>
+                        <th>Remarks</th>
+                        <th>Oc Date</th>
+                        <th>Season</th>
+                        <th>Style Status</th>
+                        <th>Ship Mode</th>
+                        <th>Yrn. Inhouse Dt</th>
+                        <th>Yrn. Trnsit Dt</th>
+                        <th>Smp. Apv dt</th>
+                        <th>Blk. Hngr Apv dt</th>
+                        <th>Tst Apv Dt</th>
+                        <th>Initial Plane Date</th>
+                        <th>Cncl Qty</th>
+                        <th>Cncl Remarks</th>
+                        <th>Booked ExFty</th>
+                        <th>Po ExFty</th>
+                        <th>Rev ExFty</th>
+                        <th>Yarn Source Type</th>
+                        <th>Other Process</th>
+                        <th>Style Description</th>
+                        <th>L/C Mother Company</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow item in Model.Rows)
+                    {
+                    <tr>
+                        <td> <a class="print" onclick="Print(@item.ItemArray[43])"><span class="fa fa-print"></span> Print</a></td>
+                        <td>@item.ItemArray[0]</td>
+                        <td>@item.ItemArray[1]</td>
+                        <td>@item.ItemArray[2]</td>
+                        <td>@item.ItemArray[3]</td>
+                        <td>@item.ItemArray[4]</td>
+                        <td>@item.ItemArray[5]</td>
+                        <td>@item.ItemArray[6]</td>
+                        <td>@item.ItemArray[7]</td>
+                        <td>@item.ItemArray[8]</td>
+                        <td>@item.ItemArray[9]</td>
+                        <td>@item.ItemArray[10]</td>
+                        <td>@item.ItemArray[11]</td>
+                        <td>@item.ItemArray[12]</td>
+                        <td>@item.ItemArray[13]</td>
+                        <td>@item.ItemArray[14]</td>
+                        <td>@item.ItemArray[15]</td>
+                        <td>@item.ItemArray[16]</td>
+                        <td>@item.ItemArray[17]</td>
+                        <td>@item.ItemArray[18]</td>
+                        <td>@item.ItemArray[19]</td>
+                        <td>@item.ItemArray[20]</td>
+                        <td>@item.ItemArray[21]</td>
+                        <td>@item.ItemArray[22]</td>
+                        <td>@item.ItemArray[47]</td>
+                        <td>@item.ItemArray[48]</td>
+                        <td>@item.ItemArray[49]</td>
+                        <td>@item.ItemArray[50]</td>
+                        <td>@item.ItemArray[23]</td>
+
+
+
+                        <td>@item.ItemArray[24]</td>
+                        <td>@item.ItemArray[25]</td>
+                        <td>@item.ItemArray[26]</td>
+                        <td>@item.ItemArray[27]</td>
+                        <td>@item.ItemArray[28]</td>
+                        <td>@item.ItemArray[29]</td>
+                        <td>@item.ItemArray[30]</td>
+                        <td>@item.ItemArray[31]</td>
+                        <td>@item.ItemArray[32]</td>
+                        <td>@item.ItemArray[33]</td>
+                        <td>@item.ItemArray[34]</td>
+                        <td>@item.ItemArray[35]</td>
+                        <td>@item.ItemArray[36]</td>
+                        <td>@item.ItemArray[37]</td>
+                        <td>@item.ItemArray[38]</td>
+                        <td>@item.ItemArray[39]</td>
+                        <td>@item.ItemArray[40]</td>
+                        <td>@item.ItemArray[41]</td>
+                        <td>@item.ItemArray[42]</td>
+                        <td>@item.ItemArray[44]</td>
+                        <td>@item.ItemArray[45]</td>
+                        <td>@item.ItemArray[46]</td>
+
+                    </tr>
+
+
+                    }
+
+
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </form>
+
+</div>
+

@@ -1,0 +1,120 @@
+﻿@model System.Data.DataSet;
+@using System.Data;
+
+<div class="row">
+    <div class="col-md-6">
+        @{
+            var style = "";
+            @if (Model.Tables[0].Rows.Count > 0) style= Model.Tables[0].AsEnumerable().FirstOrDefault().ItemArray[0].ToString();
+        }
+        <div class="row">
+            <label>Style No: @style</label>
+        </div>
+        <div class="card card-success">
+            <div class="card-header">
+                <div class="row">
+                    <span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:chocolate; font-weight:bold">Consamption</label>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+                <div class="card-body table-responsive " style="height:300px">
+
+                    <div class="col-md-12 table ">
+                        <table class="table  table-bordered table-head-fixed text-nowrap table-hover">
+                            <thead class="fixedHeader-floating">
+                                <tr>
+                                    <th>Yarn Name</th>
+                                    <th>Count</th>
+                                    <th>Color</th>
+                                    <th>Total Require Qty.</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow item in Model.Tables[0].Rows)
+                                {
+
+                                    <tr style="background-color:lightsteelblue">
+
+                                        <td>@item.ItemArray[2]</td>
+                                        <td>@item.ItemArray[3]</td>
+                                        <td>@item.ItemArray[4]</td>
+                                        <td>@item.ItemArray[5]</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        @{
+            var styleNo = "";
+            if (Model.Tables[0].Rows.Count > 0) styleNo= Model.Tables[0].AsEnumerable().FirstOrDefault().ItemArray[0].ToString();
+        }
+        <div class="row">
+            <label>Style Name: @styleNo</label>
+        </div>
+        <div class="card card-success">
+            <div class="card-header">
+                <div class="row">
+                    <span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:chocolate; font-weight:bold">Received In House</label>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+                <div class="card-body table-responsive " style="height:300px">
+
+
+                    <div class="col-md-12 table ">
+                        <table class="table  table-bordered table-head-fixed text-nowrap table-hover">
+                            <thead class="fixedHeader-floating">
+                                <tr>
+                                    <th>Yarn Name</th>
+                                    <th>Count</th>
+                                    <th>Color</th>
+                                    <th>Total Received Qty.</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow item in Model.Tables[1].Rows)
+                                {
+
+                                    <tr style="background-color:lightsteelblue">
+
+                                        <td>@item.ItemArray[2]</td>
+                                        <td>@item.ItemArray[3]</td>
+                                        <td>@item.ItemArray[4]</td>
+                                        <td>@item.ItemArray[5]</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

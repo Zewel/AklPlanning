@@ -1,0 +1,47 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+@using System.Text.RegularExpressions;
+
+
+
+        <div class="card card-info">
+            <div class="card-header">
+                <h6>Month Wise Total Order Qty</h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>Year</td>
+                            <td>Month</td>
+                            <td>Set Qty</td>
+                            <td>Pcs Qty</td>
+                        </tr>
+                       
+                    </thead>
+                    <tbody id="tbodyid">
+
+                        @foreach (DataRow item in Model.Rows)
+                        {
+                            <tr>
+
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                                <td>@item.ItemArray[2]</td>
+                                <td>@item.ItemArray[3]</td>
+                                
+                          </tr>
+
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" style="background-color:lightsteelblue">Total</td>
+                            <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[2])) </td>
+                            <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[3])) </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>

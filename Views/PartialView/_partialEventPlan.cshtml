@@ -1,0 +1,51 @@
+﻿@model System.Data.DataSet;
+@using System.Data;
+@using System.Text.RegularExpressions;
+
+
+<div class="card-body table-responsive p-0" style="height:350px;">
+    <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="EventTbl">
+        <thead class="fixedHeader-floating">
+            <tr style="background-color:aqua">
+                <td>Buyer</td>
+                <td>Style</td>
+                <td>Master Event</td>
+                <td>Details Event</td>
+                <td>Action</td>
+                <td>Start Date</td>
+                <td>End Date</td>
+                <td>Status</td>
+            </tr>
+
+        </thead>
+        <tbody id="tbodyid">
+
+            @foreach (DataRow item in Model.Tables[1].Rows)
+            {
+                <tr>
+
+
+                    <td>@item.ItemArray[1]</td>
+                    <td>@item.ItemArray[2]</td>
+                    <td>@item.ItemArray[3]</td>
+                    <td>@item.ItemArray[4]</td>
+                    <td>@item.ItemArray[5]</td>
+                    <td>@item.ItemArray[6]</td>
+                    <td>@item.ItemArray[7]</td>
+                    <td>@item.ItemArray[8]</td>
+
+                </tr>
+
+
+            }
+        </tbody>
+        <tfoot>
+            @*<tr>
+                    <td colspan="2" style="background-color:lightsteelblue">Total</td>
+                    <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[2])) </td>
+                    <td>@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[3])) </td>
+                </tr>*@
+        </tfoot>
+    </table>
+    </div>
+

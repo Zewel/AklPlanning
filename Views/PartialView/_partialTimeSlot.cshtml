@@ -1,0 +1,30 @@
+﻿@using System.Data
+@model System.Data.DataTable
+
+<table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+    <thead>
+        <tr style="background-color:aqua">
+            <td>SL</td>
+            <td>From Time</td>
+            <td>To Time</td>
+            <td>Task Type</td>
+            <td>Task Description</td>
+        </tr>
+    </thead>
+    <tbody id="tbodyid">
+        @{ int count = 1;}
+        @foreach (DataRow item in Model.Rows)
+        {
+            <tr id="@count">
+                <td>@count</td>
+                <td>@item.ItemArray[1]</td>
+                <td>@item.ItemArray[2]</td>
+                <td> <select class="form-control select2 ddltaskType" id="taskType_@count" style="width: 350px"></select></td>
+                <td><textarea class="form-control" id="taskDescription_@count" rows="2" style="width: 350px" placeholder="Enter ..."></textarea></td>
+                <td hidden> <input type="text" class="form-control" value="@item.ItemArray[0]" id="timeSlotId_@count" placeholder="Enter ..."></td>
+                <td hidden> <input type="text" class="form-control"  id="dailyActivityId_@count" placeholder="Enter ..."></td>
+            </tr>
+            count++;
+        }
+    </tbody>
+</table>

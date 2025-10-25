@@ -1,0 +1,772 @@
+﻿@model SweaterPlanning.Models.CapacityAllocate
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    .DTFC_LeftBodyLiner {
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row table-responsive">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header row">
+
+                    <div class="col-md-4">
+                        <h3 class="card-title"><span class="fa fa-list"></span> Buyer Wise Capacity Allocation</h3>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        @*<div class="form-group" id="divdllTaskType">*@
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="dllTaskType">Allocation Year</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control select2" style="width: 100%;" id="dllYear">
+                                </select>
+                            </div>
+                            
+                        </div>
+
+                        @*</div>*@
+
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary float-right" onclick="AllocationSummary()">
+                            View Summery
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-default float-right" data-toggle="modal" data-target="#modal-xl">
+                            New Allocate
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="card-body col-md-12">
+                    <div class="col-md-12 table-responsive" style="width:100%;">
+                        <table id="dailyTaskTable" class="table table-bordered table-hover dataTable">
+                            <thead class="fixedHeader-locked">
+                                <tr style="background-color:antiquewhite">
+                                    <th align="center">CapacityAllocateId</th>
+                                    <th align="center">BuyerName</th>
+                                    <th align="center">MarchantName</th>
+                                    <th align="center">YearName</th>
+                                    <th align="center">GaugeName</th>
+                                    <th align="center">January</th>
+                                    <th align="center">February</th>
+                                    <th align="center">March</th>
+                                    <th align="center">April</th>
+                                    <th align="center">May</th>
+                                    <th align="center">June</th>
+                                    <th align="center">July</th>
+                                    <th align="center">August</th>
+                                    <th align="center">September</th>
+                                    <th align="center">October</th>
+                                    <th align="center">November</th>
+                                    <th align="center">December</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            @*</tbody>*@
+                            <tfoot>
+                                <tr style="background-color:lavenderblush">
+                                    <th colspan="5" style="background-color:floralwhite">Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                   </div>
+            </div>
+            <div class="modal fadeInUp" id="modal-xl">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header card-header">
+                            <h4 class="modal-title">Sweater Planning</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Capacity Allocation</h3>
+                                            @*<a asp-action="Index" class="float-right">Back to List</a>*@
+                                        </div>
+
+                                        @*  <form name="MonthWiseWorkingDay" id="valid" asp-action="Create">*@
+                                        <form asp-action="Create">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <div class="form-group">
+                                                            <label asp-for="BuyerId" class="control-label">Buyer</label>
+                                                            <select asp-for="BuyerId" class="form-control select2 col-md-12" style="width: 100%;" asp-items="ViewBag.BuyerId">
+                                                                <option value="">--Select Buyer Name--</option>
+                                                            </select>
+                                                            <span asp-validation-for="BuyerId" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="MarchantId" class="control-label"> Marchandizer</label>
+                                                            <select asp-for="MarchantId" class="form-control select2 col-md-12" style="width: 100%;" asp-items="ViewBag.MarchantId">
+                                                                <option value="">--Select Marchant name--</option>
+                                                            </select>
+                                                            <span asp-validation-for="MarchantId" class="text-danger"></span>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label asp-for="YearId" class="control-label"> Year</label>
+                                                            <select asp-for="YearId" class="form-control select2" style="width: 100%;" asp-items="ViewBag.YearId">
+                                                                <option value="">--Select Year--</option>
+                                                            </select>
+                                                            <span asp-validation-for="YearId" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="MonthId" class="control-label">Month</label>
+                                                            <select asp-for="MonthId" class="form-control select2 " style="width: 100%;" asp-items="ViewBag.MonthId">
+                                                                <option value="">--Select Month--</option>
+                                                            </select>
+                                                            <span asp-validation-for="MonthId" class="text-danger"></span>
+                                                        </div>
+                                                        @*<div class="form-group">
+                                                                <label asp-for="GaugeId" class="control-label">Gauge</label>
+                                                                <select asp-for="GaugeId" class="form-control  select2" style="width: 100%;" onchange="AllocationValidation();AllocationAssistant()" asp-items="ViewBag.GaugeId">
+                                                                    <option value="">--Select Gauge--</option>
+                                                                </select>
+                                                                <span asp-validation-for="GaugeId" class="text-danger"></span>
+                                                            </div>*@
+                                                        <div class="form-group">
+                                                            <label asp-for="GaugeGroupId" class="control-label">Gauge Group</label>
+                                                            <select asp-for="GaugeGroupId" class="form-control  select2" style="width: 100%;" onchange="AllocationValidation();AllocationAssistant()" asp-items="ViewBag.GaugeGroupId">
+                                                                <option value="">--Select Gauge Group--</option>
+                                                            </select>
+                                                            <span asp-validation-for="GaugeGroupId" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="AllocateQty" class="control-label"> Allocate Qty</label>
+                                                            <input asp-for="AllocateQty" class="form-control" oninput="CheckRemainingQty()" />
+                                                            <span asp-validation-for="AllocateQty" class="text-danger"></span>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="form-group">
+                                                    <input type="submit" value="Create" id="allocateBtn" class="btn btn-default" />
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-8" id="capacityAssistant">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="modal fadeInUp" id="summaryModal">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header card-header">
+                            <h4 class="modal-title" id="headderId"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12" id="summaryBody">
+                                @*<div class="card card-primary">
+                                       <div class="card-body" >
+
+                                       </div>
+                                    </div>*@
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="modal fadeInUp" id="editDataModal">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header card-header" style="background-color:dodgerblue">
+                            <h5 class="modal-title" id="headderId">Edit Capacity Allocation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12" id="summaryBody">
+                                <input type="hidden" id="capacityAllocateId" />
+                                <div class="form-group">
+                                    <label id="buyerName" class="control-label"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="merchantName" class="control-label"> </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="YearName" class="control-label"> </label>
+                                </div>
+                                <div class="form-group">
+                                    <label id="gaugeName" class="control-label"> </label>
+                                    <input type="hidden" id="editGaugeId" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"> Month</label>
+                                    <select class="form-control select2" style="width: 100%;" id="monthNames" onchange="CurrentData()">
+                                        <option value="">--Select Month--</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" id="allocateQty"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">New Allocate Qty</label>
+                                    <input type="number" id="newAllocateQty" class="form-control" oninput="CheckRemainingQty()" />
+                                    <span class="field-validation-valid error" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" onclick="SubmitForEdit()">Save changes</button>
+                            @*<button type="button" class="btn btn-outline-dark edit float-right" data-dismiss="modal" onclick="SubmitForEdit()">Save changes</button>*@
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+
+        $(function () {
+
+            LoadYear('dllYear');
+            $('#YearId').val(currentYear).trigger('change');
+            //LoadTable();
+            $("#dllYear").change(function () {
+                debugger;
+                var yearId = isNaN(parseInt($('#dllYear').val())) ? parseInt(currentYear) : parseInt($('#dllYear').val());
+
+                $('#dailyTaskTable').DataTable().clear().destroy();
+                table = $('#dailyTaskTable').DataTable({
+                    "ajax": { "url": apiHeader + "api/Common/GetCapacityAllocatioLlist/" + yearId, "dataSrc": "", "crossDomain": true, },
+                    //"buttons": ['excel', 'pdf', 'copy'],
+                    // "scrollY": "300px",
+                    //"scrollY": "300px",
+                    fixedHeader: {
+                        header: true
+                    } ,
+                    "scrollX": true,
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "fixedColumns": {
+                        leftColumns: 5,
+                        rightColumns: 0
+                    },
+                    "ordering": false,
+                    "lengthMenu": [[-1], ["All"]],
+                    "rowsGroup": [1],
+                    "vertical_align": 'middle',
+                    "columns":
+                        [
+                            { "data": "CapacityAllocateId" },
+                            { "data": "BuyerName" },
+                            { "data": "MarchantName" },
+                            { "data": "YearName" },
+                            { "data": "GaugeName" },
+                            { "data": "January" },
+                            { "data": "February" },
+                            { "data": "March" },
+                            { "data": "April" },
+                            { "data": "May" },
+                            { "data": "June" },
+                            { "data": "July" },
+                            { "data": "August" },
+                            { "data": "September" },
+                            { "data": "October" },
+                            { "data": "November" },
+                            { "data": "December" }
+                        ],
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false,
+                            "orderable": false
+                        },
+                        { orderable: false, targets: '_all' },
+
+                        { className: 'dt-center', targets: [1, 2, 3, 4] },
+
+                        //, { className: "btn", targets: 9 },
+                    ],
+                    "footerCallback": function (row, data, start, end, display) {
+                        var api = this.api();
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function (i) {
+
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+
+                        };
+
+
+                        if (api.column(5).data().length) {
+                            var janTotal = api
+                                .column(5, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { janTotal = 0 };
+
+                        $(api.column(5).footer()).html(
+                            janTotal + ' Pcs'
+                        );
+                        if (api.column(6).data().length) {
+                            var febTotal = api
+                                .column(6, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { febTotal = 0 };
+
+                        $(api.column(6).footer()).html(
+                            febTotal + ' Pcs'
+                        );
+                        if (api.column(7).data().length) {
+                            var marTotal = api
+                                .column(7, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { marTotal = 0 };
+
+                        $(api.column(7).footer()).html(
+                            marTotal + ' Pcs'
+                        );
+                        if (api.column(8).data().length) {
+                            var aprTotal = api
+                                .column(8, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { aprTotal = 0 };
+
+                        $(api.column(8).footer()).html(
+                            aprTotal + ' Pcs'
+                        );
+                        if (api.column(9).data().length) {
+                            var mayTotal = api
+                                .column(9, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { mayTotal = 0 };
+
+                        $(api.column(9).footer()).html(
+                            mayTotal + ' Pcs'
+                        );
+                        if (api.column(10).data().length) {
+                            var junTotal = api
+                                .column(10, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { junTotal = 0 };
+
+                        $(api.column(10).footer()).html(
+                            junTotal + ' Pcs'
+                        );
+                        if (api.column(11).data().length) {
+                            var julTotal = api
+                                .column(11, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { julTotal = 0 };
+
+                        $(api.column(11).footer()).html(
+                            julTotal + ' Pcs'
+                        );
+                        if (api.column(12).data().length) {
+                            var augTotal = api
+                                .column(12, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { augTotal = 0 };
+
+                        $(api.column(12).footer()).html(
+                            augTotal + ' Pcs'
+                        );
+                        if (api.column(13).data().length) {
+                            var sepTotal = api
+                                .column(13, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { sepTotal = 0 };
+
+                        $(api.column(13).footer()).html(
+                            sepTotal + ' Pcs'
+                        );
+                        if (api.column(14).data().length) {
+                            var octTotal = api
+                                .column(14, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { octTotal = 0 };
+
+                        $(api.column(14).footer()).html(
+                            octTotal + ' Pcs'
+                        );
+                        if (api.column(15).data().length) {
+                            var novTotal = api
+                                .column(15, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { novTotal = 0 };
+
+                        $(api.column(15).footer()).html(
+                            novTotal + ' Pcs'
+                        );
+                        if (api.column(16).data().length) {
+                            var decTotal = api
+                                .column(16, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { decTotal = 0 };
+
+                        $(api.column(16).footer()).html(
+                            decTotal + ' Pcs'
+                        );
+
+                    }
+
+                });
+
+            }).change();
+             $('#dailyTaskTable tbody').on('click', 'tr', function () {
+            debugger;
+            var data = table.row(this).data();
+            //alert('You clicked on ' + data.MarchantName + '\'s row');
+            //alert('yes');
+            EditData(data.BuyerName,data.MarchantName, data.YearName, data.GaugeName);
+        });
+
+             $("#dailyTaskTable").rowspanizer({ vertical_align: 'middle' });
+
+            $('#editDataModal').on('hidden.bs.modal', function (e) {
+                debugger;
+                $('#allocateQty').html('');
+                $('#newAllocateQty').val('');
+                $('#capacityAllocateId').text('');
+            });
+         });
+        var yearId = 0;
+        function LoadYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetAllocateYear',
+                type: "GET",
+                dataType: "json",
+                async:false,
+                success: function (result) {
+                    debugger;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                        }
+                    }
+                    debugger;
+                    $('#dllYear').val(currentYear).trigger('change');
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+    var AllocateData = [];
+    var table;
+
+
+
+
+    function EditData(buyerName, marchantName, yearName, gaugeName) {
+        debugger;
+        var colNames = gaugeName.replace(/\s/g, '');
+        gaugeGroups = colNames.replace(/\//g, '-');
+        $.ajax({
+            type: "GET",
+            url: apiHeader + 'api/Common/MarchantAllocateData/' + buyerName + '/' + marchantName + '/' + yearName + '/' + gaugeGroups,
+            contentType: "json",
+            //data: JSON.stringify(obj),
+            success: function (result) {
+                debugger;
+                result;
+                AllocateData = result;
+                $('#editDataModal').modal();
+                $('#buyerName').text('Buyer Name: ' + result[0].BuyerName);
+                $('#merchantName').text('Merchant Name: ' + result[0].MarchantName);
+                $('#YearName').text('Years: ' + result[0].YearName);
+                $('#gaugeName').text('Gauge: ' + result[0].GaugeName);
+                $('#editGaugeId').val(result[0].GaugeId);
+                $('#monthNames').empty();
+                $('#monthNames').append($("<option></option>").val('').html('--Select Month--'));
+                const key = 'MonthNames';
+                const FactoryResult = [...new Map(result.map(item =>
+                    [item[key], item])).values()].sort();
+
+                //var fieldArray = {}; // object instead of array
+                //$.each(data, function (i, item) {
+                //    fieldArray[item.Field] = item.Field;
+                //});
+                for (var i = 0; i < FactoryResult.length; i++) {
+
+                    $('#monthNames').append($("<option></option>").val(FactoryResult[i].MonthId).html(FactoryResult[i].MonthNames));
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    function CurrentData() {
+        debugger;
+        var monthId = parseInt($('#monthNames').val());
+        var gaugeId = parseInt($('#editGaugeId').val());
+        var filterData = AllocateData.find(x => x.MonthId == monthId && x.GaugeId == gaugeId).AllocateQty;
+        var capacityId = AllocateData.find(x => x.MonthId == monthId).CapacityAllocateId;
+        $('#allocateQty').text('Current Allocate Qty: ' + filterData);
+        $('#capacityAllocateId').text('');
+        $('#capacityAllocateId').text(capacityId);
+
+    }
+
+    function AllocationSummary() {
+        var year = $('#dllYear').val();
+        var yearName = $("#dllYear option:selected").text();
+
+             var urlpath = '@Url.Action("capacityAllocationSummeryView", "PartialView")';
+            $.ajax({
+                url: urlpath,
+                dataType: 'html',
+                type: "Get",
+                data: { yearId:year},
+                async: false,
+                success: function (data) {
+                    $('#headderId').text('Capacity Allocation Summary of  ' + yearName);
+                    $('#summaryModal').modal();
+                    $("#summaryBody").html(data);
+                },
+                complete: function () {
+
+
+                }
+            });
+        }
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        var validaionAssistant = 0;
+    function AllocationValidation() {
+        var Buyer = $('#BuyerId').val();
+        var Marchat = $('#MarchantId').val();
+        var year = $('#YearId').val();
+        var month = $('#MonthId').val();
+        //var gauge = $('#GaugeId').val();
+        var gaugeGroup = $('#GaugeGroupId').val();
+        debugger;
+         $.ajax({
+                type: "GET",
+             url: apiHeader + 'api/Common/AllocationValidation/' + Buyer + '/' + Marchat + '/' + year + '/' + month + '/' + gaugeGroup,
+                contentType: "json",
+                //data: JSON.stringify(obj),
+             success: function (result) {
+                 if (result == 1) {
+                     validaionAssistant = 1;
+                     $("#allocateBtn").prop("disabled", true);
+                     //Toast.fire({
+                     //    icon: 'danger',
+                     //    title: "Already Allocated of this month"
+                     //});
+
+                     toastr.warning('Already Allocated of this month.');
+                 } else {
+                     $("#allocateBtn").prop("disabled", false);
+                 }
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+         }
+        function AllocationAssistant() {
+            var Buyer = $('#BuyerId').val();
+            var Marchat = $('#MarchantId').val();
+            var year = $('#YearId').val();
+            var month = $('#MonthId').val();
+            var gauge = $('#GaugeId').val();
+            var gaugeGroup = $('#GaugeGroupId').val();
+
+             var urlpath = '@Url.Action("capacityAllocationAssistantView", "PartialView")';
+            $.ajax({
+                url: urlpath,
+                dataType: 'html',
+                type: "Get",
+                data: { buyerId: Buyer, marchantId: Marchat, yearId: year, monthId: month, gaugeGroup: gaugeGroup},
+                async: false,
+                success: function (data) {
+                    debugger;
+
+                    $("#capacityAssistant").html(data);
+                },
+                complete: function () {
+
+
+                }
+            });
+        }
+
+        function CheckRemainingQty() {
+            debugger;
+            //var aTable = $('#tableTimeSlot').DataTable();
+            //var colAchange = aTable.cell(0, 4).data();
+            //aTable.destroy();
+
+            var colName = $("#GaugeGroupId option:selected").text();
+            var colNames = colName.replace(/\s/g, '');
+            colNames = colNames.replace(/\//g, '');
+            var remainingQty = $('#' + colNames + '').text();
+            var allocateQty = $('#AllocateQty').val();
+            if (parseInt(allocateQty) > parseInt(remainingQty) || parseInt(remainingQty) == 0) {
+
+               // $("#allocateBtn").prop("disabled", true);
+                //Toast.fire({
+                //    icon: 'danger',
+                //    title:"Capacity Input is Invalid"
+                //});
+                toastr.error('Capacity Input is Over Allocated.');
+            } else {
+                if (validaionAssistant == 1) {
+                    toastr.warning('Already Allocated of this month.');
+                } else {
+
+                    $("#allocateBtn").prop("disabled", false);
+                }
+            }
+    }
+    function SubmitForEdit() {
+        if ($('#newAllocateQty').val() == '' || $('#newAllocateQty').val() == "") {
+            toastr.warning('Please give valid qty.');
+            return false;
+        } else {
+            var allocationId = parseInt($('#capacityAllocateId').text());
+            var newAllocationQty = parseInt($('#newAllocateQty').val());
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("EditAllocationQty", "CapacityAllocates")',
+                contentType: "json",
+                data: { allocationId: allocationId, allocationQty: newAllocationQty},
+                success: function (result) {
+                    if (result == 1) {
+                        toastr.success('Allocate Qty. Change Successfully');
+                        LoadTable();
+                    }
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    </script>
+
+}

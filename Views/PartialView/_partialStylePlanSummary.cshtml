@@ -1,0 +1,146 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-8">
+        @*@{
+                var style = "";
+                @if (Model.Tables[0].Rows.Count > 0) style = Model.Tables[0].AsEnumerable().FirstOrDefault().ItemArray[0].ToString();
+            }*@
+        @*<div class="row">
+                <label>Style No: @style</label>
+            </div>*@
+        <div class="card card-success">
+            <div class="card-header">
+                <div class="row">
+                    <span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:white; font-weight:bold">Plan Po</label>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+                <div class="card-body table-responsive " style="height:450px">
+
+                    <div class="col-md-12 table ">
+                        <table class="table  table-bordered table-head-fixed text-nowrap table-hover">
+                            <thead class="fixedHeader-floating">
+                                <tr>
+                                    <th>Style No</th>
+                                    <th>Po No</th>
+                                    <th>Po Qty</th>
+                                    <th>Gauge</th>
+                                    <th>Ex-Fty</th>
+                                    <th>Production Unit</th>
+                                    <th>Plan Start Date</th>
+                                    <th>Plan End Date</th>
+                                    <th>Plan Qty</th>
+                                    <th>Plan Machine</th>
+                                    <th>Production Issue</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow item in Model.Rows)
+                                {
+                                    if (Convert.ToInt32(item.ItemArray[8]) != 0)
+                                    {
+                                        <tr style="background-color:lightsteelblue">
+
+                                            <td>@item.ItemArray[0]</td>
+                                            <td>@item.ItemArray[1]</td>
+                                            <td>@item.ItemArray[2]</td>
+                                            <td>@item.ItemArray[3]</td>
+                                            <td>@item.ItemArray[4]</td>
+                                            <td>@item.ItemArray[5]</td>
+                                            <td>@item.ItemArray[6]</td>
+                                            <td>@item.ItemArray[7]</td>
+                                            <td>@item.ItemArray[8]</td>
+                                            <td>@item.ItemArray[9]</td>
+                                            <td>@item.ItemArray[10]</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+
+                        </table>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        @*@{
+                var styleNo = "";
+                if (Model.Tables[0].Rows.Count > 0) styleNo = Model.Tables[0].AsEnumerable().FirstOrDefault().ItemArray[0].ToString();
+            }*@
+        @*<div class="row">
+                <label>Style Name: @styleNo</label>
+            </div>*@
+        <div class="card card-info">
+            <div class="card-header">
+                <div class="row">
+                    <span class="info-box-text fa fa-cog" style="color:chocolate"></span><label style="color:white; font-weight:bold"> Un-Plan Po</label>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+                <div class="card-body table-responsive " style="height:450px">
+
+
+                    <div class="col-md-12 table ">
+                        <table class="table  table-bordered table-head-fixed text-nowrap table-hover">
+                            <thead class="fixedHeader-floating">
+                                <tr>
+                                    <th>Style No</th>
+                                    <th>Po No</th>
+                                    <th>Po Qty</th>
+                                    <th>Gauge</th>
+                                    <th>Ex-Fty</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow item in Model.Rows)
+                                {
+                                    if (Convert.ToInt32(item.ItemArray[8]) == 0)
+                                    {
+                                        <tr style="background-color:lightsteelblue">
+
+                                            <td>@item.ItemArray[0]</td>
+                                            <td>@item.ItemArray[1]</td>
+                                            <td>@item.ItemArray[2]</td>
+                                            <td>@item.ItemArray[3]</td>
+                                            <td>@item.ItemArray[4]</td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

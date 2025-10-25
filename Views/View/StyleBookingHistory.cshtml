@@ -1,0 +1,354 @@
+﻿
+ 
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="card-title"><span class="fa fa-search"></span> Style-Info Booking History Search Criteria</h3>
+            </div>
+        </div>
+        <div class="card-body row">
+
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Style Wise
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="styleNo">Style No.</label>
+                            <input type="text" class="form-control" id="styleNo" placeholder="Enter Style No.">
+                        </div>
+                      
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Date Wise
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                        <div class="form-group clearfix">
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary1" onclick="RadioInput()" value="1" name="r1">
+                                <label for="radioPrimary1">
+                                    Order Conf. Date
+                                </label>
+                            </div>
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary2" onclick="RadioInput()" value="2" name="r1">
+                                <label for="radioPrimary2">
+                                    Delivery Date
+                                </label>
+                            </div>
+                            @*<div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary3" onclick="RadioInput()" value="3" name="r1">
+                                <label for="radioPrimary3">
+                                  Knitt. Plan Date
+                                </label>
+                            </div>*@
+                        </div>
+                        <fieldset class="border p-2" id="orderDiv">
+                            <legend class="w-auto" style="font-size:12px;">Order Date:</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderFromDate">From Date</label>
+                                        <input type="date" class="form-control" id="orderFromDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderToDate">To Date</label>
+                                        <input type="date" data-date-format="DD MMMM YYYY" class="form-control" id="orderToDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="border p-2" id="deliveryDiv">
+                            <legend class="w-auto" style="font-size:12px;">Delivery Date:</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderFromDate">From Date</label>
+                                        <input type="date" class="form-control" id="deliveryFromDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderToDate">To Date</label>
+                                        <input type="date" class="form-control" id="deliveryToDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="border p-2" id="PlanDiv">
+                            <legend class="w-auto" style="font-size:12px;">Knitt Plan Date:</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="planFromDate">Knitt Plan From Date</label>
+                                        <input type="date" class="form-control" id="planFromDate" placeholder="Plan From Date">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="planToDate">Knitt Plan To Date</label>
+                                        <input type="date" class="form-control" id="planToDate" placeholder="Plan To Date">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+                    @*<fieldset class="border p-2">
+                            <legend class="w-auto" style="font-size:12px;">Planning Date:</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderFromDate">From Date</label>
+                                        <input type="date" class="form-control" id="planningFromDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderToDate">To Date</label>
+                                        <input type="date" class="form-control" id="planningToDate" placeholder="Enter Date">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>*@
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Buyer & Merchant
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="form-group" id="divBuyer">
+                            <label>Buyer</label>
+                            <input type="text" class="form-control" id="buyer" placeholder="Enter Po. No.">
+                        </div>
+                        <div class="form-group" id="divMerchant">
+                            <label>Merchantdiser</label>
+                            <input type="text" class="form-control" id="marchent" placeholder="Enter Po. No.">
+                        </div>
+                        <div class="form-group" id="divTeam">
+                            <label>Team Name</label>
+                            <input type="text" class="form-control" id="teamHead" placeholder="Enter Po. No.">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" onclick="GetAllStyle()" id="processButton" class="float-right btn btn-primary"><span class="fa fa-search"></span> Submit</button>
+        </div>
+    </div>
+    <div class="row" id="StyleListView">
+
+    </div>
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#orderDiv').hide();
+            $('#deliveryDiv').hide();
+            $('#PlanDiv').hide();
+            $("#styleNo").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetStlNo/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.StlDesc);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 3,
+                //select: function (event, ui) {
+                //    log(ui.item ?
+                //        "Selected: " + ui.item.label :
+                //        "Nothing selected, input was " + this.value);
+                //},
+                //open: function () {
+                //    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                //},
+                //close: function () {
+                //    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                //}
+            });
+
+
+        });
+        function ExcelList(){
+            debugger;
+            //let table = document.getElementsByTagName("table");
+            //console.log(table);
+            //debugger;
+            //TableToExcel.convert(table[0], {
+            //    name: `UserManagement.xlsx`,
+            //    sheet: {
+            //        name: 'Usermanagement'
+            //    }
+            //});
+            var table2excel = new Table2Excel();
+
+            table2excel.export(document.querySelectorAll('table'));
+        }
+        function GetAllStyle() {
+
+            var StyleNo = $('#styleNo').val();
+            var Buyer = $('#buyer').val();
+            var Marchant = $('#marchent').val();
+            var TeamHead = $('#teamHead').val();
+            var OrderFromDate = $('#orderFromDate').val();
+            var OrderToDate = $('#orderToDate').val();
+            var DeliveryFromDate = $('#deliveryFromDate').val();
+            var DeliveryToDate = $('#deliveryToDate').val();
+            var entity = {
+
+                StyleNo: StyleNo,
+                Buyer: Buyer,
+                Marchant: Marchant,
+                TeamHead: TeamHead,
+                OrderFromDate: OrderFromDate,
+                OrderToDate: OrderToDate,
+                DeliveryFromDate: DeliveryFromDate,
+                DeliveryToDate: DeliveryToDate,
+            };
+            debugger;
+             var urlpath = '@Url.Action("StyleBookingHistoryView", "PartialView")';
+
+
+             $.ajax({
+                type: "POST",
+                 url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                 data: JSON.stringify(entity),
+                 dataType: "html",
+                 beforeSend: function () {
+                     $('#testSpan').show();
+                     $("#StyleListView").empty();
+                 },
+                success: function (result) {
+
+                    $("#StyleListView").html(result);
+                    $('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                    $('#styleNo').val('');
+                    $('#buyer').val('');
+                    $('#marchent').val('');
+                    $('#teamHead').val('');
+                    $('#orderFromDate').val('');
+                    $('#orderToDate').val('');
+                    $('#deliveryFromDate').val('');
+                    $('#deliveryToDate').val('');
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function RadioInput() {
+            debugger;
+            var inputValue = parseInt($('input[name="r1"]:checked').val());
+            if (inputValue == 1) {
+                $('#orderDiv').show();
+                $('#deliveryDiv').hide();
+                $('#PlanDiv').hide();
+                $('#deliveryFromDate').val("");
+                $('#deliveryToDate').val("");
+                $('#planFromDate').val("");
+                $('#planToDate').val("");
+            } else if (inputValue == 2) {
+                $('#orderFromDate').val("");
+                $('#orderToDate').val("");
+                $('#orderDiv').hide();
+                $('#PlanDiv').hide();
+                $('#deliveryDiv').show();
+                $('#planFromDate').val("");
+                $('#planToDate').val("");
+            } else {
+                $('#orderDiv').hide();
+                $('#PlanDiv').show();
+                $('#deliveryDiv').hide();
+                $('#orderFromDate').val("");
+                $('#orderToDate').val("");
+                $('#deliveryFromDate').val("");
+                $('#deliveryToDate').val("");
+                
+            }
+        }
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportStylelList'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "AllStyleList.xlsx", { cellStyles: true });
+        }
+
+
+        //function ExportAllData_HTML() {
+        //    var wb = { SheetNames: [], Sheets: {} };
+        //    var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportStylelList'), { raw: true });
+        //    wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+        //    XLSX.writeFile(wb, "myTemp.xlsx", { cellStyles: true });
+        //}
+        function Print(element) {
+
+            window.open(reportHeader+"Report/CapacityReport?stlCode=" + element, '_blank');
+        }
+
+      
+
+    </script>
+}

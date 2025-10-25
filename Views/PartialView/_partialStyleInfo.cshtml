@@ -1,0 +1,336 @@
+﻿@model SweaterPlanning.Models.StyleMaster
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <h3 class="card-title">Style Information</h3>
+                    </div>
+                </div>
+                <form>
+                    <div class="card-body row">
+                        @*<div class="row">*@
+                        <div class="col-md-6">
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Style No # @Model.StlCode</label>
+                                <label class="col-md-6">@Model.StlDesc</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Booking Type</label>
+                                <label class="col-md-6">Capacity Booking</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Buyer</label>
+                                <label class="col-md-6">@Model.Bur_Name</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Style Des.</label>
+                                <label class="col-md-6">@Model.StlDescrptn</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Department:</label>
+                                <label class="col-md-6">@Model.GmtDept</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Gauge:</label>
+                                <label class="col-md-6">@Model.GaugeDesc</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Season:</label>
+                                <label class="col-md-6">@Model.SeasonName</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Garment Type:</label>
+                                <label class="col-md-6">@Model.GmtDept</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Style Type:</label>
+                                <label class="col-md-6">@Model.StyleType</label>
+                            </div>
+                            @*<div class="row col-md-12 table-bordered">
+                                    <label style="background-color:lavender" class="col-md-6">Yarn Type:</label>
+                                    <label class="col-md-6"></label>
+                                </div>*@
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Count:</label>
+                                <label class="col-md-6">@Model.YarnCount</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Des.:</label>
+                                <label class="col-md-6">@Model.YarnComp</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Order Qty.:</label>
+                                <label class="col-md-6">@Model.pottlqty</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">FOB:</label>
+                                <label class="col-md-6">$ @Model.FobAmnt</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">OC Date:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.ConfDt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Source Type:</label>
+                                <label class="col-md-6">@Model.srcType</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Supplier:</label>
+                                <label class="col-md-6">@Model.SupName</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-7">Merchandiser:</label>
+                                <label class="col-md-5">@Model.Fullname</label>
+                            </div>
+                            @*<div class="row col-md-12 table-bordered">
+                                    <label style="background-color:lavender" class="col-md-6">Dev Style:</label>
+                                    <label class="col-md-6"></label>
+                                </div>
+                                <div class="row col-md-12 table-bordered">
+                                    <label style="background-color:lavender" class="col-md-6">Repeat Style:</label>
+                                    <label class="col-md-6"></label>
+                                </div>*@
+
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Production Lead:</label>
+                                <label class="col-md-6">@Model.ProdLead</label>
+                            </div>
+                        </div>
+                        @*<div class="col-md-7">
+                                <div class="row">
+                                    <div class="row box-shadow">
+                                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.StyleSktbyt)" height="100px" width="100px" />
+                                    </div>
+                                    <div class="row table-bordered">
+                                        <label class="col-md-6">Repeat Style:</label>
+                                        <label class="col-md-6"></label>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-md-6">
+                            <div class="row  col-md-12 table-bordered" style="float:right">
+                                <img src="data:image;base64,@System.Convert.ToBase64String(Model.StyleSktbyt)" height="100px" />
+
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">File Handover Date:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.filehndovrdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Delivery Start:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.POfirstdeldt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Delivery End:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.Pomaxdel).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Order:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.YrnOrddt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Inhouse:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.YrnInhsDt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Color Approval:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.YrnColapvdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn purchase Led:</label>
+                                <label class="col-md-6">@Model.Yrnprclead</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Yarn Transit:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.YrnTrnsitdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Sample Approval:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.Smpapvdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Bulk Han. Approval:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.BlkHngrapvdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Test Approval:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.tstApvdt).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Sewing Item I/H:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.SewitmIH).ToString("dd MMM yyyy")</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Packing Item I/H:</label>
+                                <label class="col-md-6">@Convert.ToDateTime(Model.PakItmIH).ToString("dd MMM yyyy")</label>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </form>
+                @*<div class="card-footer">
+                        <button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>
+                    </div>*@
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">IE Part</h3>
+                </div>
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="background:antiquewhite">
+                                            <th width="200">Machine Type</th>
+                                            <td>Knitting</td>
+                                            <td>Linking</td>
+                                            <td>Sewing</td>
+                                            <td>Trimming</td>
+                                            <td>Mending</td>
+                                            <td>Finishing</td>
+                                            <td>Other</td>
+                                            <td>Total</td>
+                                            <td width="200">Process</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>@Model.MachineType</td>
+                                            <td>@Model.SmvKn</td>
+                                            <td>@Model.SmvLk</td>
+                                            <td>@Model.SmvSw</td>
+                                            <td>@Model.SmvTr</td>
+                                            <td>@Model.SmvMn</td>
+                                            <td>@Model.Smvfin</td>
+                                            <td></td>
+                                            <td>@Model.SmvTtl</td>
+                                            <td style="width:200px">@Model.SewProc</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                @*<div class="card-footer">
+                        <button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>
+                    </div>*@
+            </div>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">PO Wise Planning</h3>
+                </div>
+                <form>
+                    <div class="card-body table-responsive" style="height: 200px;">
+                        <div class="row">
+                            <table class="table table-bordered table-striped table-hovertable-head-fixed">
+                                <thead>
+                                    <tr style="background-color:antiquewhite">
+                                        <th>PO NO#</th>
+                                        <th>PO Qty.</th>
+                                        <th>Ship Mode</th>
+                                        @*<th>Conf. Date</th>
+                                            <th>FOB Date</th>*@
+                                        <th>Ex-Fty Date</th>
+                                        <th>Planning Month</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.StylePurchaseOrders)
+                                    {
+                                        <tr>
+                                            <td>@item.PONo</td>
+                                            <td>@item.POQty</td>
+                                            <td>@item.ShipMode</td>
+                                            @*<td></td>
+                                                <td></td>*@
+                                            <td>@Convert.ToDateTime(item.ExftyNew).ToString("dd MMM yyyy")</td>
+                                            <td><input type="text" id="taskDate_ @item.POCod" class="form-control datepicker" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                @*<div class="card-footer">
+                        <button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>
+                    </div>*@
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Initial Planning Part</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" id="divdllTaskType">
+                            <label for="dllCoordinator">Co-Ordinator</label>
+
+                            <select class="form-control select2" style="width: 100%;" id="dllCoordinator">
+                            </select>
+                        </div>
+                        <div class="form-group" id="divdllTaskType">
+                            <label for="dllTaskType">Ratio Type</label>
+                            <select class="form-control select2" style="width: 100%;" id="dllReatioType">
+                            </select>
+                        </div>
+                        <div class="form-group" id="divOrderDate">
+                            <label for="txtOrderDate">Knitting Start Date</label>
+                            <input type="text" id="knittingDate" class="form-control datepicker" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" id="divOrderDate">
+                            <label for="txtOrderDate">Linking Start Date</label>
+                            <input type="text" id="linkingDate" class="form-control datepicker" />
+                        </div>
+                        <div class="form-group" id="divOrderDate">
+                            <label for="txtOrderDate">Finishing Start Date</label>
+                            <input type="text" id="finishingDate" class="form-control datepicker" />
+                        </div>
+                        <div class="form-group" id="divOrderDate">
+                            <label for="txtOrderDate">Inspection Start Date</label>
+                            <input type="text" id="InspectionDate" class="form-control datepicker" />
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea class="form-control" id="remarks" rows="3" placeholder="Enter ..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Deny Reason</label>
+                            <textarea class="form-control" id="denyReason" rows="3" placeholder="Enter ..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </form>
+        <div class="card-footer">
+           @* <button type="submit" onclick="Add()" class="float-right btn btn-primary">Submit</button>*@
+        </div>
+    </div>

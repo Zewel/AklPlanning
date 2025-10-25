@@ -1,0 +1,103 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+    </style>
+</head>
+<body>
+    <table id="#our_table" border="1">
+        <tr>
+            <th>head1</th>
+            <th>head1</th>
+            <th>head1</th>
+        </tr>
+        <tr>
+            <td><span class="event-1" id="col-1" draggable="true">aaa</span></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sample</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><span class="event-2" id="col-2" draggable="true">bbb</span></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+@section Scripts{
+
+<script>
+    $(document).ready(function () {
+        $('.event-1').on("dragstart", function (event) {
+            var dt = event.originalEvent.dataTransfer;
+            dt.setData('Text', $(this).attr('id'));
+        });
+        $('table td').on("dragenter dragover drop", function (event) {
+            event.preventDefault();
+            if (event.type === 'drop') {
+                var data = event.originalEvent.dataTransfer.getData('Text', $(this).attr('col-1'));
+                de = $('#' + data).detach();
+                de.appendTo($(this));
+            };
+        });
+        $('.event-2').on("dragstart", function (event) {
+            var dt = event.originalEvent.dataTransfer;
+            dt.setData('Text', $(this).attr('id'));
+        });
+        $('table td').on("dragenter dragover drop", function (event) {
+            event.preventDefault();
+            if (event.type === 'drop') {
+                var data = event.originalEvent.dataTransfer.getData('Text', $(this).attr('col-2'));
+                de = $('#' + data).detach();
+                de.appendTo($(this));
+            };
+        });
+
+    });
+
+
+</script>
+}

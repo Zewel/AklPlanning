@@ -1,0 +1,143 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+<div class="card card-primary" style="height:500px; width:100%">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="card-title"><span class="fa fa-list"> All T/A List</span></h3>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                <button class="button btn-info" style="float:right" onclick="ExportAllData_HTML()"> <span class=" fa fa-list"></span>Excel</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form>
+        <div class="card-body table-responsive " style="height:400px; width:100%">
+            <div class="col-md-12 table ">
+                <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="exportTAndAList">
+                    <thead class="fixedHeader-floating">
+                        <tr>
+
+                            <th>Main Category</th>
+                            <th>T&A Category</th>
+                            <th>T&A Event</th>
+                            <th>Gap Date</th>
+                            <th>Pln Date</th>
+                            <th>Conf Date</th>
+                            <th>Comp Date</th>
+                            <th>Style NO</th>
+                            <th>Comp Remrks</th>
+                            <th>Resp. Forverify</th>
+                            <th>Gmt. Dept</th>
+                            <th>Gmt. Dpt. Id</th>
+                            <th>Gauge Desc.</th>
+                            <th>Team Name</th>
+                            <th>Tm HD</th>
+                            <th>HOD ID</th>
+                            <th>PO First Del Date</th>
+                            <th>Bur. Name</th>
+                            <th>Merchandiser</th>
+                            <th>Dly Remarks</th>
+                            <th>Verify Remarks</th>
+                            <th>Verify Date</th>
+                            <th>Verify By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow item in Model.Rows)
+                        {
+                            var plnDate = "";
+                            var complDate = "";
+                            var compDate = "";
+                            var firstDelDate = "";
+                            if (item.ItemArray[6].ToString() != "")
+                            {
+                                plnDate = Convert.ToDateTime(item.ItemArray[6]).ToString("dd MMM yyyy");
+                            }
+                            if (item.ItemArray[7].ToString() != "")
+                            {
+                                complDate = Convert.ToDateTime(item.ItemArray[7]).ToString("dd MMM yyyy");
+                            }
+                            if (item.ItemArray[8].ToString() != "")
+                            {
+                                compDate = Convert.ToDateTime(item.ItemArray[8]).ToString("dd MMM yyyy");
+                            }
+                            if (item.ItemArray[19].ToString() != "")
+                            {
+                                firstDelDate = Convert.ToDateTime(item.ItemArray[19]).ToString("dd MMM yyyy");
+                            }
+                            if (item.ItemArray[8].ToString() != "")
+                            {
+                        <tr style="background-color:lavenderblush" class="tag">
+                            <td class="stlNo">@item.ItemArray[1]</td>
+                            <td class="mcndesc">@item.ItemArray[3]</td>
+                            <td class="mcndesc">@item.ItemArray[4]</td>
+                            <td class="yrnInHouseDt">@item.ItemArray[5]</td>
+                            <td class="yrnTrnDt">@plnDate</td>
+                            <td class="smpApDt">@complDate</td>
+                            <td class="BlkApDt">@compDate</td>
+                            <td class="PlanStatus">@item.ItemArray[10]</td>
+                            <td class="planningQty">@item.ItemArray[11]</td>
+                            <td class="gaugeDesc">@item.ItemArray[12]</td>
+                            <td class="remarks">@item.ItemArray[13]</td>
+                            <td class="pocolor">@item.ItemArray[14]</td>
+                            <td class="merchentNm">@item.ItemArray[15]</td>
+                            <td class="seasonName">@item.ItemArray[16]</td>
+                            <td class="stlStatus">@item.ItemArray[17]</td>
+                            <td class="monthName">@item.ItemArray[18]</td>
+                            <td class="monthName">@firstDelDate</td>
+                            <td class="monthName">@item.ItemArray[20]</td>
+                            <td class="monthName">@item.ItemArray[21]</td>
+                            <td class="monthName">@item.ItemArray[22]</td>
+                            <td class="monthName">@item.ItemArray[29]</td>
+                            <td class="monthName">@item.ItemArray[30]</td>
+                            <td class="monthName">@item.ItemArray[31]</td>
+
+
+
+                        </tr>
+                            }
+                            else
+                            {
+                    <tr style="background-color:yellow" class="tag">
+                        <td class="stlNo">@item.ItemArray[1]</td>
+                        <td class="mcndesc">@item.ItemArray[3]</td>
+                        <td class="mcndesc">@item.ItemArray[4]</td>
+                        <td class="yrnInHouseDt">@item.ItemArray[5]</td>
+                        <td class="yrnTrnDt">@plnDate</td>
+                        <td class="smpApDt">@complDate</td>
+                        <td class="BlkApDt">@compDate</td>
+                        <td class="PlanStatus">@item.ItemArray[10]</td>
+                        <td class="planningQty">@item.ItemArray[11]</td>
+                        <td class="gaugeDesc">@item.ItemArray[12]</td>
+                        <td class="remarks">@item.ItemArray[13]</td>
+                        <td class="pocolor">@item.ItemArray[14]</td>
+                        <td class="merchentNm">@item.ItemArray[15]</td>
+                        <td class="seasonName">@item.ItemArray[16]</td>
+                        <td class="stlStatus">@item.ItemArray[17]</td>
+                        <td class="monthName">@item.ItemArray[18]</td>
+                        <td class="monthName">@firstDelDate</td>
+                        <td class="monthName">@item.ItemArray[20]</td>
+                        <td class="monthName">@item.ItemArray[21]</td>
+                        <td class="monthName">@item.ItemArray[22]</td>
+
+                        <td class="monthName">@item.ItemArray[29]</td>
+                        <td class="monthName">@item.ItemArray[30]</td>
+                        <td class="monthName">@item.ItemArray[31]</td>
+
+                    </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </form>
+
+</div>

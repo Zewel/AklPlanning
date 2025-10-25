@@ -1,0 +1,264 @@
+﻿
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="card-title"><span class="fa fa-search"></span> T&A Search Criteria</h3>
+            </div>
+        </div>
+        <div class="card-body row">
+
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Style & Buyer Wise
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="styleNo">Style No.</label>
+                                    <input type="text" class="form-control" id="styleNo" placeholder="Enter Style No.">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" id="divBuyer">
+                                    <label>Buyer</label>
+                                    <input type="text" class="form-control" id="buyer" placeholder="Enter Po. No.">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" id="divBuyer">
+                                    <label>Item Catagory</label>
+                                    <input type="text" class="form-control" id="itemCatagoryId" placeholder="Enter Style No.">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" id="divBuyer">
+                                    <label>T&A Event</label>
+                                    <input type="text" class="form-control" id="eventId" placeholder="Enter Style No.">
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="orderFromDate">Pln. From Date</label>
+                                    <input type="date" class="form-control" id="plnFromDate" placeholder="Enter Date">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="orderToDate">Pln. To Date</label>
+                                    <input type="date" data-date-format="DD MMMM YYYY" class="form-control" id="plnToDate" placeholder="Enter Date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-6 col-md-2">
+                                <div class="form-group">
+                                    <label for="orderToDate">Metarial</label>
+                                    <select class="form-control select2 CataOptionId" style="width: 100%;" id="CataOpId" >
+                                        <option value="">....Select Metarial....</option>
+                                        <option value="Non Costing Metarial">Non Costing Metarial</option>
+                                        <option value="Knittings Metarial">Knittings Metarial</option>
+                                        <option value="Linking Metarial">Linking Metarial</option>
+                                        <option value="Sweing Metarial">Sweing Metarial</option>
+                                        <option value="Finishing Metarial">Finishing Metarial</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="orderFromDate">Delivery From Date</label>
+                                    <input type="date" class="form-control" id="exFromDate" placeholder="Enter Date">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="orderToDate">Delivery To Date</label>
+                                    <input type="date" data-date-format="DD MMMM YYYY" class="form-control" id="exToDate" placeholder="Enter Date">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+           
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" onclick="GetAllTAndA()" id="processButton" class="float-right btn btn-primary" style="border-radius:50%"><span class="fa fa-search"></span></button>
+        </div>
+    </div>
+    <div class="row" id="StyleListView">
+
+    </div>
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            debugger;
+            //var now = new Date();
+
+            //var day = ("0" + now.getDate()).slice(-2);
+            //var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            //var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+            //$('#plnFromDate').val(today);
+            $('#orderDiv').hide();
+            $('#deliveryDiv').hide();
+
+            $("#styleNo").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetStlNo/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.StlDesc);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 3
+            });
+            $("#itemCatagoryId").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetCatagory/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.ItemMainCategory);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 1
+            });
+            $("#eventId").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetEvent/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.tnEvent);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        });
+
+        function GetAllTAndA() {
+
+            var StyleNo = $('#styleNo').val();
+            var Buyer = $('#buyer').val();
+            var catagory = $('#itemCatagoryId').val();
+            var event = $('#eventId').val();
+            var plnFromDate = $('#plnFromDate').val();
+            var plnToDate = $('#plnToDate').val();
+            var exFromDate = $('#exFromDate').val();
+            var exToDate = $('#exToDate').val();
+            var metarial = $('#CataOpId').val();
+            var entity = {
+                StyleNo: StyleNo,
+                Buyer: Buyer,
+                TCatagory: catagory,
+                TEvent: event,
+                PlnFromDate: plnFromDate,
+                PlnToDate: plnToDate,
+                ExFromDate: exFromDate,
+                ExnToDate: exToDate,
+                Metarial: metarial
+            };
+            debugger;
+             var urlpath = '@Url.Action("SearchAllTAndA", "PartialView")';
+
+
+             $.ajax({
+                type: "POST",
+                 url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                 data: JSON.stringify(entity),
+                 dataType: "html",
+                 beforeSend: function () {
+                     $('#testSpan').show();
+                     $("#StyleListView").empty();
+                 },
+                 success: function (result) {
+                     debugger;
+                    $("#StyleListView").html(result);
+                    $('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function RadioInput() {
+            debugger;
+            var inputValue = parseInt($('input[name="r1"]:checked').val());
+            if (inputValue == 1) {
+                $('#orderDiv').show();
+                $('#deliveryDiv').hide();
+                $('#deliveryFromDate').val("");
+                $('#deliveryToDate').val("");
+            } else {
+                $('#orderFromDate').val("");
+                $('#orderToDate').val("");
+                $('#orderDiv').hide();
+                $('#deliveryDiv').show();
+            }
+        }
+
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportTAndAList'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "AllTAndAList.xlsx", { cellStyles: true });
+        }
+
+    </script>
+}

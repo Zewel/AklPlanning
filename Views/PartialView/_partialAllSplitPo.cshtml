@@ -1,0 +1,34 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+
+<table id="SplitPoTable" class="table table-bordered table-responsive">
+    <thead>
+        <tr style="background-color:lightblue">
+            <th style="width:200px">Style No</th>
+            <th style="width:200px">Po NO</th>
+            <th style="width:200px">Operational Part</th>
+            <th style="width:200px">Po Quantity</th>
+
+            <th style="width:200px">Po Color</th>
+            <th>Po Type</th>
+            <th>Ex-Fty</th>
+            <th style="width:200px">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow item in Model.Rows)
+        {
+        <tr>
+            <td>@item.ItemArray[3]</td>
+            <td>@item.ItemArray[4]</td>
+            <td>@item.ItemArray[5]</td>
+            <td>@item.ItemArray[6]</td>
+            <td>@item.ItemArray[10]</td>
+            <td>@item.ItemArray[11]</td>
+            <td>@item.ItemArray[13]</td>
+            <td> <button type="button" class="btn btn-sm btn-info" onclick="GetStyleInfo(@item.ItemArray[0],@item.ItemArray[2],@item.ItemArray[12])"><span class="fa fa-plus"></span>Add</button></td>
+        </tr>
+        }
+        </tbody>
+</table>

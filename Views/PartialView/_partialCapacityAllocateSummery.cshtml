@@ -1,0 +1,184 @@
+﻿@model System.Data.DataSet;
+@using System.Data;
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Buyer Summary</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Buyer Name</td>
+                            <td>Allocate Qty</td>
+                            <td>Confirm Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count0 = 1;
+                            int bTotal = 0;
+                            int aTotal = 0;}
+                        @foreach (DataRow item in Model.Tables[0].Rows)
+                        {
+                            <tr id="@count0">
+                                <td>@count0</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                                <td>@item.ItemArray[2]</td>
+                            </tr>
+                            count0++;
+                            bTotal = bTotal + Convert.ToInt32(item.ItemArray[1]);
+                            aTotal = aTotal + Convert.ToInt32(item.ItemArray[2]);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>@bTotal</td>
+                            <td>@aTotal</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div> 
+       
+    </div>
+    <div class="col-md-3">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Marchandizer Summmary</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Marchandizer</td>
+                            <td>Allocate Qty</td>
+                            <td>Confirm Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count1 = 1;
+                            int mrTotal = 0;
+                            int oTotal = 0;}
+                        @foreach (DataRow item in Model.Tables[1].Rows)
+                        {
+                            <tr id="@count1">
+                                <td>@count1</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                                <td>@item.ItemArray[2]</td>
+                            </tr>
+                            count1++;
+
+                            mrTotal = mrTotal + Convert.ToInt32(item.ItemArray[1]);
+                            oTotal = oTotal + Convert.ToInt32(item.ItemArray[2]);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>@mrTotal</td>
+                            <td>@oTotal</td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="col-md-3">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Month Wise Summary</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Month</td>
+                            <td>Allocate Qty</td>
+                            <td>confirm Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count2 = 1;
+                            int mTotal = 0;
+                            int rTotal = 0;}
+                        @foreach (DataRow item in Model.Tables[2].Rows)
+                        {
+                            <tr id="@count2">
+                                <td>@count2</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                                <td>@item.ItemArray[2]</td>
+                            </tr>
+                            count2++;
+                            mTotal = mTotal + Convert.ToInt32(item.ItemArray[1]);
+                            rTotal = rTotal +  Convert.ToInt32(item.ItemArray[2]);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>@mTotal</td>
+                            <td>@rTotal</td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-md-3">
+        <div class="card card-info">
+            <div class="card-header">
+                <h5>Gauge Wise Summary</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped" id="tableTimeSlot">
+                    <thead>
+                        <tr style="background-color:aqua">
+                            <td>SL</td>
+                            <td>Gauge</td>
+                            <td>Allocate Qty</td>
+                            <td>confirm Qty</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                        @{ int count3 = 1;
+                            int gTotal = 0;}
+                        @foreach (DataRow item in Model.Tables[3].Rows)
+                        {
+                            <tr id="@count3">
+                                <td>@count3</td>
+                                <td>@item.ItemArray[0]</td>
+                                <td>@item.ItemArray[1]</td>
+                                <td>@item.ItemArray[2]</td>
+                            </tr>
+                            count3++;
+                            gTotal = gTotal + Convert.ToInt32( item.ItemArray[1]);
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Total</td>
+                            <td>@gTotal</td>
+                            <td></td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            </div>
+        </div>
+      
+</div>

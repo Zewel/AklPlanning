@@ -1,0 +1,396 @@
+﻿@model UserOperationPermission;
+<style>
+
+    .red {
+        background-color: antiquewhite;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Yearly Capacity Projection</h3>
+                </div>
+
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" id="divdllTaskType">
+                                    <label for="dllTaskType">Projection Year</label>
+                                    <select class="form-control select2" onchange="IsDuplicate()" style="width: 100%;" id="dllYear" required>
+                                    </select>
+                                </div>
+                            </div>
+                            @*<div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="txtOrderDate">Avg. Time Per Production(Minutes)</label>
+                                        <input type='text' class="form-control" id='avgTiming' required/>
+                                    </div>
+                                </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtOrderDate">Tolerate Timing (%)</label>
+                                    <input type='text' class="form-control" id='tolerateTiming' required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="card-footer">
+                    <button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+
+            <div class="card card-primary">
+                <div class="card-header row">
+                    <div class="col-md-4">
+                        <h3 class="card-title">Yearly Capacity Projection List</h3>
+                    </div>
+                    <div class="col-md-4">
+
+                        @*<div class="form-group" id="divdllTaskType">*@
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="dllTaskType">Allocation Year</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control select2" style="width: 100%;" onchange="LoadTableChangeYear()" id="dllPorjectionYear">
+                                </select>
+                            </div>
+                        </div>
+
+                        @*</div>*@
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table id="dailyTaskTable" class="table table-responsive table-bordered table-hover dataTable">
+                        <thead>
+                            <tr style="background-color:antiquewhite">
+                                <th align="center">CapacityProjectionId</th>
+                                <th>Year</th>
+                                <th align="center">Factory</th>
+                                <th>Brand</th>
+                                <th>Gauge</th>
+                                <th>Month</th>
+                                <th>Day No.</th>
+                                <th>Total Minutes</th>
+                                <th>Avg. Knitting Time</th>
+                                <th>Tolarance Timing %</th>
+                                <th>Machine Qty.</th>
+                                <th>Total Order Qty</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="10">Total</th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    @*<button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>*@
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        $(function () {
+
+            LoadProjectionYear('dllPorjectionYear');
+            LoadYear('dllYear');
+            LoadTableChangeYear();
+
+            $('#dailyTaskTable tbody').on('click', 'button', function () {
+                debugger;
+                //var myData = table1.row(this).data();
+                var myData = table1.row($(this).parents('tr')).data();
+                var data = parseInt(myData.CapacityProjectionId);
+                var flag = 'Edit';
+
+                edit(data)
+            });
+        });
+
+        function LoadProjectionYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetAllocateYear',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value=''>--Select Year--</option>");
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                    }
+
+                    $('#dllPorjectionYear').val(currentYear).trigger('change');
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+        function LoadYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetYear',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value=''>--Select Year--</option>");
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+
+        function IsDuplicate() {
+            var Year = $('#dllYear').val();
+            $.ajax({
+                url: apiHeader + 'api/CapacityProjection/IsProcessCompleted/' + Year,
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    if (result == 1) {
+                        //$("#processButton").prop("disabled", true);
+                        $("#processButton").attr("disabled", true);
+                        Toast.fire({
+                            icon: 'error',
+                            title: " Already This Year Process Completed"
+                        });
+
+                    } else {
+                        $("#processButton").prop("disabled", false);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        function Add() {
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Save`,
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Submit();
+
+                    //Swal.fire('Saved!', 'Submit()', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            });
+
+        }
+        function edit(id) {
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Save`,
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    SubmitForEdit(id) ;
+
+                    //Swal.fire('Saved!', 'Submit()', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            });
+
+        }
+
+        function Submit() {
+
+            debugger;
+            debugger;
+            var Year = $('#dllYear').val();
+            //var AvgTiming = $('#avgTiming').val();
+            var TolaranceTime = $('#tolerateTiming').val();
+
+            $.ajax({
+                type: "GET",
+                //url: apiHeader + 'api/CapacityProjection/ProjectionProcess/' + Year + '/' + AvgTiming + '/' + TolaranceTime,
+                url: apiHeader + 'api/CapacityProjection/ProjectionProcess/' + Year + '/' + TolaranceTime,
+                contentType: "json",
+                //data: JSON.stringify(obj),
+                success: function (result) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: "Process Complete"
+                    });
+                    location.reload();
+                },
+
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function SubmitForEdit(capacityProjId) {
+
+            $.ajax({
+                type: "GET",
+                url: apiHeader + 'api/CapacityProjection/EditProjectionProcess/' + capacityProjId,
+                contentType: "json",
+                success: function (result) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: "Process Complete"
+                    });
+                    location.reload();
+                },
+
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        var table1;
+        function LoadTableChangeYear() {
+            debugger;
+
+
+                var yearId = isNaN(parseInt($('#dllPorjectionYear').val())) ? parseInt(currentYear) : parseInt($('#dllPorjectionYear').val());
+             $('#dailyTaskTable').DataTable().clear().destroy();
+            $("tr.lvlcollapse").off('click');
+            
+             table1 = $('#dailyTaskTable').DataTable({
+                    "ajax": { "url": apiHeader + "api/CapacityProjection/ProjectionProcessList/" + yearId, "dataSrc": "", "crossDomain": true, },
+                    //"buttons": ['excel', 'pdf', 'copy'],
+                    // "scrollY": "300px",
+                    //"scrollY": "300px",
+                    "fixedHeader": true,
+                    "ordering": false,
+                    "lengthMenu": [[-1], ["All"]],
+                    "rowsGroup": [1, 2, 3, 4],
+                    "vertical_align": 'middle',
+                    "columns":
+                        [
+                            { "data": "CapacityProjectionId" },
+                            { "data": "Year" },
+                            { "data": "Factory" },
+                            { "data": "Brand" },
+                            { "data": "Gauge" },
+                            { "data": "MonthName" },
+                            { "data": "DayNo" },
+                            { "data": "TotalMinutes" },
+                            { "data": "AvgKnittingTime" },
+                            { "data": "TolaranceTiming" },
+                            { "data": "NoOfMachine" },
+                            { "data": "TotalProductionQty" },
+                            {
+                                "data": null,
+                                "defaultContent": "<button class='edit btn btn-block bg-gradient-success btn-sm'>Edit</button>",
+                                "targets": -1
+                            }
+                        ],
+                    "columnDefs": [
+                        {
+                            "targets": [0],
+                            "visible": false,
+                            "searchable": false,
+                            "orderable": false
+                        },
+                        { orderable: false, targets: '_all' },
+
+                        { className: 'dt-center', targets: [1, 2, 3, 4] },
+
+                        //, { className: "btn", targets: 9 },
+                    ],
+                    "footerCallback": function (row, data, start, end, display) {
+                        var api = this.api();
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function (i) {
+
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                    i : 0;
+
+                        };
+
+
+                        if (api.column(11).data().length) {
+                            var pageTotal = api
+                                .column(11, { page: 'current' })
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                })
+                        }
+                        else { pageTotal = 0 };
+
+
+                        $(api.column(11).footer()).html(
+                            pageTotal + ' Pcs'
+                        );
+                    }
+
+                });
+
+            $("#dailyTaskTable").rowspanizer({ vertical_align: 'middle' });
+
+              @*$('#dailyTaskTable tbody').on('click', 'button', function () {
+                debugger;
+                //var data = table.row($(this).parents('tr')).data();
+                  var user_data = table.row($(this).parents('tr')).data();
+                  var data = parseInt(user_data.CapacityProjectionId);
+                  var flag = 'Edit';
+
+                  edit(data)
+                //window.location.href = '@Url.Action("Edit", "MachineQuantities")?id=' + data ;
+              });*@
+           
+
+        }
+    </script>
+}

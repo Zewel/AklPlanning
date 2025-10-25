@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SweaterPlanning.Models.CapacityAllocate>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Marchant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Buyer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Years)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Months)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gauge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllocateQty)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Marchant.MarchantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Buyer.BuyerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Years.YearId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Months.MonthId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gauge.GaugeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllocateQty)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CapacityAllocateId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CapacityAllocateId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CapacityAllocateId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,182 @@
+﻿@model System.Data.DataSet;
+@using System.Data;
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">HOD</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[0]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Merchant</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[1]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Buyer</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[2]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Gauge</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[3]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Style No</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[4]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Po No</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[5]</label>
+        </div>
+        <div class="row col-md-12 table-bordered">
+            <label style="background-color:lavender" class="col-md-6">Po Qty</label>
+            <label class="col-md-6">@Model.Tables[0].Rows[0].ItemArray[6]</label>
+            <input type="hidden" id="styleId" value="@Model.Tables[0].Rows[0].ItemArray[9]" />
+            <input type="hidden" id="poId" value="@Model.Tables[0].Rows[0].ItemArray[10]" />
+        </div>
+
+    </div>
+    <div class="col-md-8">
+
+        <div class="col-md-12">
+            <fieldset class="border p-2" style="background-color:lightcyan" id="orderDiv">
+                <legend class="w-auto" style="font-size: 22px; padding: 5px 10px; color:white; background-color:mediumpurple">History Information:</legend>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Plan Status Type:</label>
+                            <select class="form-control select2" style="width: 100%;" id="statusType" onchange="">
+                                <option value="">--Select Type--</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Current Status</label>
+                            <textarea class="form-control" id="currentStatus" rows="2" placeholder="Enter ..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Marchant Comment</label>
+                            <textarea class="form-control" id="merchantCommt" rows="2" placeholder="Enter ..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="txtOrderDate">Propose Date</label>
+                            <input type='date' class="form-control datepicker" id='proposeDate' />
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                            <fieldset class="border p-2" style="background-color:lightcyan" id="orderDiv">
+                                <legend class="w-auto" style="font-size: 10px; padding: 5px 10px; color:white; background-color:mediumpurple">Production Flag:</legend>
+
+                                @if (Convert.ToInt32(Model.Tables[0].Rows[0].ItemArray[8]) == 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="yellowFlag" value="0" name="customRadio" checked>
+                                                <label for="yellowFlag" class="custom-control-label"><i class="fa-solid fa-flag" style="color: yellow;"></i></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="greenFlag" value="1" name="customRadio">
+                                                <label for="greenFlag" class="custom-control-label"><i class="fa-solid fa-flag" style="color: green;"></i></label>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                }
+                                else
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="yellowFlag" value="0" name="customRadio">
+                                                <label for="yellowFlag" class="custom-control-label"><i class="fa-solid fa-flag" style="color: yellow;"></i></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="greenFlag" value="1" name="customRadio" checked>
+                                                <label for="greenFlag" class="custom-control-label"><i class="fa-solid fa-flag" style="color: green;"></i></label>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                }
+                            </fieldset>
+                        </div>
+                        <div class="col-md-1">
+
+                            <button type="button" class="btn btn-info btn-xs" onclick="SaveHistory()" style="border-radius: 50%; background-color: #cc5de8;"><span class="fa fa-plus"></span></button>
+
+                        </div>
+                    </div>
+
+
+</fieldset>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 table ">
+        <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="">
+            <thead>
+                <tr style="background-color:aqua">
+                    <td>#SL</td>
+                    <td>Style</td>
+                    <td>Po</td>
+                    <td>Plan Status</td>
+                    <td>Planner Comments</td>
+                    <td>Merchant Commitement</td>
+                    <td>Planner Name</td>
+                    <td>History Date</td>
+                </tr>
+            </thead>
+            <tbody id="tbodyid">
+                @{ int count0 = 1;}
+                @foreach (DataRow item in Model.Tables[1].Rows)
+                {
+                    <tr>
+                        <td>@count0</td>
+
+                        <td>@item.ItemArray[0]</td>
+                        <td>@item.ItemArray[1]</td>
+                        <td>@item.ItemArray[2]</td>
+                        <td>@item.ItemArray[3]</td>
+                        <td>@item.ItemArray[4]</td>
+                        <td>@item.ItemArray[5]</td>
+                        <td>@item.ItemArray[6]</td>
+                    </tr>
+                    count0++;
+
+                }
+            </tbody>
+            <tfoot>        </tfoot>
+
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            debugger;
+
+        });
+    </script>
+}

@@ -1,0 +1,156 @@
+﻿
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+
+                <div class="col-md-5">
+                    <h3 class="card-title"><span class="fa fa-search"></span> Style-Po List For Change Plan Month</h3>
+                </div>
+                <div class="col-md-1">
+                    <label for="styleNo">Style No.</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" style="height:25px" id="styleNo" placeholder="Enter Style No.">
+
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-info btn-xs float-left" onclick="GetAllStyle()" style="border-radius: 50%; background-color: forestgreen; margin-left:10px "><span class="fa fa-search"></span></button>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body row table-responsive" id="StyleListView">
+            @*<div class="row" id="StyleListView">
+
+                </div>*@
+
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+
+            $("#styleNo").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+                        url: apiHeader + "api/Common/GetStlNo/" + request.term,
+                        dataType: "json",
+                        success: function (data) {
+                            var stl = [];
+                            $.each(data, function (i, item) {
+                                stl.push(item.StlDesc);
+                            });
+                            response(stl);
+
+                        }
+                    });
+                },
+                minLength: 3,
+
+            });
+
+
+            $('#orderDiv').hide();
+            $('#deliveryDiv').hide();
+        });
+
+        function GetAllStyle() {
+            var StyleNo = $('#styleNo').val();
+
+            debugger;
+             var urlpath = '@Url.Action("PoListView", "PartialView")';
+
+
+            $.ajax({
+                type: "GET",
+                url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                data: { stlNo:StyleNo},
+                 dataType: "html",
+                 beforeSend: function () {
+                     $('#testSpan').show();
+                     $("#StyleListView").empty();
+                 },
+                success: function (result) {
+
+                    $("#StyleListView").html(result);
+                    $('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function SavePoDate(element) {
+            debugger;
+            pOCod = parseInt($(element).closest("tr").find('.poConfirmId').val());
+            planDate =$(element).closest("tr").find('.newPlnMonth').val();
+
+            var obj = {
+                StlCod: pOCod,
+                InitialPlaneDate: planDate
+
+            };
+
+
+                   $.ajax({
+                       type: "POST",
+                       url: apiHeader + 'api/StyleApproval/PlanMonthEdit',
+                       contentType: "application/json;charset=utf-8",
+                       data: JSON.stringify(obj),
+                       success: function (result) {
+
+                           if (result == true) {
+                               toastr.success(
+                                   'Save SuccessFull!',
+                                   'Yes',
+                                   {
+                                       timeOut: 1000,
+                                       fadeOut: 1000,
+                                       onHidden: function () {
+                                           window.location.reload();
+                                       }
+                                   }
+                               );
+                           } else {
+                               toastr.warning('problems finding / Session End');
+                           }
+
+                       },
+
+                       complete: function () {
+                           // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                       },
+                       error: function (errormessage) {
+                           alert(errormessage.responseText);
+                       }
+                   });
+       }
+
+    </script>
+}

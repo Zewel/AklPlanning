@@ -1,0 +1,270 @@
+﻿@model SweaterPlanning.Models.MachineQuantity
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-4">
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="fa fa-list"></span> Machine Quantity</h3>
+                    <button type="button" class="btn btn-default float-right" data-toggle="modal" data-target="#modal-xl">
+                        Create
+                    </button>
+                    <button type="button" class="btn btn-default float-right" onclick="Print()">
+                        Print
+                    </button>
+
+                </div>
+
+                <div class="card-body table-responsive">
+                    <table id="dailyTaskTable" class="table table-responsive table-bordered table-hover dataTable">
+                        <thead>
+                            <tr style="background-color:antiquewhite">
+                                <th align="center">MachineId</th>
+                                <th align="center">Year</th>
+                                <th>Factory Code</th>
+                                <th>Brand Name</th>
+                                <th>Gauge Group Name</th>
+                                <th>Gauge Name</th>
+                                <th>No Of Machine</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        @*</tbody>*@
+                        <tfoot>
+                            <tr>
+                                <th colspan="6">Total</th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal fadeInUp" id="modal-xl">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header card-header">
+                            <h4 class="modal-title">Sweater Planning</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Factory Wise Machine Entry</h3>
+                                        @*<a asp-action="Index" class="float-right">Back to List</a>*@
+                                    </div>
+
+                                    @*  <form name="MonthWiseWorkingDay" id="valid" asp-action="Create">*@
+                                    <form asp-action="Create">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                    <div class="form-group">
+                                                        <label asp-for="YearId" value="Year" class="control-label"> Year <span style="color:red"> *</span></label>
+                                                        <select asp-for="YearId" class="form-control" asp-items="ViewBag.YearId">
+                                                            <option value="">--Select Year--</option>
+                                                        </select>
+                                                        <span asp-validation-for="YearId" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="FactoryId" class="control-label"> Factory <span style="color:red"> *</span></label>
+                                                        <select asp-for="FactoryId" class="form-control" asp-items="ViewBag.FactoryId">
+                                                            <option value="">--Select Factory--</option>
+                                                        </select>
+                                                        <span asp-validation-for="FactoryId" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="BrandId" class="control-label"> Brand <span style="color:red"> *</span></label>
+                                                        <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId">
+                                                            <option value="">--Select Machine Brand--</option>
+                                                        </select>
+                                                        <span asp-validation-for="BrandId" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="GaugeId" class="control-label">Gauge <span style="color:red"> *</span></label>
+                                                        <select asp-for="GaugeId" class="form-control" asp-items="ViewBag.GaugeId">
+                                                            <option value="">--Select Gauge--</option>
+                                                        </select>
+                                                        <span asp-validation-for="GaugeId" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="GaugeGroupId" class="control-label">Gauge Group <span style="color:red"> *</span></label>
+                                                        <select asp-for="GaugeGroupId" class="form-control" asp-items="ViewBag.GaugeGroupId">
+                                                            <option value="">--Select Gauge--</option>
+                                                        </select>
+                                                        <span asp-validation-for="GaugeGroupId" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="NoOfMachine" class="control-label"> No of Machine <span style="color:red"> *</span></label>
+                                                        <input asp-for="NoOfMachine" class="form-control" />
+                                                        <span asp-validation-for="NoOfMachine" class="text-danger"></span>
+                                                    </div>
+                                                    @*<div class="form-group">
+                                                            <input type="submit" value="Create" class="btn btn-default" />
+                                                        </div>*@
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+
+                                            <div class="form-group">
+                                                <input type="submit" value="Create" class="btn btn-primary" />
+
+                                            </div>
+                                        </div>
+
+                                        @*<div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>*@
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+
+         $(function () {
+           var table= $('#dailyTaskTable').DataTable({
+               "ajax": { "url": apiHeader + "api/Common/GetAllMachineQty", "dataSrc": "", "crossDomain": true, },
+               "buttons": ['excel', 'pdf', 'copy'],
+               //scrollY: "300px",
+               //scrollX: true,
+               //scrollCollapse: true,
+               //paging: false,
+               "ordering": false,
+               "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
+               "rowsGroup": [1],
+               "vertical_align": 'middle',
+                "columns":
+                [
+                        { "data": "MachineId" },
+                        { "data": "YearName" },
+                        { "data": "FactoryCode" },
+                        { "data": "BrandName" },
+                        { "data": "GaugeGroupName" },
+                        { "data": "GaugeName" },
+                        { "data": "NoOfMachine" },
+                        {
+                            "data": null,
+                            "defaultContent": "<button class='btn btn-block bg-gradient-success btn-sm edit' >Edit</button>",
+                            "targets": -1
+                        }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    { orderable: false, targets: '_all' },
+
+                    { className: 'dt-center', targets: [1,2,3,4] },
+
+                    //, { className: "btn", targets: 9 },
+               ],
+
+               "footerCallback": function (row, data, start, end, display) {
+                   var api = this.api();
+                   // Remove the formatting to get integer data for summation
+                   var intVal = function (i) {
+
+                       return typeof i === 'string' ?
+                           i.replace(/[\$,]/g, '') * 1 :
+                           typeof i === 'number' ?
+                               i : 0;
+
+                   };
+
+
+                   if (api.column(6).data().length) {
+                       var pageTotal = api
+                           .column(6, { page: 'current' })
+                           .data()
+                           .reduce(function (a, b) {
+                               return intVal(a) + intVal(b);
+                           })
+                   }
+                   else { pageTotal = 0 };
+
+                   $(api.column(6).footer()).html(
+                       pageTotal +' Pcs'
+                   );
+                   //$(api.column(5).footer()).html(
+                   //    totalTime +' Minutes'
+                   //);
+               }
+            });
+            $('#dailyTaskTable tbody').on('click', 'button', function () {
+                debugger;
+                //var data = table.row($(this).parents('tr')).data();
+                var user_data = table.row($(this).parents('tr')).data();
+                var date = user_data.MachineId;
+                var flag = 'Edit';
+                window.location.href = '@Url.Action("Edit", "MachineQuantities")?id=' + date ;
+            });
+         //   $('#dailyTaskTable').rowspanizer(
+         //       {
+	        //columns: [1]
+         //       });
+
+            $("#dailyTaskTable").rowspanizer({ vertical_align: 'middle' });
+        });
+
+        function Add() {
+             window.location.href = '@Url.Action("DailyActivityByTimeSlot", "View")';
+        }
+
+
+        function Print() {
+            //window.location.assign('http://localhost:14377/Report/PrintReport');
+
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('dailyTaskTable'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "MachineList.xlsx", { cellStyles: true });
+        }
+    </script>
+
+
+}

@@ -1,0 +1,373 @@
+﻿
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <h3 class="card-title"><span class="fa fa-search"></span> Style-Info Search Criteria</h3>
+            </div>
+        </div>
+        <div class="card-body row">
+
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-arrow-down"></i>
+                            Search Criteria
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="styleNo">Year</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllChangeYear">
+                                    </select>
+                                </div>
+                            </div> 
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="styleNo">Manager</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllManager">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="poNo">Month</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllMonth">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" onclick="LoadTableChangeYear()" id="processButton" class="float-left btn btn-primary"><span class="fa fa-search" ></span> Find</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+
+        </div>
+        
+    </div>
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <div class="col-md-4">
+                    <h3 class="card-title">Qumilative Capacity For Managers </h3>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <table id="dailyTaskTable" class="table table-responsive table-bordered table-hover">
+                    <thead>
+                        <tr style="background-color:antiquewhite">
+                            <th align="center">Month</th>
+                            <th align="center">Gauge</th>
+                            <th>Avg. Capacity SmV</th>
+                            <th align="center">Capacity Allocate (Qty)</th>
+                            <th>Avg. Running Smv</th>
+                            <th>TotalOrder</th>
+                            <th>Balance</th>
+                            <th>Total Allocate/ Running Smv</th>
+                            <th>Balance/ Running Smv</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: #db4ef5" >
+                            <th colspan="3">Total</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+
+            LoadYear('dllChangeYear');
+            LoadMonth('dllMonth');
+            LoadMarchantHead('dllManager')
+            $('#exportStylelList').dataTable();
+
+        })
+        function LoadYear(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetallYear',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    allYears = result;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        $('#' + elementId + '').append("<option value=''>--Select Year--</option>");
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                        }
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+
+
+        function LoadMonth(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/Common/GetMonth',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    allYears = result;
+                    if (result.length > 0) {
+                        $('#' + elementId + '').empty();
+                        $('#' + elementId + '').append("<option value=''>--Select Month--</option>");
+                        for (var i = 0; i < result.length; i++) {
+
+                            $('#' + elementId + '').append($("<option></option>").val(result[i].MonthId).html(result[i].MonthNames));
+                        }
+                    }
+
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function LoadTableChangeYear() {
+            debugger;
+
+            var yearId = isNaN(parseInt($('#dllChangeYear').val())) ? parseInt(currentYear) : parseInt($('#dllChangeYear').val());
+            var marchantId = parseInt($('#dllManager').val());
+            var MonthId = isNaN(parseInt($('#dllMonth').val())) ? 0 : parseInt($('#dllMonth').val());
+
+            $('#dailyTaskTable').DataTable().clear().destroy();
+            $("tr.lvlcollapse").off('click');
+
+            table1 = $('#dailyTaskTable').DataTable({
+                "ajax": { "url": apiHeader + "api/CapacityProjection/YearlyManagerCapacity/" + yearId + "/" + marchantId + "/" + MonthId , "dataSrc": "", "crossDomain": true, },
+                //"buttons": ['excel', 'pdf', 'copy'],
+                // "scrollY": "300px",
+                //"scrollY": "300px",
+                "fixedHeader": true,
+                "ordering": false,
+                "lengthMenu": [[-1], ["All"]],
+                "rowsGroup": [0, 1, 2, 3],
+                "vertical_align": 'middle',
+                "columns":
+                    [
+                        { "data": "MonthNames" },
+                        { "data": "GaugeGroupName" },
+                        { "data": "AvgKnittingTime" },
+                        { "data": "TotalAllocateQty" },
+                        { "data": "AvgSmvKn" },
+                        { "data": "TotalOrder" },
+                        { "data": "BalancePcs" },
+                        { "data": "TAQtyBasedOnRunningSMV" },
+                        { "data": "BalanceOnRunning" }
+                    ],
+                "columnDefs": [
+                    //{
+                    //    "targets": [0],
+                    //    "visible": false,
+                    //    "searchable": false,
+                    //    "orderable": false
+                    //},
+                    { orderable: false, targets: '_all' },
+
+                    { className: 'dt-center', targets: [1, 2, 3, 4] },
+
+                    //, { className: "btn", targets: 9 },
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+
+                    };
+
+
+                    
+
+                    if (api.column(3).data().length) {
+                        var pageTotal = api
+                            .column(3, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            })
+                    }
+                    else { pageTotal = 0 };
+
+
+                    $(api.column(3).footer()).html(
+                        pageTotal + ' Pcs'
+                    );
+                    $(api.column(4).footer()).html(
+                       ''
+                    );
+                    
+                    if (api.column(5).data().length) {
+                        var pageTotal = api
+                            .column(5, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            })
+                    }
+                    else { pageTotal = 0 };
+
+
+
+                    $(api.column(5).footer()).html(
+                        pageTotal + ' Pcs'
+                    );
+                    $(api.column(6).footer()).html(
+                        ''
+                    );
+                    if (api.column(7).data().length) {
+                        var pageTotal = api
+                            .column(7, { page: 'current' })
+                            .data()
+                            .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            })
+                    }
+                    else { pageTotal = 0 };
+
+
+
+                    $(api.column(7).footer()).html(
+                        pageTotal + ' Pcs'
+                    );
+                    $(api.column(8).footer()).html(
+                        ''
+                    );
+                },
+                 "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    //if (aData.Age == "20") {
+                    //    //cell background color
+                    //    $(nRow).find('td:eq(1)').css('background-color', '#ffc2c2');
+                    //}
+                     if (parseInt(aData.BalanceOnRunning) <= 0) {
+                         //row background color
+                         $('td', nRow).css('background-color', '#fadbd8');
+                     } else {
+
+                         $('td', nRow).css('background-color', '#d6eaf8');
+                     }
+
+                    //else if (aData.Age == "25") {
+                    //    //cell text color
+                    //    $('td', nRow).css('color', 'red');
+                    //}
+                }
+
+            });
+
+            $("#dailyTaskTable").rowspanizer({ vertical_align: 'middle' });
+
+
+
+
+        }
+
+
+      
+      
+         function GetAllStyle() {
+             var YearId = $('#dllChangeYear').val();
+             var MonthId = $('#dllMonth').val();
+
+
+            debugger;
+             var urlpath = '@Url.Action("ShipmentList", "PartialView")';
+
+
+             $.ajax({
+                 type: "GET",
+                 url: urlpath,
+                 contentType: "application/json;charset=utf-8",
+                 data: { year: YearId, monthId: MonthId},
+                 dataType: "html",
+                 beforeSend: function () {
+                     $('#testSpan').show();
+                     $("#StyleListView").empty();
+                 },
+                success: function (result) {
+
+                    $("#StyleListView").html(result);
+                    $('#testSpan').hide();
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportStylelList'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "AllStyleList.xlsx", { cellStyles: true });
+        }
+
+
+    </script>
+}

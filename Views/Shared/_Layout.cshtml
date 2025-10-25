@@ -1,0 +1,427 @@
+﻿
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@*@using HtmlHelperViewExtensions*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @*<script type="text/javascript">
+            function preventBack() { window.history.forward(); }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () { null };
+        </script>*@
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>@ViewData["Title"] - AmanPlanManagement</title>
+    <link href="~/plugins/fontawesome-free/css/all.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+    <link href="~/plugins/fontawesome-free-6.2.1-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="~/plugins/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link href="~/assets/css/Ionicons.css" rel="stylesheet" />
+    <link href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />*@
+    <link href="~/dist/css/adminlte.css" rel="stylesheet" />
+    <link href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" rel="stylesheet" />
+    <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <!-- summernote -->
+    <!-- Google Font: Source Sans Pro -->
+
+    <link href="~/assets/css/Googleapis.css" rel="stylesheet" />
+    <link href="~/plugins/datepicker/datepicker3.css" rel="stylesheet" />
+    <link href="~/plugins/sweetalert2/sweetalert2.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/CustomSite.css" rel="stylesheet" />
+    <link href="~/plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/FontAwesome5.css" rel="stylesheet" />
+    <link href="~/assets/css/DateTimePicker4.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/css/flipTimer.css" rel="stylesheet" />
+    @*<link href="~/plugins/datatables-rowgroup/css/rowGroup.bootstrap4.css" rel="stylesheet" />*@
+    <link href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.css" rel="stylesheet" />
+    <link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    @*<link href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet" />*@
+    <link href="~/css/mdp.css" rel="stylesheet" />
+    <link href="~/css/pepper-ginder-custom.css" rel="stylesheet" />
+    <link href="~/css/prettify.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/plugins/ContextMenu/jquery.contextmenu.css" rel="stylesheet" />
+
+    <style>
+        .modal-backdrop {
+            background-color: rgb(0, 0, 0, 0.5);
+        }
+    </style>
+    <style>
+        th, td {
+            white-space: nowrap;
+            width: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <div class="wrapper">
+
+        <!--</nav>-->
+        <nav class="main-header navbar navbar-expand navbar-blue navbar-light navbar-fixed-top">
+
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/Home/Index" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+            </ul>
+
+            <form class="form-inline">
+                <div class="input-group input-group-lg">
+                    <div class="col-md-5">
+                        <label for="dllTaskType">Plan Year</label>
+                    </div>
+                    <div class="col-md-7">
+                        <select class="form-control select2" style="width: 100%;" onchange="" id="dllCurrentYear">
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <form class="form-inline">
+                <div class="input-group input-group-lg">
+                    <h5 style="color:white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sweater Planning Systems</h5>
+                </div>
+            </form>
+            <form class="form-inline">
+                <div class="input-group input-group-lg">
+                    <h5 style="color:white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auto Plan Mode</h5>
+                </div>
+            </form>
+            @*<form class="form-inline">
+                    <div class="input-group input-group-lg">
+
+                        <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                    </div>
+                </form>*@
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="UserInfoes" asp-action="Logout" role="button">
+                        <img class="brand-image img-circle" src="~/assets/img/Hnet.com-image.png" />
+                        @*<span>
+
+                            </span>*@
+                    </a>
+                </li>
+            </ul>
+
+
+            @*<form class="form-inline ml-3">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>*@
+
+
+        </nav>
+        <aside class="main-sidebar e sidebar-dark-primary elevation-4">
+            <a href="/Home/Index" class="brand-link">
+                @*<img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">*@
+                <img src="~/assets/img/389261071_orig.jpg" class="brand-image img-circle elevation-3" style="opacity: .8" />
+                <span class="brand-text font-weight-light">Sweater Planning</span>
+            </a>
+            @**@
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        @*  <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">*@
+
+                        <img src="~/assets/img/Logo.png" class="img-circle elevation-2" alt="User Image" />
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString(SessionCollection.UserName)</a>
+                    </div>
+                </div>
+
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mt-2" id="menuBar">
+
+                </nav>
+            </div>
+        </aside>
+        <div class="content-wrapper">
+
+            <section class="content">
+
+                @RenderBody()
+                <input type="hidden" id="SessionUserId" value="@HttpContextAccessor.HttpContext.Session.GetString(SessionCollection.UserId)" />
+                <input type="hidden" id="SessionCompany" value="@HttpContextAccessor.HttpContext.Session.GetString(SessionCollection.CompanyId)" />
+            </section>
+
+        </div>
+        <footer class="main-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong> &copy; 2022 - Aman Plan Management - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>.</strong>
+                    All rights reserved to the Developers.
+                </div>
+                <div class="col-md-2">
+
+                    <div class="float-left d-none d-sm-inline-block">
+                        <b>Physical Address: </b>@HttpContextAccessor.HttpContext.Session.GetString(SessionCollection.MACAddress)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="float-left d-none d-sm-inline-block">
+                        <b>Pc Name: </b>@HttpContextAccessor.HttpContext.Session.GetString(SessionCollection.PcName)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="float-right d-none d-sm-inline-block">
+                        <b>Version</b> 1.0.1
+                    </div>
+                </div>
+            </div>
+
+
+
+        </footer>
+        <aside class="control-sidebar control-sidebar-dark">
+        </aside>
+    </div>
+
+
+    <script src="~/plugins/jquery/jquery.js"></script>
+    <script src="~/plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="~/js/jquery.rowspanizer.js"></script>
+    <script src="~/plugins/jquery-ui/jquery-ui.js"></script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/plugins/sparklines/sparkline.js"></script>
+    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/plugins/Datejs/build/date-en-US.js"></script>
+    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/dist/js/adminlte.js"></script>
+    <script src="~/plugins/fontawesome-free-6.2.1-web/js/all.js"></script>
+    <script src="~/plugins/fontawesome-free-6.2.1-web/js/fontawesome.js"></script>
+    @*<script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>*@
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <script src="~/dist/js/demo.js"></script>
+    <script src="~/plugins/select2/js/select2.js"></script>
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/SweetalertNew/sweetalert2.all.min.js"></script>
+    <script src="~/plugins/SweetalertNew/sweetalert2.min.js"></script>
+    <link href="~/plugins/SweetalertNew/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <script src="~/plugins/jquery.rowspanizer.js-master/jquery.rowspanizer.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>*@
+    <script src="~/js/jquery.flipTimer.js"></script>
+    <link href="~/plugins/datatables-select/css/select.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/plugins/NewDataTables/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/plugins/NewDataTables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/jquery.dataTable.Rowgroup.js"></script>
+    <script src="~/plugins/datatables-select/js/dataTables.select.min.js"></script>
+    <link href="~/plugins/datatables-rowgroup/css/rowGroup.bootstrap4.min.css" rel="stylesheet" />
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <link href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <script src="~/plugins/RowGroup-1.1.2/js/dataTables.rowGroup.min.js"></script>
+    <script src="~/js/jquery-ui-1.11.1.js"></script>
+    <script src="~/js/jquery-ui.multidatespicker.js"></script>
+    <script src="~/plugins/datatables/fixedColumns.js"></script>
+    <script src="~/js/custom.js"></script>
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="~/Content/Site.css" rel="stylesheet" />*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>*@
+    @*<script src="~/plugins/moment/moment-with-locales.js"></script>
+        <script src="~/plugins/moment/moment.min.js"></script>*@
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>*@
+
+    @*<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>*@
+    <script src="~/js/mark.min.js"></script>
+    <script src="~/js/xlsx.full.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    @*<script src="~/plugins/table2excel/dist/table2excel.js"></script>*@
+
+    <script src="~/plugins/ContextMenu/jquery.contextmenu.js"></script>
+    <link href="~/plugins/easy-seo-context/src/jquery.contextmenu.css" rel="stylesheet" />
+    <script src="~/plugins/easy-seo-context/src/jquery.contextmenu.js"></script>
+
+
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script>
+
+        $(function () {
+            LoadMenu();
+            var url = window.location;
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            $('ul.sidebar-menu a').filter(function () {
+                return this.href == url;
+            }).parent().addClass('active');
+
+            $('ul.treeview-menu a').filter(function () {
+                return this.href == url;
+            }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+
+            $('.select2').select2();
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd M yyyy'
+
+            });
+
+          //  $('.dataTable').dataTable();
+            //This is for auto refress page;
+
+            //window.setTimeout(function () {
+            //    window.location.reload();
+            //}, 3000);
+
+            $(document).on('keypress', 'input[type=number]', function (e) {
+
+                var keyCode = e.which ? e.which : e.keyCode;
+
+                if (!(keyCode >= 46 && keyCode <= 57)) {
+
+                    return false;
+                }
+            });
+
+            $(document).on('keyup keydown change', 'input[type=number]', function (e) {
+
+                $('input[type=number]').attr({
+                    "min": 0
+                });
+            });
+
+
+
+            var url = window.location;
+
+            $('ul.nav-sidebar a').filter(function () {
+                return this.href == url;
+            }).addClass('');
+
+            $('ul.nav-treeview a').filter(function () {
+                return this.href == url;
+            }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open').prev('a').addClass('');
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "10",
+                "hideDuration": "300",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            $(".edit").hide();
+            debugger;
+            CurrentYear();
+        });
+
+       //var apiHeader = "http://localhost:52190/";
+        
+      // var apiHeader = "http://202.51.184.171:8888/";
+
+        var isLocal = window.location.hostname === "localhost";
+        var apiHeader = isLocal
+            ? "http://localhost:52190/"
+            : "http://202.51.184.171:8888/";
+
+
+        var reportHeader = "http://202.51.184.171:8181/";
+        var ConsamptionRptHeader = "http://45.251.57.131/mer/Cons/consNewrpt.aspx?x=";
+    function LoadMenu() {
+
+             var urlpath = '@Url.Action("MenuGeneration", "Home")';
+            $.ajax({
+                url: urlpath,
+                dataType: 'html',
+                type: "Get",
+                data: {},
+                async: false,
+                success: function (data) {
+
+                    $("#menuBar").html(data);
+                },
+                complete: function () {
+
+
+                }
+            });
+        }
+        function ValidationColor(controlName, divName, message, isDropdown) {
+
+            $('#' + divName + ' ' + '.customLabel').empty();
+            var flag = 'input';
+            if (isDropdown == true) {
+                flag = 'change';
+            }
+
+            $('#' + divName + '').append('<div class="customLabel"><p class="text-danger">' + message + '</p></div>');
+
+            $('#' + divName + '').addClass("has-warning");
+
+            //$('#' + controlName + '').addClass("form-control-warning");
+
+            $('#' + controlName + '').bind(flag, function () {
+                $('#' + divName + ' ' + '.customLabel').empty();
+                $('#' + divName + '').removeClass("has-warning");
+                $('#' + controlName + '').removeClass("form-control-warning");
+            });
+        }
+
+    </script>
+</body>
+</html>

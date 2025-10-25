@@ -1,0 +1,206 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header row">
+
+                    <div class="col-md-4">
+                        <h3 class="card-title"><span class="fa fa-list"></span>Aman Work Calander</h3>
+
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row float-right">
+                            <div class="col-md-4">
+                                <label for="dllTaskType">Allocation Year</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control select2" onchange="LoadFullCalander()" style="width: 100%;" id="dllYear">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-body" id="workCalanderDiv">
+
+                </div>
+                <div class="card-footer">
+                    <div class="form-group float-right">
+                        <input type="submit" id="saveWeekend" value="Save" onclick="SaveHolydays()" class="btn btn-primary float-right" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+
+        $(function () {
+            LoadYear('dllYear');
+            var dates = $('#workCalanderDiv').multiDatesPicker('getDates');
+            var today = new Date();
+            var y = today.getFullYear();
+            var dateList = ['10/14/' + y, '02/19/' + y, '01/14/' + y, '11/16/' + y];
+            //$('#workCalanderDiv').multiDatesPicker({
+            //    addDates: ['10/14/' + y, '02/19/' + y, '01/14/' + y, '11/16/' + y] ,
+            //    numberOfMonths: [3, 4],
+            //    defaultDate: '1/1/' + y,
+
+            //});
+            GetWeekends();
+
+        });
+
+        function LoadYear(elementId) {
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetYear',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].YearId).html(result[i].YearName));
+                    }
+                    $('#dllYear').val(currentYear).trigger('change');
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        function GetWeekends() {
+            var year = $('#dllYear').val();
+            var yearName = $("#dllYear option:selected").text();
+            var weekendDates = [];
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetWeekendDays/' + year,
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (Object.keys(result).length > 0) {
+                        $.each(result, function (index, order) {
+                            weekendDates.push(order.WeekendDay);
+                        });
+
+                        $('#workCalanderDiv').multiDatesPicker({
+                            addDates: weekendDates,
+                            numberOfMonths: [3, 4],
+                            defaultDate: '1/1/' + yearName,
+
+                        });
+                        $("#saveWeekend").prop("disabled", true);
+                    } else {
+                        $('#workCalanderDiv').multiDatesPicker({
+                          //  addDates: ['1/1/' + yearName],
+                            numberOfMonths: [3, 4],
+                            defaultDate: '1/1/' + yearName,
+
+                        });
+                        $("#saveWeekend").prop("disabled", false);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        }
+        var year = 0;
+        var nameOfYear = "";
+
+        function LoadFullCalander() {
+            year = $('#dllYear').val();
+            nameOfYear = $("#dllYear option:selected").text();
+            var weekendDates = [];
+            debugger;
+            $.ajax({
+                url: apiHeader + 'api/Common/GetWeekendDays/' + year,
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (Object.keys(result).length > 0) {
+                        $.each(result, function (index, order) {
+                            weekendDates.push(order.WeekendDay);
+                        });
+                        //$('#workCalanderDiv').multiDatesPicker('resetDates', 'disabled');
+                        //$('#workCalanderDiv').multiDatesPicker('resetDates')
+                        $('#workCalanderDiv').multiDatesPicker('destroy');
+                        $('#workCalanderDiv').html("");
+                        
+                        $('#workCalanderDiv').multiDatesPicker({
+                            addDates: weekendDates,
+                            numberOfMonths: [3, 4],
+                            defaultDate: '1/1/' + nameOfYear,
+
+                        });
+                        $('#workCalanderDiv').multiDatesPicker('removeDates', '1/1/' + parseInt(nameOfYear) - 1);
+                        //$("#saveWeekend").prop("disabled", true);
+                    } else {
+                        //$('#workCalanderDiv').multiDatesPicker('resetDates', 'disabled');
+                        //$('#workCalanderDiv').html("");
+                        //$('#workCalanderDiv').multiDatesPicker('resetDates')
+                        $('#workCalanderDiv').multiDatesPicker('destroy');
+                        $('#workCalanderDiv').multiDatesPicker({
+                           // addDates: ['1/1/' + nameOfYear],
+                            numberOfMonths: [3, 4],
+                            defaultDate: '1/1/' + nameOfYear,
+
+                        });
+                        $('#workCalanderDiv').multiDatesPicker('removeDates', '1/1/' + parseInt(nameOfYear) - 1);
+                        $("#saveWeekend").prop("disabled", false);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+            debugger
+            //$('#workCalanderDiv').html("");
+
+
+        }
+        function SaveHolydays() {
+            debugger;
+            var today = new Date();
+            var dates = $('#workCalanderDiv').multiDatesPicker('getDates');
+            var dates1 = $('#workCalanderDiv').multiDatesPicker('');
+            var stringResult = dates.toString();
+
+            var obj = {
+                YearId: parseInt($('#dllYear').val()),
+                WeekendDay: stringResult,
+            };
+            $.ajax({
+                type: "POST",
+                url: apiHeader + 'api/Common/SaveOffDays',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    if (result == 1) {
+                        toastr.success('Save Successfully.');
+                    } else {
+                        toastr.warning('problems finding.');
+                    }
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+}

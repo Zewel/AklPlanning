@@ -1,0 +1,95 @@
+﻿@model IEnumerable<SweaterPlanning.Models.StylePurchaseOrder>
+<table class="table table-bordered table-striped table-hovertable-head-fixed" id="PoTable">
+    <thead>
+        <tr style="background-color:antiquewhite">
+            @*<th>Action</th>*@
+
+            <th>Action</th>
+            <th>#Po No</th>
+            <th>Color</th>
+            <th>Po Qty</th>
+            <th>Knitting Qty</th>
+            <th>Booked Ex-Fty</th>
+            <th>Po Ex-Fty</th>
+            <th>Rev. Ex-Fty</th>
+            <th>Varience</th>
+            <th>Remarks</th>
+            <th>Cancel Qty</th>
+            <th>Cancel Remarks</th>
+            <th>Initial Planning Date</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StylePurchaseOrder item in Model)
+        {
+        <tr>
+            <td>
+                <button class="button  btn-success" data-toggle="tooltip" data-placement="top" title="Edit Po" style="border-radius:50%;" onclick="EditPo(@item.POCod, this); return false"><span class="fa fa-edit"></span></button>
+                
+
+            </td>
+
+            <td>
+                @item.PONo <input type="hidden" class="poCode" value="@item.POCod" />
+                <input type="hidden" class="planDate" value="@item.InitialPlaneDate" />
+            </td>
+            <td>@item.POColor</td>
+            <td class="poQty">@item.POQty</td>
+            <td class="poQty">@item.KnittQty</td>
+            <td>@Convert.ToDateTime(item.BookingExfty).ToString("dd MMM yyyy")</td>
+            @{if (Convert.ToDateTime(item.POExfty).ToString("dd MMM yyyy") == "01 Jan 1900")
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@Convert.ToDateTime(item.POExfty).ToString("dd MMM yyyy")</td>
+                } }
+
+            @{if (Convert.ToDateTime(item.RevExfty).ToString("dd MMM yyyy") == "01 Jan 1900")
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@Convert.ToDateTime(item.RevExfty).ToString("dd MMM yyyy")</td>
+                } }
+            <td>0</td>
+            <td>@item.Remarks</td>
+            <td>@item.CnclQty</td>
+            <td>@item.CnclRemarks</td>
+            @{
+                if (Convert.ToDateTime(item.InitialPlaneDate).ToString("dd MMM yyyy") == null)
+                {
+
+
+                    <td></td>
+                }
+                else
+                {
+                    <td>@Convert.ToDateTime(item.InitialPlaneDate).ToString("dd MMM yyyy")</td>
+                }
+            }
+        <td>
+            @if (item.KnittQty > 0)
+            {
+                <button class="button  btn-danger" data-toggle="tooltip" data-placement="top" title="Remove Po" style="border-radius:50%;" onclick="DeletePo(@item.POCod)" disabled><span class="fa fa-trash"></span></button>
+            }
+            else
+            {
+                <button class="button  btn-danger" data-toggle="tooltip" data-placement="top" title="Remove Po" style="border-radius:50%;" onclick="DeletePo(@item.POCod)"><span class="fa fa-trash"></span></button>
+            }
+        </td>
+        </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr style="background-color:lightblue">
+            <td colspan="2">Total</td>
+            <td>@Model.Sum(x => x.POQty)</td>
+            <td>@Model.Sum(x => x.KnittQty)</td>
+            <td colspan="9"></td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,60 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+            <table class="table table-bordered" id="exportStylelList">
+                <thead style="background-color:aliceblue">
+                    <tr>
+                        <th>Production<br>Date</th>
+                        <th>Factory</th>
+                        <th>Total<br>Line</th>
+                        <th>Linking<br>SMV</th>
+                        <th>Linking<br>Man</th>
+                        <th>Working<br>Hour</th>
+                        <th>Working<br>Minute</th>
+                        <th>Linking<br>Target</th>
+                        <th>Linking<br>Production</th>
+                        <th>Balence</th>
+                        <th>Efficiency</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow item in Model.Rows)
+                    {
+
+                    <tr>
+
+                        <td>@item.ItemArray[0]</td>
+                        <td>@item.ItemArray[1]</td>
+                        <td>@item.ItemArray[2]</td>
+                        <td>@item.ItemArray[3]</td>
+                        <td>@item.ItemArray[4]</td>
+                        <td>@item.ItemArray[5]</td>
+                        <td>@item.ItemArray[6]</td>
+                        <td>@item.ItemArray[7]</td>
+                        <td>@item.ItemArray[8]</td>
+                        <td>@item.ItemArray[9]</td>
+                        <td>@item.ItemArray[10] %</td>
+
+                    </tr>
+
+                    }
+
+
+                </tbody>
+                <tfoot>
+                    <tr style="background-color:antiquewhite">
+                        <th colspan="2">Total:</th>
+                        <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[2])) Line</th>
+
+                        <th colspan="4"></th>
+
+                        <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[7])) Pcs</th>
+                        <th>@Model.AsEnumerable().Sum(e => Convert.ToInt32(e.ItemArray[8])) Pcs</th>
+
+                        <th colspan="2"></th>
+                    </tr>
+
+                </tfoot>
+            </table>
+

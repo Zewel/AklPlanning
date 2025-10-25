@@ -1,0 +1,140 @@
+﻿
+@model System.Data.DataTable;
+@using System.Data;
+
+
+<div class="container-fluid">
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 class="card-title"><span class="fa fa-list "></span>Costing Master Item Catagory</h3>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label float-right">Production Unit:</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control select2" style="width: 100%;" id="FactoryId" onchange="" disabled>
+                        <option value="">--Select Factory--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+        <div class="card-body table-responsive" style="height:500px">
+
+
+
+            <table class="table  table-bordered table-head-fixed text-nowrap table-hover" id="PoTable">
+                <thead>
+                    <tr style="background-color:antiquewhite">
+                        <th>Master Item</th>
+                        <th>Catagory</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow item in Model.Rows)
+                    {
+                        <tr>
+                            <td>
+                                @item.ItemArray[1]
+                                <input type="hidden" class="Catagoryid" value="@item.ItemArray[0]" />
+
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control select2 CataOptionId" style="width: 100%;" id="CataOpId" value="@item.ItemArray[2]" onchange="">
+                                        <option value="">....Catagory Loading....</option>
+                                        <option value="Non Costing Metarial">Non Costing Metarial</option>
+                                        <option value="Knittings Metarial">Knittings Metarial</option>
+                                        <option value="Linking Metarial">Linking Metarial</option>
+                                        <option value="Sweing Metarial">Sweing Metarial</option>
+                                        <option value="Finishing Metarial">Finishing Metarial</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="submit" onclick="Save(this)" id="saveButton" class="float-left btn btn-primary btn-sm">Submit</button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr style="background-color:blueviolet">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+
+
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-10">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            LoadFactory("FactoryId");
+            debugger;
+            var companyId = parseInt($('#SessionCompany').val());
+            $('#FactoryId').val(companyId).trigger('change');
+
+        });
+
+        function Save(element) {
+            debugger
+            var id = parseInt($(element).closest("tr").find('.Catagoryid').val());
+            var optionId = $(element).closest("tr").find('.CataOptionId').val();
+
+            $.ajax({
+                type: "GET",
+                url: apiHeader + 'api/Common/UpdateCataSeg/' + id + '/' + optionId ,
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+
+                    if (result == true) {
+                        toastr.success(
+                            'Save SuccessFull!',
+                            'Yes',
+                            {
+                                timeOut: 3000,
+                                fadeOut: 3000,
+                                onHidden: function () {
+                                    window.location.reload();
+                                }
+                            }
+                        );
+                    } else {
+                        toastr.warning('problems finding / Session End');
+                    }
+
+                },
+
+                complete: function () {
+                    // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+    </script>
+};

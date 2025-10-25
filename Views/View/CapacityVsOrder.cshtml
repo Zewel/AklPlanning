@@ -1,0 +1,146 @@
+﻿
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3 class="card-title"><span class="fa fa-search"></span>Capacity vs Order</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="dllTaskType" style="float:right">Production Year:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control select2" style="width: 100%;" onchange="" id="dllProductionYear">
+                            </select>
+                        </div>
+                        @*<div class="col-md-6">
+                                <input type="date" data-date="" data-date-format="DD MM YYYY" class="form-control" />
+                                <input type="date" data-date=""  data-date-format="DD MMMM YYYY" value="2015-08-09">
+                            </div>*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="dllTaskType" style="float:right">Marchandizer: </label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control select2" style="width: 100%;" onchange="" id="dllMarchandizer">
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-info btn-xs float-left" onclick="GetAllStyle()" style="border-radius: 50%; background-color: forestgreen; margin-left:10px "><span class="fa fa-search"></span></button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-info btn-xs float-right" onclick="PrintPDF()" style="border-radius: 50%; background-color: forestgreen;"><span class="fa fa-file-pdf"></span></button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-info btn-xs float-right" onclick="ExportAllData_HTML()" style="border-radius: 50%; background-color: forestgreen;"><span class="fa fa-file-excel"></span></button>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="row" id="StyleListView">
+
+            </div>
+
+
+        </div>
+        <div class="card-footer">
+            @*<button type="submit" onclick="GetAllStyle()" id="processButton" class="float-right btn btn-primary">Submit</button>*@
+        </div>
+    </div>
+
+
+</div>
+<div class="col-md-12 col-xs-12 text-center" id="testSpan" style="display: none">
+
+    <span>
+        Please wait Data is loading -
+        <img src="~/assets/img/dataTableLoader.gif" />
+        @*<img src="~/assets/img/loading-2.gif" />*@
+    </span>
+
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+          LoadProductionYear('dllProductionYear');
+          LoadMarchantHead('dllMarchandizer')
+        });
+
+
+
+        function GetAllStyle() {
+            var yearId = $('#dllProductionYear').val();
+            var marchantId = $('#dllMarchandizer').val();
+
+            debugger;
+             var urlpath = '@Url.Action("CapacityVsOrderPartial", "PartialView")';
+
+
+            $.ajax({
+                type: "GET",
+                url: urlpath,
+                contentType: "application/json;charset=utf-8",
+                data: { yearId: yearId, MarchatId: marchantId},
+                 dataType: "html",
+                beforeSend: function () {
+
+                     $("#StyleListView").empty();
+                 },
+                success: function (result) {
+
+                    $("#StyleListView").html(result);
+
+                },
+
+                complete: function () {
+                   // window.location.href = '@Url.Action("CreateSlot", "View")';
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+
+
+
+        function ExportAllData_HTML() {
+            var wb = { SheetNames: [], Sheets: {} };
+            var ws9 = XLSX.utils.table_to_sheet(document.getElementById('exportStylelList'), { raw: true });
+            wb.SheetNames.push('Temp Table'); wb.Sheets["Temp Table"] = ws9;
+            XLSX.writeFile(wb, "myTemp.xlsx", { cellStyles: true });
+        }
+        function PrintPDF() {
+            var yearId = parseInt( $('#dllProductionYear').val());
+            var marchantId = parseInt($('#dllMarchandizer').val());
+            if (yearId == 0 || marchantId == 0) {
+                toastr.warning('Please give the all input.');
+                return false;
+            } else {
+
+                window.open(reportHeader+"Report/CapacityVsOrderReport?yearId=" + yearId + "&" + "merchantId=" + marchantId, '_blank');
+
+            }
+
+        }
+    </script>
+}

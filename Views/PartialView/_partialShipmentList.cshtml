@@ -1,0 +1,150 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+<div class="card card-primary col-md-12">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="card-title"><span class="fa fa-list"> Style List</span> Month Wise Shipment Schedule</h3>
+            </div>
+            <div class="col-md-4">
+                <label class="label-info">Total Order Qty is:@Model.AsEnumerable().Sum(x => Convert.ToInt32(x.ItemArray[6])) </label>
+            </div>
+            <div class="col-md-4">
+                <button class="button btn-info" style="float:right" onclick="ExportAllData_HTML()"> <span class=" fa fa-list"></span>Excel</button>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form>
+        <div class="card-body table-responsive dataTable " style="height:280px">
+            <table class="table dataTable table-bordered table-head-fixed text-nowrap table-hover" id="exportStylelList">
+                <thead style="background-color:aliceblue">
+                    <tr style="background-color:lightblue">
+                        <th style="background-color:lightblue">Year</th>
+                        <th style="background-color:lightblue">Style</th>
+                        <th style="background-color:lightblue">PO</th>
+                        <th style="background-color:lightblue">Buyer</th>
+                        <th style="background-color:lightblue">PO Qty</th>
+                        <th style="background-color:lightblue">Booking Ex-Factory</th>
+                        <th style="background-color:lightblue">PO Ex-Factory</th>
+                        <th style="background-color:lightblue">Rev. Ex-Factory</th>
+                        <th style="background-color:lightblue">Final Ex-Factory</th>
+                        <th style="background-color:lightblue">Gap Days Booking To Final</th>
+                        <th style="background-color:lightblue">Remaining Days To Ship</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow item in Model.Rows)
+                    {
+                        int index = Model.Rows.IndexOf(item) + 1;
+                        if (index % 2 == 0)
+                        {
+                            <tr style="background-color:gainsboro">
+                                <td>@item.ItemArray[2]</td>
+                                <td>@item.ItemArray[3]</td>
+                                <td>@item.ItemArray[4]</td>
+                                <td>@item.ItemArray[5]</td>
+                                <td>@item.ItemArray[6]</td>
+                                <td>@Convert.ToDateTime(item.ItemArray[7]).ToString("dd-MMM-yyyy")</td>
+                                @if (item.ItemArray[8].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[8]).ToString("dd-MMM-yyyy")</td>
+                                }
+                                @if (item.ItemArray[9].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[9]).ToString("dd-MMM-yyyy")</td>
+                                }
+                                @if (item.ItemArray[10].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[10]).ToString("dd-MMM-yyyy")</td>
+                                }
+
+                                <td>@item.ItemArray[11]</td>
+                                <td>@item.ItemArray[12]</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background-color:lightgoldenrodyellow">
+                                <td>@item.ItemArray[2]</td>
+                                <td>@item.ItemArray[3]</td>
+                                <td>@item.ItemArray[4]</td>
+                                <td>@item.ItemArray[5]</td>
+                                <td>@item.ItemArray[6]</td>
+                                <td>@Convert.ToDateTime(item.ItemArray[7]).ToString("dd-MMM-yyyy")</td>
+                                @if (item.ItemArray[8].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[8]).ToString("dd-MMM-yyyy")</td>
+                                }
+                                @if (item.ItemArray[9].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[9]).ToString("dd-MMM-yyyy")</td>
+                                }
+                                @if (item.ItemArray[10].ToString() == "")
+                                {
+
+
+                                    <td></td>
+                                }
+                                else
+                                {
+
+                                    <td>@Convert.ToDateTime(item.ItemArray[10]).ToString("dd-MMM-yyyy")</td>
+                                }
+
+                                <td>@item.ItemArray[11]</td>
+                                <td>@item.ItemArray[12]</td>
+                            </tr>
+                        }
+
+
+                    }
+
+
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </form>
+
+</div>
+

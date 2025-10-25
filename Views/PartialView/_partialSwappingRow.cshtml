@@ -1,0 +1,18 @@
+﻿@model System.Data.DataTable;
+@using System.Data;
+
+@foreach (DataRow item in Model.Rows)
+{
+    <tr>
+        <td hidden>@item.ItemArray[0]</td>
+        <td class="context-menu-one">@item.ItemArray[1]</td>
+        <td><a href="#" onclick="SwappingPo(@item.ItemArray[1],@item.ItemArray[2], this); return false;"><label name="stlNo" style="cursor:pointer">@item.ItemArray[3]</label></a> </td>
+        <td>@item.ItemArray[4]</td>
+        <td>@item.ItemArray[5]</td>
+        <td>@Convert.ToInt32(item.ItemArray[6])</td>
+        <td style="width:5px">@item.ItemArray[7]</td>
+        <td>@item.ItemArray[8]</td>
+        <td>@Convert.ToDateTime(item.ItemArray[9]).ToString("dd MM yyyy")</td>
+    </tr>
+}
+

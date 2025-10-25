@@ -1,0 +1,244 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Daily Task</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" id="divOrderDate">
+                                    <label for="txtOrderDate">Task Date</label>
+                                    <input type="text" id="taskDate" class="form-control datepicker" onchange="CheckCurrentdate()" value="@DateTime.Now.ToString("dd MMM yyyy")" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtOrderDate">Start Time</label>
+                                    <div class='input-group date' id='datetimepicker3' data-target-input="nearest">
+
+                                        <input type='text' class="form-control" id='startDate' data-target="#datetimepicker3" />
+                                        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                            <div class="input-group-text">
+                                                <i class="far fa-clock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtOrderDate">End Time</label>
+                                    <div class='input-group date' id='endDate' data-target-input="nearest">
+
+                                        <input type='text' class="form-control" id='endTime' data-target="#datetimepicker3" />
+                                        <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                            <div class="input-group-text">
+                                                <i class="far fa-clock"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group" id="divdllTaskType">
+                                    <label for="dllTaskType">Task Type</label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllTaskType">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Task Description</label>
+                                    <textarea class="form-control" id="taskDescription" rows="3" placeholder="Enter ..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Responsible</label>
+                                    <input type="text" class="form-control" id="responsible" placeholder="Enter ...">
+                                </div>
+                                <div class="form-group">
+                                    <div class="countdown-bar" id="countdownB">
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </form>
+                <div class="card-footer">
+                    <button type="submit" onclick="Add()" class="float-right btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><span class="fa fa-list"></span> Task lists</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="dailyTaskTable" class="table table-bordered table-hover dataTable">
+                        <thead>
+                            <tr>
+                                <th>Activity Id</th>
+                                <th>Activity Code</th>
+                                <th>Activity Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Task Type</th>
+                                <th>Task Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        @*</tbody>*@
+                        @*<tfoot>
+                        <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                        </tr>
+                        </tfoot>*@
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('#startDate').datetimepicker({
+                format: 'LT'
+            }); $('#endTime').datetimepicker({
+                format: 'LT'
+            });
+            LoadTaskType('dllTaskType');
+
+
+            //$("#dailyTaskTable").DataTable({
+            //    "ajax": {
+            //        "url": apiHeader + "api/DailyActivity/GetAll",
+            //        "type": "GET",
+            //        "datatype": "json",
+            //    },
+            //    "columns": [
+            //        { "data": "ActivityId", "autowidth": true },
+            //        { "data": "ActivityCode", "autowidth": true },
+            //        { "data": "ActivityDate", "autowidth": true },
+            //        { "data": "StartTime", "autowidth": true },
+            //        { "data": "EndTime", "autowidth": true },
+            //        { "data": "TaskTypeId", "autowidth": true },
+            //        { "data": "TaskDescription", "autowidth": true }
+
+            //    ]
+            //});
+            $('#dailyTaskTable').DataTable({
+                "ajax": { "url": apiHeader + "api/DailyActivity/GetAll", "dataSrc": "" },
+                "columns": [{ "data": "ActivityId" },
+                    { "data": "ActivityCode" },
+                    { "data": "ActivityDate" },
+                    { "data": "StartTime" },
+                    { "data": "EndTime" },
+                    { "data": "TaskTypeId" },
+                    { "data": "TaskDescription" },]
+            });
+        });
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        function LoadTaskType(elementId) {
+            $.ajax({
+                url: apiHeader + 'api/TaskTypes/GetTaskTypes',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $('#' + elementId + '').empty();
+                    $('#' + elementId + '').append("<option value='0'>--Select Task Type--</option>");
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        $('#' + elementId + '').append($("<option></option>").val(result[i].TaskTypeId).html(result[i].TastTypeName));
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function Add() {
+            var obj = {
+                ActivityDate: $('#taskDate').val(),
+                StartTime: $('#startDate').val(),
+                EndTime: $('#endTime').val(),
+                TaskTypeId: $('#dllTaskType').val(),
+                TaskDescription: $('#taskDescription').val()
+            };
+            $.ajax({
+                type: "POST",
+                url: apiHeader + 'api/DailyActivity/Add',
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: result
+                    })
+                    //Swal.fire(
+                    //    result,
+                    //    'You clicked the button!',
+                    //    'success'
+                    //)
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function LoadData() {
+            $.ajax({
+                url: apiHeader + 'api/TaskTypes/GetTaskTypes',
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    $.ajax({
+                        url: apiHeader + 'api/TaskTypes/GetTaskTypes',
+                        type: "GET",
+                        dataType: "json",
+                        success: function (result) {
+                            $('#' + elementId + '').empty();
+                            $('#' + elementId + '').append("<option value='0'>--Select Task Type--</option>");
+
+                            for (var i = 0; i < result.length; i++) {
+
+                                $('#' + elementId + '').append($("<option></option>").val(result[i].TaskTypeId).html(result[i].TastTypeName));
+                            }
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+                    });
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+}

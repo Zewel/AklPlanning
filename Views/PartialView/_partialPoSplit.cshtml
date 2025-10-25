@@ -1,0 +1,311 @@
+﻿@*@Model.Item1.SweaterPlanning.Model.Item1..StyleMaster;
+    @Model.Item1.System.Data.DataTable*@
+@model Tuple<SweaterPlanning.Models.StyleMaster, System.Data.DataTable>;
+@using System.Data;
+
+<style>
+
+    .blink_me {
+        animation: blinker 1s linear infinite;
+    }
+
+    @@keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <div class="row">
+                        <h3 class="card-title">Style Information</h3>
+                    </div>
+                </div>
+                <form>
+                    <div class="card-body row">
+                        <div class="col-md-6">
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Style No # @Model.Item1.StlCode</label>
+                                <label class="col-md-6">@Model.Item1.StlDesc</label>
+                                <input type="hidden" id="styleCode" value="@Model.Item1.StlCode" />
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Buyer</label>
+                                <label class="col-md-6">@Model.Item1.Bur_Name</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Style Des.</label>
+                                <label class="col-md-6">@Model.Item1.StlDescrptn</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Department:</label>
+                                <label class="col-md-6">@Model.Item1.GmtDept</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Gauge:</label>
+                                <label class="col-md-6">@Model.Item1.GaugeDesc</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Season:</label>
+                                <label class="col-md-6">@Model.Item1.SeasonName</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row  col-md-12 table-bordered" style="float:right">
+                                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Item1.StyleSktbyt)" height="100px" />
+
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Merchandiser:</label>
+                                <label class="col-md-5">@Model.Item1.Fullname</label>
+                            </div>
+                            <div class="row  col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">Production Lead:</label>
+                                <label class="col-md-6">@Model.Item1.ProdLead</label>
+                            </div>
+                            <div class="row col-md-12 table-bordered">
+                                <label style="background-color:lavender" class="col-md-6">FOB:</label>
+                                <label class="col-md-6">$ @Model.Item1.FobAmnt</label>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </form>
+
+            </div>
+
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Initial Planning Part</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" id="divdllTaskType">
+                                    <label for="dllCoordinator">Gauge<span style="color:red"> *</span></label>
+
+                                    <select class="form-control select2" style="width: 100%;" id="dllGauge">
+                                    </select>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="form-group" id="divdllTaskType">
+                                    <label for="dllTaskType">Machine Type<span style="color:red"> *</span></label>
+                                    <select class="form-control select2" style="width: 100%;" id="dllMcnType">
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>New SMV<span style="color:red"> *</span></label>
+                                    <input type="number" class="form-control" id="smvValue" rows="1" placeholder="Enter ..." />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+                <div class="card-footer">
+                    <button type="submit" onclick="SavePoSplit()" class="float-right btn btn-primary">Submit</button>
+                    <button type="submit" onclick="Deny()" class="float-left btn btn-warning">Deny</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">IE Part</h3>
+                </div>
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="background:antiquewhite">
+                                            <th>Machine Type</th>
+                                            <th>Knitting</th>
+                                            <th>Total</th>
+                                            <th>Process</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>@Model.Item1.MachineType</td>
+                                            <td>@Model.Item1.SmvKn</td>
+                                            <td>@Model.Item1.SmvTtl</td>
+                                            <td>@Model.Item1.SewProc</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">PO Wise Planning</h3>
+                </div>
+                <form>
+                    <div class="card-body table-responsive" style="height: 200px;">
+                        <div class="row">
+                            <table class="table table-bordered table-striped table-hovertable-head-fixed" id="PoTable">
+                                <thead>
+                                    <tr style="background-color:antiquewhite">
+                                        <th>Action</th>
+                                        <th>PO NO#</th>
+                                        <th>PO Qty.</th>
+                                        <th>Ship Mode</th>
+                                        <th>Ex-Fty Date</th>
+                                        <th>Plan Date</th>
+                                        <th>Po Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Item1.StylePurchaseOrders)
+                                    {
+
+
+                                        <tr>
+                                            @if (item.PoSplitId == 0 || item.planStatus == 0)
+                                            {
+
+                                                <td> <input type="checkbox" class="checkBoxCls" id="checkboxPrimary3"></td>
+                                            }
+                                            else if (item.PoSplitId != 0 || item.planStatus == 1)
+                                            {
+                                                <td> <input type="checkbox" class="checkBoxCls" id="checkboxPrimary3" disabled></td>
+
+                                            }
+
+                                            <td>
+                                                @item.PONo <input type="hidden" class="poCode" value="@item.POCod" />
+                                                <input type="hidden" class="planDate" value="@item.InitialPlaneDate" />
+                                            </td>
+                                            <td class="poQty">@item.POQty</td>
+                                            <td>@item.ShipMode</td>
+                                            @*<td></td>
+                                                <td></td>*@
+                                            <td>@Convert.ToDateTime(item.ExftyNew).ToString("dd MMM yyyy")</td>
+                                            <td>@Convert.ToDateTime(item.InitialPlaneDate).ToString("dd MMM yyyy")</td>
+
+                                            @if (item.PoSplitId == 0)
+                                            {
+
+                                                <td><button type="button" onclick="IndividualPoSplit(@item.POCod, @item.POQty, '@Convert.ToDateTime(item.InitialPlaneDate).ToString("dd MMM yyyy")')" class="float-right btn-xs btn-primary"><span class="fas fa-repeat"></span>Po Split</button></td>
+
+                                            }
+                                            else
+                                            {
+                                                <td><button type="button" onclick="IndividualPoSplit(@item.POCod, @item.POQty, '@Convert.ToDateTime(item.InitialPlaneDate).ToString("dd MMM yyyy")')" class="float-right btn-xs btn-primary" disabled><span class="fas fa-repeat"></span>Po Split</button></td>
+
+
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                @*<div class="card-footer">
+                        <button type="submit" onclick="Add()" id="processButton" class="float-right btn btn-primary">Submit</button>
+                    </div>*@
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Split Po Information</h3>
+        </div>
+        <form>
+            <div class="card-body table-responsive" style="height: 200px;">
+                <div class="row">
+                    <table class="table table-bordered table-striped table-hovertable-head-fixed" id="PoTable">
+                        <thead>
+                            <tr>
+                                <th colspan="7" style="background-color:cadetblue">Original Style Info</th>
+                                <th colspan="4" style="background-color:aqua">New Info</th>
+                            </tr>
+                            <tr style="background-color:antiquewhite">
+                                <th>A</th>
+                                <th>Style</th>
+                                <th>PO NO#</th>
+                                <th>PO Qty.</th>
+                                <th>Original Gauge</th>
+                                <th>Ori./Brand</th>
+                                <th>Ori./SMVKn</th>
+                                <th>New Gauge</th>
+                                <th>New Brand</th>
+                                <th>New SMV</th>
+                                <th>New Po Qty.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow item in Model.Item2.Rows)
+                            {
+
+
+
+
+                                <tr>
+                                    @if (Convert.ToInt32(item.ItemArray[11]) == 0)
+                                    {
+                                        <td><button type="button" onclick=" DeletePoSplit(@Convert.ToInt32(item.ItemArray[12]))" style="border-radius:50%" class="float-right btn-xs btn-danger"><span class="fa fa-trash"></span></button></td>
+
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span class="blink_me fa fa-cog"> Prduction Running</span>
+                                        </td>
+                                    }
+
+                                    <td>@item.ItemArray[0]</td>
+                                    <td>@item.ItemArray[1]</td>
+                                    <td>@item.ItemArray[2]</td>
+                                    <td>@item.ItemArray[3]</td>
+                                    <td>@item.ItemArray[4]</td>
+                                    <td>@item.ItemArray[5]</td>
+                                    <td>@item.ItemArray[6]</td>
+                                    <td>@item.ItemArray[7]</td>
+                                    <td>@item.ItemArray[8]</td>
+                                    <td>@item.ItemArray[9]</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
